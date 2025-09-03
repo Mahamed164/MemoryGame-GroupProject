@@ -1,0 +1,30 @@
+name: User Story
+description: Mall för att beskriva en ny funktionalitet ur användarens perspektiv
+title: "[US]: <kort beskrivning>"
+labels: ["user story"]
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Beskrivning
+      description: "Som <användartyp> vill jag <mål> för att <nytta>."
+      placeholder: "Som spelare vill jag kunna logga in för att se mina resultat."
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptanskriterier
+      description: Lista som checkboxar
+      placeholder: |
+        - [ ] AC1
+        - [ ] AC2
+        - [ ] AC3
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anteckningar
+      description: Extra detaljer, länkar, skisser
