@@ -6,7 +6,41 @@
              xmlns:local="clr-namespace:SUP.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+    <Grid Background="#FFE689B4">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Viewbox
+    Grid.Row="1"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center"
+            Stretch="Uniform">
+            <Grid Width="1000" Height="600">
+                <ItemsControl ItemsSource="{Binding Pads}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="4" Rows="5" />
+                            <!--  beskriver att vi vill ha något i tre kolumner och tre rader (3x3 knappar/pads)  -->
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Margin" Value="12" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Background="White"/><!--{Binding IsLit, Converter={StaticResource LitToBrushConverter}}" Command="{Binding ClickCommand}"--> 
+                            <!--  ClickCommand finns i Pads som är bbundet som ItemSource ovan  -->
+
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Viewbox>
     </Grid>
 </UserControl>
