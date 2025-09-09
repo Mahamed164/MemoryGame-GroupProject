@@ -2,8 +2,22 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SUP"
+             xmlns:gameVM="clr-namespace:SUP.ViewModels"
+             xmlns:gameView="clr-namespace:SUP.Views"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
+        <DataTemplate DataType="{x:Type gameVM:StartViewModel}">
+            <gameView:StartView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type gameView:GameView}">
+            <gameView:GameView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type gameVM:EndViewModel}">
+            <gameView:EndView/>
+        </DataTemplate>
+        
     </Application.Resources>
 </Application>
