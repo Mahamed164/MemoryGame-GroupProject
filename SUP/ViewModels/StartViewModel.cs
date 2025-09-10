@@ -12,7 +12,27 @@ namespace SUP.ViewModels
     [AddINotifyPropertyChangedInterface]
     public class StartViewModel
     {
-        public string PlayerName { get; set; }
+        private string playerName;
+        
+
+        public string PlayerName
+        {
+            get { return playerName; }
+            set
+            {
+                playerName = value;
+
+                if (string.IsNullOrEmpty(playerName))
+                {
+                    Greeting = "Player Name";
+                }
+                else
+                {
+                    Greeting = "Hej " + playerName + ", klicka på Start Game när du är redo!";
+                }
+            }
+        }
+        public string Greeting { get; set; }
         public ICommand StartGameCmd { get;}
 
         public StartViewModel(ICommand startGameCmd) 
