@@ -23,6 +23,6 @@ namespace SUP
             DataContext = new MainShellViewModel();
         }
 
-
+       
     }
 }
