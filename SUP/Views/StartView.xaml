@@ -10,18 +10,18 @@
     mc:Ignorable="d">
     <Grid Background="#FFE689B4">
         <TextBlock
-            Width="120"
-            Height="64"
-            Margin="113,144,0,0"
+            Width="255"
+            Height="93"
+            Margin="76,93,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontSize="20"
-            Text="Player Name"
+            Text="{Binding Greeting, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap" />
         <TextBox
             Width="148"
             Height="62"
-            Margin="104,178,0,0"
+            Margin="105,192,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}"
@@ -41,7 +41,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontSize="30"
-            Text="Welcome To MemoryGame"
+            Text="Welcome To Memory Game"
             TextWrapping="Wrap" />
 
     </Grid>
