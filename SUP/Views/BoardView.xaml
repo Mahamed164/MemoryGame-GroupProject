@@ -8,20 +8,14 @@
              
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=vm:MemoryBoardViewModel}"
              >
 
     <!--d:DataContext="{d:DesignInstance Type=vm:MemoryBoardViewModel}"-->
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="3*"/>
-        </Grid.RowDefinitions>
-
-    </Grid>
-
+   
     <UserControl.Resources>
-<!--Detta är kopierat från HumanBenchMark-->
+        
+        <!--Detta är kopierat från HumanBenchMark-->
         <Style TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Margin" Value="5" />
@@ -47,5 +41,50 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-   
+    <Grid Background="#FFE689B4" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+         Grid.Row="0"
+         Grid.ColumnSpan="3"
+         Margin="25,2,3,0"
+         FontSize="30"
+         Foreground="White"
+         Text="Memory" />
+
+        <Viewbox
+         Grid.Row="1"
+         HorizontalAlignment="Center"
+         VerticalAlignment="Center"
+         Stretch="Uniform">
+            <Grid Width="600" Height="600">
+                <ItemsControl ItemsSource="{Binding Cards}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="5" Rows="4" />
+                      
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Margin" Value="12" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Background="{Binding IsLit, Converter={StaticResource LitToBrushConverter}}" Command="{Binding ClickCommand}" /> 
+                            <!--LÖSA CONVERTERN FÖR BINDA, FORTSÄTTA KALLA DEN COLOR MEN SE OM JAG FÅR IN NUMMER.....-->
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Viewbox>
+
+
+    </Grid>
+
 </UserControl>
