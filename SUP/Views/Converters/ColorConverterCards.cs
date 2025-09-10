@@ -42,10 +42,10 @@ namespace SUP.Views.Converters
 
                 switch
                 {
-                    FeedbackState.Wrong => Red,
-                    FeedbackState.Correct => Green,
-                    FeedbackState.Finished => LightPink,
-                    FeedbackState.Neutral => HotPink,
+                    //FeedbackState.Wrong => Red,
+                    //FeedbackState.Correct => Green,
+                    //FeedbackState.Finished => LightPink,
+                    //FeedbackState.Neutral => HotPink,
                     _ => White
                 };
             }
