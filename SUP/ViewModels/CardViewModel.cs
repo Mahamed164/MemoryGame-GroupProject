@@ -17,7 +17,9 @@ namespace SUP.ViewModels
 
         public bool IsClicked { get; set; }
 
-        public string HexCode { get; set; }
+        public int RandomNumber { get; set; }
+
+      //  public string HexCode { get; set; }
 
         public CardViewModel(int id, Action<int> onClick)
         {
@@ -27,14 +29,14 @@ namespace SUP.ViewModels
 
         Random random = new Random();
 
-        public RandomColorGenerator(int index)
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                tasks[i] = _gameService.RollDiceAsync(_cts.Token);
-            }
+        //public RandomColorGenerator(int index)
+        //{
+        //    for (int i = 0; i < 10; i++)
+        //    {
+        //        tasks[i] = _gameService.RollDiceAsync(_cts.Token);
+        //    }
 
-        }
+        //}
 
         //private static readonly SolidColorBrush HotPink = Make("#FF69B4");
         //private static readonly SolidColorBrush Red = Make("#DC143C");
