@@ -14,12 +14,11 @@ namespace SUP.ViewModels
     {
         public int Id { get; set; }
         public ICommand ClickCommand { get; set; }
-
         public bool IsClicked { get; set; }
 
-        public int RandomNumber { get; set; }
+        //public int RandomNumber { get; set; }
 
-      //  public string HexCode { get; set; }
+        //public string HexCode { get; set; }
 
         public CardViewModel(int id, Action<int> onClick)
         {
