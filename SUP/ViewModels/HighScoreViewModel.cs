@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SUP.Enums
+namespace SUP.ViewModels
 {
-    public enum FeedbackState
+    public class HighScoreViewModel
     {
-        Wrong,
-        Correct,
-        Finished,
-        Neutral
+        //databaslogik
     }
 }

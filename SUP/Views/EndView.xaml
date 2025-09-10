@@ -41,16 +41,22 @@
             <Button
                 Width="100"
                 Height="40"
-                Background="CornflowerBlue"
-                Command="{Binding SaveScoreCmd}"
-                Content="Spara resultat" />
+                Background="ForestGreen"
+                Command="{Binding RestartCmd}"
+                Content="Spela igen" />
             <Button
                 Width="100"
                 Height="40"
                 Margin="30"
-                Background="ForestGreen"
-                Command="{Binding RestartCmd}"
-                Content="Spela igen" />
+                Background="CornflowerBlue"
+                Command="{Binding SaveScoreCmd}"
+                Content="Spara resultat" />
+            <Button
+    Width="100"
+    Height="40"
+    Background="Orange"
+    Command="{Binding HighScoreCmd}"
+    Content="Visa topplista" />
         </StackPanel>
 
 
