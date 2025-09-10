@@ -26,7 +26,7 @@ namespace SUP.ViewModels
             ClickCommand = new RelayCommand(_ => onClick(Id));
         }
 
-        Random random = new Random();
+       // Random random = new Random();
 
         //public RandomColorGenerator(int index)
         //{

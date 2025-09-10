@@ -19,6 +19,7 @@
         <DataTemplate DataType="{x:Type vm:GameViewModel}">
             <gameView:GameView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MemoryBoardViewModel}"/>
     </Window.Resources>
 
     <Grid>
