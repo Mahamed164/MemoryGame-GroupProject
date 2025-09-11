@@ -1,27 +1,28 @@
-﻿<UserControl x:Class="SUP.Views.BoardView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SUP.Views"
-             xmlns:vm="clr-namespace:SUP.ViewModels"
-             xmlns:converters="clr-namespace:SUP.Views.Converters"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             
-             >
+﻿<UserControl
+    x:Class="SUP.Views.BoardView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:SUP.Views.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SUP.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:SUP.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
 
-    <!--d:DataContext="{d:DesignInstance Type=vm:MemoryBoardViewModel}"-->
+    <!--  d:DataContext="{d:DesignInstance Type=vm:MemoryBoardViewModel}"  -->
 
     <UserControl.DataContext>
-        <vm:MemoryBoardViewModel/>
+        <vm:MemoryBoardViewModel />
     </UserControl.DataContext>
-   
+
     <UserControl.Resources>
-        <converters:FaceUpBrushConverter x:Key="FaceUpBrushConverter"/>
+        <converters:FaceUpBrushConverter x:Key="FaceUpBrushConverter" />
         
-        
-        <!--Detta är kopierat från HumanBenchMark-->
+
+
+        <!--  Detta är kopierat från HumanBenchMark  -->
         <Style TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Margin" Value="5" />
@@ -29,12 +30,12 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border
-                    Name="border"
-                    Padding="4,2"
-                    Background="{TemplateBinding Background}"
-                    BorderBrush="DarkGray"
-                    BorderThickness="0"
-                    CornerRadius="10">
+                            Name="border"
+                            Padding="4,2"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="DarkGray"
+                            BorderThickness="2"
+                            CornerRadius="10">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>
@@ -47,10 +48,11 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    
-    
-    
-    <Grid Background="#FFE689B4" > <!--{Binding Feedback, Converter={StaticResource FeedbackToBrushConverter}, TargetNullValue=#FF69B4}-->
+
+
+
+    <Grid Background="#FFE689B4">
+        <!--  {Binding Feedback, Converter={StaticResource FeedbackToBrushConverter}, TargetNullValue=#FF69B4}  -->
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="3*" />
@@ -58,24 +60,24 @@
         </Grid.RowDefinitions>
 
         <TextBlock
-         Grid.Row="0"
-         Grid.ColumnSpan="3"
-         Margin="25,2,3,0"
-         FontSize="30"
-         Foreground="White"
-         Text="Memory" />
+            Grid.Row="0"
+            Grid.ColumnSpan="3"
+            Margin="25,2,3,0"
+            FontSize="30"
+            Foreground="White"
+            Text="Memory" />
 
         <Viewbox
-         Grid.Row="1"
-         HorizontalAlignment="Center"
-         VerticalAlignment="Center"
-         Stretch="Uniform">
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Stretch="Uniform">
             <Grid Width="600" Height="600">
                 <ItemsControl ItemsSource="{Binding Cards}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Columns="5" Rows="4" />
-                      
+
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemContainerStyle>
@@ -83,17 +85,26 @@
                             <Setter Property="Margin" Value="12" />
                         </Style>
                     </ItemsControl.ItemContainerStyle>
-                    
-                    
+
+
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button Command="{Binding ClickCommand}"
-                                    Background="{Binding Color}"/>
-
-                            <!-- källa binding . = https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.binding.path?view=windowsdesktop-9.0-->
-                            <!--Optionally, a period (.) path can be used to bind to the current source.-->
-                            <!--Background="{Binding IsLit, Converter={StaticResource ColorConverterCards}}"-->    
-                            <!--LÖSA CONVERTERN FÖR BINDA, FORTSÄTTA KALLA DEN COLOR MEN SE OM JAG FÅR IN NUMMER.....-->
+                            <Button Command="{Binding ClickCommand}">
+                                <Button.Background>
+                                    <MultiBinding Converter="{StaticResource FaceUpBrushConverter}">
+                                        <Binding Path="FaceUp" />
+                                        <Binding Path="Color" />
+                                    </MultiBinding>
+                                </Button.Background>
+                            </Button>
+                            <!--MiltiValueConverting-->
+                            <!--https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.multibinding?view=windowsdesktop-9.0-->
+                            <!--https://stackoverflow.com/questions/7078820/implementing-imultivalueconverter-to-convert-between-units-->
+                            
+                            <!--  källa binding . = https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.binding.path?view=windowsdesktop-9.0  -->
+                            <!--  Optionally, a period (.) path can be used to bind to the current source.  -->
+                            <!--  Background="{Binding IsLit, Converter={StaticResource ColorConverterCards}}"  -->
+                            <!--  LÖSA CONVERTERN FÖR BINDA, FORTSÄTTA KALLA DEN COLOR MEN SE OM JAG FÅR IN NUMMER.....  -->
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

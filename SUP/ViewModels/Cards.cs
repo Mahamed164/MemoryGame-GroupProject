@@ -39,7 +39,7 @@ namespace SUP.ViewModels
                 Brushes.LightSalmon
 
             };
-            return colors[id - 1]; //id-1 pga om index 10 väljs blir det "out of range"
+            return colors[id]; //id-1 pga om index 10 väljs blir det "out of range"
         }
     }
 }
