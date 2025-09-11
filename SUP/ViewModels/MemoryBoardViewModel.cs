@@ -20,6 +20,9 @@ public class MemoryBoardViewModel : ISupportsCardInput
     public ObservableCollection<CardViewModel> Cards { get; } = new();
     FaceUpBrushConverter FUBC = new FaceUpBrushConverter();
 
+    // lista för att hålla koll på vilka kort som är vända
+    private List<CardViewModel> turnedCards = new();
+
 
     public MemoryBoardViewModel()
     {
@@ -38,8 +41,30 @@ public class MemoryBoardViewModel : ISupportsCardInput
     private async void OnButtonClicked(CardViewModel card)
     {
 
-        card.FaceUp = !card.FaceUp;
+        if (card.FaceUp)
+        {
+            return;
+        }
+        if (turnedCards.Count >= 2)
+        {
+            return;
+        }
 
+        card.FaceUp = true;
+        turnedCards.Add(card);
+
+        if (turnedCards.Count == 2)
+        {
+            await Task.Delay(800);
+
+            // om korten inte matchar vänd tbx
+            if (turnedCards[0].Id != turnedCards[1].Id)
+            {
+                turnedCards[0].FaceUp = false;
+                turnedCards[1].FaceUp = false;
+            }
+            turnedCards.Clear();
+        }
 
     }
 
