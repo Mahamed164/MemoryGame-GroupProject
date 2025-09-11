@@ -13,6 +13,7 @@ namespace SUP.ViewModels
     public class StartViewModel
     {
         private string playerName;
+
         
 
         public string PlayerName
@@ -34,10 +35,11 @@ namespace SUP.ViewModels
         }
         public string Greeting { get; set; }
         public ICommand StartGameCmd { get;}
-
+        
         public StartViewModel(ICommand startGameCmd) 
         {
-            StartGameCmd = startGameCmd;        
+            StartGameCmd = startGameCmd;
+            Greeting = "Player Name";
         }
 
         
