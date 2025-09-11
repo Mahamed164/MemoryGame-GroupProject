@@ -17,7 +17,7 @@ namespace SUP.Views.Converters //basically väldigt likt humanbenchmark sequence
 
     public class FaceUpBrushConverter : IMultiValueConverter
     {
-        private static readonly SolidColorBrush Backside = Make("#c4c3d0"); //lavendelgrå från internet
+        private static readonly SolidColorBrush Backside = Make("#FFE4A7C3"); //lavendelgrå från internet
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {

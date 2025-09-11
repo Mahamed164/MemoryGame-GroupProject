@@ -33,14 +33,14 @@
                             Name="border"
                             Padding="4,2"
                             Background="{TemplateBinding Background}"
-                            BorderBrush="DarkGray"
+                            BorderBrush="#FFE4A7C3"
                             BorderThickness="2"
                             CornerRadius="10">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="BorderBrush" Value="Black" />
+                                <Setter TargetName="border" Property="BorderBrush" Value="Purple" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
