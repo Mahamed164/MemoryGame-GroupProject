@@ -12,8 +12,8 @@
             <gameView:StartView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type gameView:GameView}">
-            <gameView:GameView />
+        <DataTemplate DataType="{x:Type gameVM:MemoryBoardViewModel}">
+            <gameView:BoardView />
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type gameVM:EndViewModel}">

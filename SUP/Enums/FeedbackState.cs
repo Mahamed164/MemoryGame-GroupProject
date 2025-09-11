@@ -8,6 +8,6 @@ namespace SUP.Enums
 {
     public enum FeedbackState
     {
-
+        Background
     }
 }

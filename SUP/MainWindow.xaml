@@ -16,10 +16,10 @@
         <DataTemplate DataType="{x:Type vm:StartViewModel}">
             <gameView:StartView />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:GameViewModel}">
-            <gameView:GameView />
+        <DataTemplate DataType="{x:Type vm:MemoryBoardViewModel}">
+            <gameView:BoardView />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:MemoryBoardViewModel}"/>
+        
     </Window.Resources>
 
     <Grid>

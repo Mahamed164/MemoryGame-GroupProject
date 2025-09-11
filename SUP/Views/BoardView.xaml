@@ -8,13 +8,19 @@
              xmlns:converters="clr-namespace:SUP.Views.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance Type=vm:MemoryBoardViewModel}"
+             
              >
 
     <!--d:DataContext="{d:DesignInstance Type=vm:MemoryBoardViewModel}"-->
+
+    <UserControl.DataContext>
+        <vm:MemoryBoardViewModel/>
+    </UserControl.DataContext>
    
     <UserControl.Resources>
-        <converters:ColorConverterCards x:Key="ColorConverterCards"/>
+        <converters:FaceUpBrushConverter x:Key="FaceUpBrushConverter"/>
+        
+        
         <!--Detta är kopierat från HumanBenchMark-->
         <Style TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -41,6 +47,9 @@
             </Setter>
         </Style>
     </UserControl.Resources>
+    
+    
+    
     <Grid Background="#FFE689B4" > <!--{Binding Feedback, Converter={StaticResource FeedbackToBrushConverter}, TargetNullValue=#FF69B4}-->
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -74,10 +83,16 @@
                             <Setter Property="Margin" Value="12" />
                         </Style>
                     </ItemsControl.ItemContainerStyle>
+                    
+                    
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button Command="{Binding ClickCommand}"/>
-                                <!--Background="{Binding IsLit, Converter={StaticResource ColorConverterCards}}"-->    
+                            <Button Command="{Binding ClickCommand}"
+                                    Background="{Binding ., Converter={StaticResource FaceUpBrushConverter}}"/>
+
+                            <!-- källa binding . = https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.binding.path?view=windowsdesktop-9.0-->
+                            <!--Optionally, a period (.) path can be used to bind to the current source.-->
+                            <!--Background="{Binding IsLit, Converter={StaticResource ColorConverterCards}}"-->    
                             <!--LÖSA CONVERTERN FÖR BINDA, FORTSÄTTA KALLA DEN COLOR MEN SE OM JAG FÅR IN NUMMER.....-->
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

@@ -21,7 +21,6 @@ namespace SUP.ViewModels
             Id = id;
             Color = ColorSelector(id);
             FaceUp = false;
-
         }
 
         public Brush ColorSelector(int id)
@@ -40,7 +39,7 @@ namespace SUP.ViewModels
                 Brushes.LightSalmon
 
             };
-            return colors[id];
+            return colors[id - 1]; //id-1 pga om index 10 väljs blir det "out of range"
         }
     }
 }

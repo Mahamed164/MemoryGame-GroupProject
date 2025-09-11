@@ -22,8 +22,8 @@ namespace SUP.ViewModels
         }
         public void StartGame(object parameter)
         {
-            CurrentView = new GameViewModel();
-            //CurrentView = new MemoryBoardViewModel();
+            //CurrentView = new GameViewModel();
+            CurrentView = new MemoryBoardViewModel();
 
         }
 

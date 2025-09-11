@@ -13,17 +13,18 @@ namespace SUP.ViewModels
     {
         Random random = new Random();
         List<Cards> cards = new List<Cards>();
-        public void MakeNumbersAndColors()
+        public List<Cards> MakeNumbersAndColors()
         {
+            var cards = new List<Cards>();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 1; i <= 10; i++) // ändrar till att i = 1 och <= 10
             {
                 cards.Add(new Cards(i));
                 cards.Add(new Cards(i));
 
             }
 
-            cards = cards.OrderBy(x => random.Next()).ToList();
+            return cards = cards.OrderBy(x => random.Next()).ToList();
 
         }
     }
