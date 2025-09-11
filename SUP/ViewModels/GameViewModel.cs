@@ -21,6 +21,13 @@ public class GameViewModel
     Random random = new Random();
 
     List<Button> cards = new List<Button>();
+    MockCardsFunction MCF = new MockCardsFunction();
+
+    public GameViewModel() 
+    { 
+     MCF.MakeNumbersAndColors();
+    }
+
 
 public void GetRandomNumber()
     {

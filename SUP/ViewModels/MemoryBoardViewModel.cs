@@ -16,7 +16,6 @@ public class MemoryBoardViewModel : ISupportsCardInput
     public ICommand PressCardIndexCommand { get; }
     public ObservableCollection<CardViewModel> Cards { get; private set; } = new();
 
-
     public MemoryBoardViewModel()
     {
         PressCardIndexCommand = new RelayCommand(p =>
@@ -29,12 +28,13 @@ public class MemoryBoardViewModel : ISupportsCardInput
 
     private async void OnButtonClicked(int index)
     {
+        
         throw new NotImplementedException();
     }
 
     private void ConfigurePads()
     {
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 20; i++)
         {
             Cards.Add(new CardViewModel(i, OnButtonClicked));
         }
