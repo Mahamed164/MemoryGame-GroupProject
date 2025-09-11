@@ -16,11 +16,13 @@ public class EndViewModel
 
     public ICommand SaveScoreCmd { get; }
     public ICommand RestartCmd { get; }
+    public ICommand HighScoreCmd { get; }
 
-    public EndViewModel(ICommand saveScoreCmd, ICommand restartCmd)
+    public EndViewModel(ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd)
     {
         SaveScoreCmd = saveScoreCmd;
         RestartCmd = restartCmd;
+        HighScoreCmd = highScoreCmd;
     }
 }
 

@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SUP.Enums
+namespace SUP.Models
 {
-    public enum FeedbackState
+    public class Score
     {
-        Wrong,
-        Correct,
-        Finished,
-        Neutral
+        public int Id { get; set; }
+        public string Name { get; set; }
+
     }
 }

@@ -31,9 +31,6 @@ namespace SUP.Views.Converters
             throw new NotImplementedException();
         }
 
-        
-
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is FeedbackState state)

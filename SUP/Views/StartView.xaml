@@ -10,9 +10,9 @@
     mc:Ignorable="d">
     <Grid Background="#FFE689B4">
         <TextBlock
-            Width="255"
-            Height="93"
-            Margin="76,93,0,0"
+            Width="235"
+            Height="95"
+            Margin="108,137,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontSize="20"
