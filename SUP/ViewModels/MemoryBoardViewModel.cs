@@ -47,7 +47,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
         //}
 
         var cardFunction = new MockCardsFunction();
-        var shuffled = cardFunction.MakeNumbersAndColors();
+        var shuffled = MakeNumbersAndColors();
 
         Cards.Clear();
 
@@ -57,5 +57,23 @@ public class MemoryBoardViewModel : ISupportsCardInput
         }
     }
 
-    
+    public List<Cards> MakeNumbersAndColors()
+    {
+        Random random = new Random();
+        List<Cards> cards = new List<Cards>();
+
+        for (int i = 1; i <= 10; i++) // ändrar till att i = 1 och <= 10
+        {
+            cards.Add(new Cards(i));
+            cards.Add(new Cards(i));
+
+        }
+
+        return cards = cards.OrderBy(x => random.Next()).ToList();
+
+    }
 }
+
+
+
+

@@ -88,7 +88,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Button Command="{Binding ClickCommand}"
-                                    Background="{Binding ., Converter={StaticResource FaceUpBrushConverter}}"/>
+                                    Background="{Binding Color}"/>
 
                             <!-- källa binding . = https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.binding.path?view=windowsdesktop-9.0-->
                             <!--Optionally, a period (.) path can be used to bind to the current source.-->
