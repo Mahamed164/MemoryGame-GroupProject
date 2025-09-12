@@ -27,14 +27,50 @@ public class MemoryBoardViewModel : ISupportsCardInput
     int completedPairs;
 
 
+    public MockTimerFunction timer = new MockTimerFunction();
+    public string TimerText { get; set; } = "00:00";
+    public bool hasStarted = false; 
+    public MemoryBoardViewModel()
+    {
+        //MCF.MakeNumbersAndColors();
+
+        //PressCardIndexCommand = new RelayCommand(p =>
+        //{
+        //    if (p != null) return;
+        //    OnButtonClicked(Convert.ToInt32(p));
+        //});
+        //ConfigureCards();
+
+       
+
+
     public MemoryBoardViewModel(ICommand finishGameCommand)
     {
         FinishGameCommand = finishGameCommand;
+
         ConfigureCards();
+        timer.Reset();
+        UpdateTimer();
+    }
+
+    private async void UpdateTimer()
+    {
+        while (true)
+        {
+            await Task.Delay(1000);
+            TimerText = timer.GetTime();
+        }
     }
 
     private async void OnButtonClicked(CardViewModel card)
     {
+
+        if (!hasStarted)
+        {
+            timer.Start();
+            hasStarted = true;
+        }
+
         await TurnCardsAsync(card);
         CheckForCompleation();
     }
@@ -47,6 +83,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
         }
 
     }
+
 
     private async Task TurnCardsAsync(CardViewModel card)
     {

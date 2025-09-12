@@ -33,7 +33,8 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Command="{Binding StartGameCmd}"
-            Content="Start Game" />
+            Content="Start Game" 
+            FontSize="25"/>
         <TextBlock
             Width="421"
             Height="87"

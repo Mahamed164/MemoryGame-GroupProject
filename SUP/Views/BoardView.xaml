@@ -19,7 +19,7 @@
 
     <UserControl.Resources>
         <converters:FaceUpBrushConverter x:Key="FaceUpBrushConverter" />
-        
+
 
 
         <!--  Detta är kopierat från HumanBenchMark  -->
@@ -100,7 +100,7 @@
                             <!--MiltiValueConverting-->
                             <!--https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.multibinding?view=windowsdesktop-9.0-->
                             <!--https://stackoverflow.com/questions/7078820/implementing-imultivalueconverter-to-convert-between-units-->
-                            
+
                             <!--  källa binding . = https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.binding.path?view=windowsdesktop-9.0  -->
                             <!--  Optionally, a period (.) path can be used to bind to the current source.  -->
                             <!--  Background="{Binding IsLit, Converter={StaticResource ColorConverterCards}}"  -->
@@ -110,7 +110,8 @@
                 </ItemsControl>
             </Grid>
         </Viewbox>
-
+        <TextBlock HorizontalAlignment="Left" Margin="654,22,0,0" TextWrapping="Wrap" Text="{Binding TimerText}" FontSize="40" VerticalAlignment="Top" Height="50" Width="114"/>
+    
 
     </Grid>
 
