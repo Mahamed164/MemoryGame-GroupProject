@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -17,30 +18,38 @@ namespace SUP.ViewModels;
 public class MemoryBoardViewModel : ISupportsCardInput
 {
     public ICommand PressCardIndexCommand { get; }
+    public ICommand FinishGameCommand { get; }
     public ObservableCollection<CardViewModel> Cards { get; } = new();
-    FaceUpBrushConverter FUBC = new FaceUpBrushConverter();
 
     // lista för att hålla koll på vilka kort som är vända
     private List<CardViewModel> turnedCards = new();
+    List<Cards> _cards = new List<Cards>();
+    int completedPairs;
 
 
-    public MemoryBoardViewModel()
+    public MemoryBoardViewModel(ICommand finishGameCommand)
     {
-        //MCF.MakeNumbersAndColors();
-
-        //PressCardIndexCommand = new RelayCommand(p =>
-        //{
-        //    if (p != null) return;
-        //    OnButtonClicked(Convert.ToInt32(p));
-        //});
-        //ConfigureCards();
-
+        FinishGameCommand = finishGameCommand;
         ConfigureCards();
     }
 
     private async void OnButtonClicked(CardViewModel card)
     {
+        await TurnCardsAsync(card);
+        CheckForCompleation();
+    }
 
+    private async void CheckForCompleation()
+    {
+        if (completedPairs == 10)
+        {
+            FinishGameCommand?.Execute(null);
+        }
+
+    }
+
+    private async Task TurnCardsAsync(CardViewModel card)
+    {
         if (card.FaceUp)
         {
             return;
@@ -55,6 +64,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
 
         if (turnedCards.Count == 2)
         {
+            completedPairs++;
             await Task.Delay(800);
 
             // om korten inte matchar vänd tbx
@@ -62,6 +72,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
             {
                 turnedCards[0].FaceUp = false;
                 turnedCards[1].FaceUp = false;
+                completedPairs--;
             }
             turnedCards.Clear();
         }
@@ -70,12 +81,8 @@ public class MemoryBoardViewModel : ISupportsCardInput
 
     private void ConfigureCards()
     {
-        //for (int i = 0; i < 20; i++)
-        //{
-        //    Cards.Add(new CardViewModel(i, OnButtonClicked));
-        //}
-
-
+      
+        completedPairs = 0;
         var shuffled = MakeNumbersAndColors();
 
         Cards.Clear();
@@ -89,16 +96,16 @@ public class MemoryBoardViewModel : ISupportsCardInput
     public List<Cards> MakeNumbersAndColors()
     {
         Random random = new Random();
-        List<Cards> cards = new List<Cards>();
+        _cards.Clear();
 
-        for (int i = 0; i < 10; i++) // ändrar till att i = 1 och <= 10
+        for (int i = 0; i < 10; i++)
         {
-            cards.Add(new Cards(i));
-            cards.Add(new Cards(i));
+            _cards.Add(new Cards(i));
+            _cards.Add(new Cards(i));
 
         }
-
-        return cards = cards.OrderBy(x => random.Next()).ToList();
+        return _cards;
+        //return cards = cards.OrderBy(x => random.Next()).ToList();
 
     }
 }
