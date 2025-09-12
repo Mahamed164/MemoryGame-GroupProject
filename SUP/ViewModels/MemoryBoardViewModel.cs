@@ -29,7 +29,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
 
     public MockTimerFunction timer = new MockTimerFunction();
     public string TimerText { get; set; } = "00:00";
-    public bool hasStarted = false; 
+    public bool hasStarted = false;
     public MemoryBoardViewModel()
     {
         //MCF.MakeNumbersAndColors();
@@ -41,7 +41,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
         //});
         //ConfigureCards();
 
-       
+    }
 
 
     public MemoryBoardViewModel(ICommand finishGameCommand)
