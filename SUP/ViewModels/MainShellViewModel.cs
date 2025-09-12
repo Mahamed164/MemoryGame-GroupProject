@@ -34,24 +34,25 @@ namespace SUP.ViewModels
         {
             CurrentView = new MemoryBoardViewModel(FinishGameCmd);
         }
-        
+
         public void PassScoreToEndView(object parameter)
         {
-            
+
         }
         public void FinishGame(object parameter)
         {
-            if (parameter is ValueTuple<int, int, string> scoreData)
-            {
-                var (missed, moves, timer) = scoreData;
-                EndViewModel = new EndViewModel(missed, moves, timer, SaveScoreCmd, RestartCmd, HighScoreCmd);
-                CurrentView = EndViewModel;
-            }
+            var result = (ValueTuple<int, int, string>)parameter;
+            int misses = result.Item1;
+            int moves = result.Item2;
+            string timer = result.Item3;
+            EndViewModel = new EndViewModel(misses, moves, timer, SaveScoreCmd, RestartCmd, HighScoreCmd);
+            CurrentView = EndViewModel;
+
         }
 
         public void RestartGame(object parameter)
         {
-             CurrentView = new MemoryBoardViewModel(FinishGameCmd);
+            CurrentView = new MemoryBoardViewModel(FinishGameCmd);
         }
         public void SaveScore(object parameter)
         {
