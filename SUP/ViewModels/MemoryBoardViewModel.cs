@@ -104,8 +104,8 @@ public class MemoryBoardViewModel : ISupportsCardInput
             _cards.Add(new Cards(i));
 
         }
-        return _cards;
-        //return cards = cards.OrderBy(x => random.Next()).ToList();
+
+        return _cards = _cards.OrderBy(x => random.Next()).ToList();
 
     }
 }
