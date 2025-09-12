@@ -23,7 +23,9 @@ public class MemoryBoardViewModel : ISupportsCardInput
     // lista för att hålla koll på vilka kort som är vända
     private List<CardViewModel> turnedCards = new();
 
-
+    public MockTimerFunction timer = new MockTimerFunction();
+    public string TimerText { get; set; } = "00:00";
+    public bool hasStarted = false; 
     public MemoryBoardViewModel()
     {
         //MCF.MakeNumbersAndColors();
@@ -35,11 +37,28 @@ public class MemoryBoardViewModel : ISupportsCardInput
         //});
         //ConfigureCards();
 
+       
         ConfigureCards();
+        timer.Reset();
+        UpdateTimer();
+    }
+
+    private async void UpdateTimer()
+    {
+        while (true)
+        {
+            await Task.Delay(1000);
+            TimerText = timer.GetTime();
+        }
     }
 
     private async void OnButtonClicked(CardViewModel card)
     {
+        if (!hasStarted)
+        {
+            timer.Start();
+            hasStarted = true;
+        }
 
         if (card.FaceUp)
         {
