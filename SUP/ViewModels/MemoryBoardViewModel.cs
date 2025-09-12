@@ -24,7 +24,9 @@ public class MemoryBoardViewModel : ISupportsCardInput
     // lista för att hålla koll på vilka kort som är vända
     private List<CardViewModel> turnedCards = new();
     List<Cards> _cards = new List<Cards>();
+    EndViewModel endViewModel = new EndViewModel();
     int completedPairs;
+    int numOffGuesses;
 
 
     public MockTimerFunction timer = new MockTimerFunction();
@@ -32,14 +34,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
     public bool hasStarted = false;
     public MemoryBoardViewModel()
     {
-        //MCF.MakeNumbersAndColors();
-
-        //PressCardIndexCommand = new RelayCommand(p =>
-        //{
-        //    if (p != null) return;
-        //    OnButtonClicked(Convert.ToInt32(p));
-        //});
-        //ConfigureCards();
+       
 
     }
 
@@ -77,12 +72,15 @@ public class MemoryBoardViewModel : ISupportsCardInput
 
     private async void CheckForCompleation()
     {
-        if (completedPairs == 10)
+        if (completedPairs == (Cards.Count/2))
         {
-            FinishGameCommand?.Execute(null);
+            int mistakes = numOffGuesses - (Cards.Count/2);
+            FinishGameCommand?.Execute((mistakes, numOffGuesses, TimerText));
         }
 
     }
+
+   
 
 
     private async Task TurnCardsAsync(CardViewModel card)
@@ -101,6 +99,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
 
         if (turnedCards.Count == 2)
         {
+            numOffGuesses++;
             completedPairs++;
             await Task.Delay(800);
 
@@ -110,6 +109,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
                 turnedCards[0].FaceUp = false;
                 turnedCards[1].FaceUp = false;
                 completedPairs--;
+               
             }
             turnedCards.Clear();
         }
@@ -142,7 +142,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
 
         }
 
-        return _cards = _cards.OrderBy(x => random.Next()).ToList();
+        return  _cards.OrderBy(x => random.Next()).ToList();
 
     }
 }
