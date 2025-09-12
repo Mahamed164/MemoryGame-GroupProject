@@ -13,9 +13,9 @@
 
     <!--  d:DataContext="{d:DesignInstance Type=vm:MemoryBoardViewModel}"  -->
 
-    <UserControl.DataContext>
+    <!--<UserControl.DataContext>
         <vm:MemoryBoardViewModel />
-    </UserControl.DataContext>
+    </UserControl.DataContext>-->
 
     <UserControl.Resources>
         <converters:FaceUpBrushConverter x:Key="FaceUpBrushConverter" />
