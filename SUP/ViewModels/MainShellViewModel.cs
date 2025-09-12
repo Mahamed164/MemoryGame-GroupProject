@@ -51,7 +51,7 @@ namespace SUP.ViewModels
 
         public void RestartGame(object parameter)
         {
-
+             CurrentView = new MemoryBoardViewModel(FinishGameCmd);
         }
         public void SaveScore(object parameter)
         {
