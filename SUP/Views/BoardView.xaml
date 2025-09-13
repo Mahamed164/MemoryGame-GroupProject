@@ -62,9 +62,7 @@
         <TextBlock
             Grid.Row="0"
             HorizontalAlignment="Center"
-            Margin="25,2,3,0"
             FontSize="32"
-            Foreground="White"
             Text="Memory" />
         <TextBlock
             Grid.Row="0"
