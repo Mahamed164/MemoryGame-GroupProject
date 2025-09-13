@@ -9,41 +9,40 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid Background="#FFE689B4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="3*" />
+        </Grid.RowDefinitions>
         <TextBlock
-            Width="235"
-            Height="95"
-            Margin="108,137,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
+            Grid.Row="1"
             FontSize="20"
-            Text="{Binding Greeting, UpdateSourceTrigger=PropertyChanged}"
-            TextWrapping="Wrap" />
+            HorizontalAlignment="Center"
+            Text="{Binding Greeting, UpdateSourceTrigger=PropertyChanged, FallbackValue=Spelarnamn:}"
+             />
         <TextBox
-            Width="148"
-            Height="62"
-            Margin="105,192,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            FontSize="20"
+            Margin="0,0,0,200"
+            Width="150"
+            Height="40"
             Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}"
-            TextWrapping="Wrap" />
+             />
         <Button
-            Width="144"
-            Height="75"
-            Margin="385,180,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
+            Grid.Row="1"
+            Margin="0,0,0,95"
+            Width="150"
+            Height="40"
             Command="{Binding StartGameCmd}"
-            Content="Start Game" 
-            FontSize="25"/>
+            Background="ForestGreen"
+            Content="Spela" 
+            />
         <TextBlock
-            Width="421"
-            Height="87"
-            Margin="180,38,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            FontSize="30"
-            Text="Welcome To Memory Game"
-            TextWrapping="Wrap" />
+            Grid.Row="0"
+            HorizontalAlignment="Center"
+            FontSize="32"
+            Text="Memory"
+             />
 
     </Grid>
 </UserControl>
