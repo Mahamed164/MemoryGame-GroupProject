@@ -61,11 +61,20 @@
 
         <TextBlock
             Grid.Row="0"
-            Grid.ColumnSpan="3"
+            HorizontalAlignment="Center"
             Margin="25,2,3,0"
-            FontSize="30"
+            FontSize="32"
             Foreground="White"
             Text="Memory" />
+        <TextBlock
+            Grid.Row="0"
+            HorizontalAlignment="Right"
+            Width="114"
+            Height="50"
+            Margin="0,3,2,25"
+            FontSize="32"
+            Text="{Binding TimerText}"
+             />
 
         <Viewbox
             Grid.Row="1"
@@ -97,9 +106,9 @@
                                     </MultiBinding>
                                 </Button.Background>
                             </Button>
-                            <!--MiltiValueConverting-->
-                            <!--https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.multibinding?view=windowsdesktop-9.0-->
-                            <!--https://stackoverflow.com/questions/7078820/implementing-imultivalueconverter-to-convert-between-units-->
+                            <!--  MiltiValueConverting  -->
+                            <!--  https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.multibinding?view=windowsdesktop-9.0  -->
+                            <!--  https://stackoverflow.com/questions/7078820/implementing-imultivalueconverter-to-convert-between-units  -->
 
                             <!--  källa binding . = https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.binding.path?view=windowsdesktop-9.0  -->
                             <!--  Optionally, a period (.) path can be used to bind to the current source.  -->
@@ -110,9 +119,5 @@
                 </ItemsControl>
             </Grid>
         </Viewbox>
-        <TextBlock HorizontalAlignment="Left" Margin="654,22,0,0" TextWrapping="Wrap" Text="{Binding TimerText}" FontSize="40" VerticalAlignment="Top" Height="50" Width="114"/>
-    
-
     </Grid>
-
 </UserControl>
