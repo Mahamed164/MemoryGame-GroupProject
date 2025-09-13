@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:SUP.ViewModels"
     xmlns:gameView="clr-namespace:SUP.Views"
-    Title="MainWindow"
+    Title="Memory"
     Width="800"
     Height="450"
     d:DataContext="{d:DesignInstance Type=vm:MainShellViewModel}"
