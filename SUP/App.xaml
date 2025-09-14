@@ -19,6 +19,10 @@
         <DataTemplate DataType="{x:Type gameVM:EndViewModel}">
             <gameView:EndView />
         </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type gameVM:HighScoreViewModel}">
+            <gameView:HighScoreView />
+        </DataTemplate>
 
     </Application.Resources>
 </Application>

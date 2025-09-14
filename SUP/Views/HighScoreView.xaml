@@ -5,32 +5,40 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:SUP.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    HorizontalAlignment="Center"
-    VerticalAlignment="Center"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid Background="#FFE689B4">
-        <StackPanel>
-            <ListView
-                d:ItemsSource="{d:SampleData ItemCount=10}"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ListView
+                Grid.Row="0"
+                d:ItemsSource="{Binding HighScores}"
                 Background="#FFE689B4"
-                FontSize="20">
+                FontSize="20"
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch"
+                >
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn />
+                        <GridViewColumn Header="Spelarnamn" DisplayMemberBinding="{Binding PlayerName}" Width="150"/>
+                        <GridViewColumn Header="Drag" DisplayMemberBinding="{Binding Moves}" Width="150"/>
+                        <GridViewColumn Header="Missar" DisplayMemberBinding="{Binding Misses}" Width="150"/>
+                        <GridViewColumn Header="Tid" DisplayMemberBinding="{Binding Time}" Width="150"/>
                     </GridView>
                 </ListView.View>
             </ListView>
             <Button
+                Grid.Row="1"
                 Width="100"
                 Height="40"
                 Margin="30"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Background="ForestGreen"
-                Command="{Binding}"
+                Command="{Binding ReturnCmd}"
                 Content="Tillbaka till spelet" />
-        </StackPanel>
     </Grid>
 </UserControl>

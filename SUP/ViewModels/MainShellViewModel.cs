@@ -13,6 +13,7 @@ namespace SUP.ViewModels
     public class MainShellViewModel
     {
         public object CurrentView { get; set; }
+        public object LatestView;
         public ICommand StartGameCmd { get; }
         public ICommand FinishGameCmd { get; }
         public ICommand RestartCmd { get; }
@@ -28,7 +29,7 @@ namespace SUP.ViewModels
             SaveScoreCmd = new RelayCommand(SaveScore);
             HighScoreCmd = new RelayCommand(OpenHighScores);
 
-            CurrentView = new StartViewModel(StartGameCmd);
+            CurrentView = new StartViewModel(StartGameCmd, HighScoreCmd);
         }
         public void StartGame(object parameter)
         {
@@ -61,7 +62,11 @@ namespace SUP.ViewModels
 
         public void OpenHighScores(object parameter)
         {
-
+            LatestView = CurrentView;
+            CurrentView = new HighScoreViewModel(new RelayCommand(p =>
+            {
+                CurrentView = LatestView;
+            }));
         }
 
     }
