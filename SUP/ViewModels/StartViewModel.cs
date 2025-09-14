@@ -35,9 +35,12 @@ namespace SUP.ViewModels
         }
         public string Greeting { get; set; }
         public ICommand StartGameCmd { get; }
+        public ICommand HighScoreCmd { get; }
 
-        public StartViewModel(ICommand startGameCmd)
+        public StartViewModel(ICommand startGameCmd, ICommand highScoreCmd)
         {
+            HighScoreCmd = highScoreCmd;
+
             StartGameCmd = new RelayCommand(p =>
             {
                 if (string.IsNullOrWhiteSpace(PlayerName))
@@ -48,6 +51,7 @@ namespace SUP.ViewModels
                 startGameCmd.Execute(p);
             });
             Greeting = "Spelarnamn:";
+            
         }
     }
 }
