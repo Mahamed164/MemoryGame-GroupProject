@@ -73,7 +73,10 @@
             FontSize="32"
             Text="{Binding TimerText}"
              />
-
+        <Button
+    Background="ForestGreen"
+    Command="{Binding RestartCmd}"
+    Content="Börja om" FontSize="23" Margin="622,12,48,12" Grid.Row="2" />
         <Viewbox
             Grid.Row="1"
             HorizontalAlignment="Center"

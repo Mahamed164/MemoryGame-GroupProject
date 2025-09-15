@@ -33,7 +33,7 @@ namespace SUP.ViewModels
         }
         public void StartGame(object parameter)
         {
-            CurrentView = new MemoryBoardViewModel(FinishGameCmd);
+            CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd);
         }
 
         public void PassScoreToEndView(object parameter)
@@ -53,7 +53,7 @@ namespace SUP.ViewModels
 
         public void RestartGame(object parameter)
         {
-            CurrentView = new MemoryBoardViewModel(FinishGameCmd);
+            CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd);
         }
         public void SaveScore(object parameter)
         {

@@ -32,6 +32,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
     public MockTimerFunction timer = new MockTimerFunction();
     public string TimerText { get; set; } = "00:00";
     public bool hasStarted = false;
+    public ICommand RestartCmd { get; }
     public MemoryBoardViewModel()
     {
        
@@ -39,10 +40,10 @@ public class MemoryBoardViewModel : ISupportsCardInput
     }
 
 
-    public MemoryBoardViewModel(ICommand finishGameCommand)
+    public MemoryBoardViewModel(ICommand finishGameCommand,ICommand restartCmd )
     {
         FinishGameCommand = finishGameCommand;
-
+        RestartCmd = restartCmd;
         ConfigureCards();
         timer.Reset();
         UpdateTimer();
