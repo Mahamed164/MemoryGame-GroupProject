@@ -81,7 +81,14 @@ public class MemoryBoardViewModel : ISupportsCardInput
 
     }
 
-   
+    private int CalculateAccuracy()
+    {
+        int accuracySubtract;
+        int amountOfPairs = _cards.Count / 2;
+        accuracySubtract = 100 / amountOfPairs;
+
+        return accuracySubtract;
+    }
 
 
     private async Task TurnCardsAsync(CardViewModel card)
