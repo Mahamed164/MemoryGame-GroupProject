@@ -73,6 +73,24 @@
             FontSize="32"
             Text="{Binding TimerText}"
              />
+        <TextBox
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            Width="114"
+            Height="20"
+            Margin="0,3,2,25"
+            FontSize="12"
+            Text="{Binding Accuracy}"/>
+        <TextBox
+    Grid.Row="1"
+    HorizontalAlignment="Right"
+    Width="114"
+    Height="20"
+    Margin="0,89,2,161"
+    FontSize="12"
+            Foreground="Black"
+            Background="#FFE689B4"
+            Text="Accuracy:"/>
         <Button
     Background="ForestGreen"
     Command="{Binding RestartCmd}"
