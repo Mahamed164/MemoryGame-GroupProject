@@ -56,7 +56,7 @@ namespace SUP.ViewModels
         {
             CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd);
         }
-        public async Task SaveScore(object parameter)
+        public void SaveScore(object parameter)
         {
             CurrentView = new SaveScoreViewModel();
         }
