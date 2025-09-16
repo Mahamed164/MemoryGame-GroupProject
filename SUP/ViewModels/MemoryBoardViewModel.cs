@@ -1,4 +1,5 @@
-﻿using PropertyChanged;
+﻿using Npgsql;
+using PropertyChanged;
 using SUP.Commands;
 using SUP.Common;
 using SUP.Views.Converters;
@@ -13,6 +14,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
+
 namespace SUP.ViewModels;
 [AddINotifyPropertyChangedInterface]
 public class MemoryBoardViewModel : ISupportsCardInput
@@ -20,6 +22,8 @@ public class MemoryBoardViewModel : ISupportsCardInput
     public ICommand PressCardIndexCommand { get; }
     public ICommand FinishGameCommand { get; }
     public ObservableCollection<CardViewModel> Cards { get; } = new();
+
+    
 
     // lista för att hålla koll på vilka kort som är vända
     private List<CardViewModel> turnedCards = new();
@@ -69,6 +73,8 @@ public class MemoryBoardViewModel : ISupportsCardInput
 
         await TurnCardsAsync(card);
         CheckForCompleation();
+
+        
     }
 
     private async void CheckForCompleation()
@@ -146,6 +152,8 @@ public class MemoryBoardViewModel : ISupportsCardInput
         return  _cards.OrderBy(x => random.Next()).ToList();
 
     }
+
+    
 }
 
 

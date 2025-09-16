@@ -1,5 +1,6 @@
 ﻿using PropertyChanged;
 using SUP.Commands;
+using SUP.ViewModels.Scores;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,9 +56,9 @@ namespace SUP.ViewModels
         {
             CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd);
         }
-        public void SaveScore(object parameter)
+        public async Task SaveScore(object parameter)
         {
-
+            CurrentView = new SaveScoreViewModel();
         }
 
         public void OpenHighScores(object parameter)
