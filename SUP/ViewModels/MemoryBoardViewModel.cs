@@ -126,7 +126,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
         }
 
     }
-
+    
     private void ConfigureCards()
     {
       
