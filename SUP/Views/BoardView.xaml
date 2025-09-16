@@ -135,15 +135,14 @@
         <Label
             x:Name="label"
             Grid.Row="1"
-            Margin="687,83,0,0"
-            HorizontalAlignment="Left"
+            Margin="0,20,20,0"
+            HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Content="Accuracy:" />
         <Label 
             Grid.Row="1"
-            Width="44"
-            Margin="695,114,0,0"
-            HorizontalAlignment="Left"
+            Margin="0,60,20,0"
+            HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Content="{Binding Accuracy }" Height="30"/>
         <!--<TextBox
