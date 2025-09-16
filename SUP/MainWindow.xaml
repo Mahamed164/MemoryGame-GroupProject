@@ -9,7 +9,7 @@
     xmlns:gameView="clr-namespace:SUP.Views"
     Title="Memory"
     Width="800"
-    Height="450"
+    Height="600"
     d:DataContext="{d:DesignInstance Type=vm:MainShellViewModel}"
     mc:Ignorable="d">
     <Window.Resources>
