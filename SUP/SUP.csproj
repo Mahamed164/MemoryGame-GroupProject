@@ -6,23 +6,11 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <UserSecretsId>3c3452d2-25c1-4c75-8560-8ea2a883e555</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\backside.jpg" />
-    <None Remove="Images\image1.png" />
-    <None Remove="Images\image10.png" />
-    <None Remove="Images\image2.png" />
-    <None Remove="Images\image3.png" />
-    <None Remove="Images\image4.png" />
-    <None Remove="Images\image5.png" />
-    <None Remove="Images\image6.png" />
-    <None Remove="Images\image7.png" />
-    <None Remove="Images\image8.png" />
-    <None Remove="Images\image9.png" />
-  </ItemGroup>
 
-  <ItemGroup>
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
   </ItemGroup>
 
