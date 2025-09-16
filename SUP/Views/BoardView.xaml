@@ -75,12 +75,14 @@
 
 
         <Button
-            Grid.Row="2"
-            Margin="622,12,48,12"
-            Background="ForestGreen"
-            Command="{Binding RestartCmd}"
-            Content="Börja om"
-            FontSize="23" />
+    Grid.Row="2"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center"
+    Background="ForestGreen"
+    Command="{Binding RestartCmd}"
+    Content="Börja om"
+    FontSize="23" Height="52" Width="120" />
+
         <Viewbox
             Grid.Row="1"
             HorizontalAlignment="Center"
