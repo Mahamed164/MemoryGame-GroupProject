@@ -6,6 +6,8 @@ using Npgsql;
 using SUP.Services;
 using SUP.Models;
 
+
+
 namespace SUP;
 
 /// <summary>
@@ -18,9 +20,8 @@ public partial class App : Application
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        var config = new ConfigurationBuilder()
-            .AddUserSecrets<App>()
-            .Build();
+        var config = new ConfigurationBuilder().AddUserSecrets<App>().Build();
+//.AddUserSecrets<App>().Build();
         var connectionString = config.GetConnectionString("Production");
         _dataSource = NpgsqlDataSource.Create(connectionString);
 
