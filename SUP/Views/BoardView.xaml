@@ -18,7 +18,7 @@
     </UserControl.DataContext>-->
 
     <UserControl.Resources>
-        <converters:FaceUpBrushConverter x:Key="FaceUpBrushConverter" />
+        <converters:FaceUpImageConverter x:Key="FaceUpImageConverter" />
 
 
 
@@ -82,7 +82,7 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Stretch="Uniform">
-            <Grid Width="600" Height="600">
+            <Grid>
                 <ItemsControl ItemsSource="{Binding Cards}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -92,7 +92,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemContainerStyle>
                         <Style TargetType="ContentPresenter">
-                            <Setter Property="Margin" Value="12" />
+                            <Setter Property="Margin" Value="5" />
                         </Style>
                     </ItemsControl.ItemContainerStyle>
 
@@ -100,12 +100,18 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Button Command="{Binding ClickCommand}">
-                                <Button.Background>
-                                    <MultiBinding Converter="{StaticResource FaceUpBrushConverter}">
-                                        <Binding Path="FaceUp" />
-                                        <Binding Path="Color" />
-                                    </MultiBinding>
-                                </Button.Background>
+                                <Button.Content>
+                                    <Image Stretch="Uniform"
+                                           VerticalAlignment="Stretch"
+                                           HorizontalAlignment="Stretch">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource FaceUpImageConverter}">
+                                                <Binding Path="FaceUp" />
+                                                <Binding Path="Image" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Button.Content>
                             </Button>
                             <!--  MiltiValueConverting  -->
                             <!--  https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.multibinding?view=windowsdesktop-9.0  -->
