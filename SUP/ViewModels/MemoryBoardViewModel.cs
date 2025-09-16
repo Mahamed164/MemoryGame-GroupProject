@@ -31,7 +31,8 @@ public class MemoryBoardViewModel : ISupportsCardInput
     EndViewModel endViewModel = new EndViewModel();
     int completedPairs;
     int numOffGuesses;
-
+    public string Accuracy { get; set; } = "100%";
+    int accuracy = 100;
 
     public MockTimerFunction timer = new MockTimerFunction();
     public string TimerText { get; set; } = "00:00";
@@ -87,7 +88,14 @@ public class MemoryBoardViewModel : ISupportsCardInput
 
     }
 
-   
+    private int CalculateAccuracy()
+    {
+        int accuracySubtract;
+        int amountOfPairs = _cards.Count / 2;
+        accuracySubtract = 100 / amountOfPairs;
+
+        return accuracySubtract;
+    }
 
 
     private async Task TurnCardsAsync(CardViewModel card)
@@ -116,6 +124,8 @@ public class MemoryBoardViewModel : ISupportsCardInput
                 turnedCards[0].FaceUp = false;
                 turnedCards[1].FaceUp = false;
                 completedPairs--;
+                accuracy -= CalculateAccuracy();
+                Accuracy = $"{accuracy}%";
                
             }
             turnedCards.Clear();

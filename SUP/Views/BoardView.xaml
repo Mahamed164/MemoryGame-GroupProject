@@ -18,7 +18,7 @@
     </UserControl.DataContext>-->
 
     <UserControl.Resources>
-        <converters:FaceUpBrushConverter x:Key="FaceUpBrushConverter" />
+        <converters:FaceUpImageConverter x:Key="FaceUpImageConverter" />
 
 
 
@@ -66,23 +66,29 @@
             Text="Memory" />
         <TextBlock
             Grid.Row="0"
-            HorizontalAlignment="Right"
             Width="114"
             Height="50"
             Margin="0,3,2,25"
+            HorizontalAlignment="Right"
             FontSize="32"
-            Text="{Binding TimerText}"
-             />
+            Text="{Binding TimerText}" />
+
+
         <Button
+    Grid.Row="2"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center"
     Background="ForestGreen"
     Command="{Binding RestartCmd}"
-    Content="Börja om" FontSize="23" Margin="622,12,48,12" Grid.Row="2" />
+    Content="Börja om"
+    FontSize="23" Height="52" Width="120" />
+
         <Viewbox
             Grid.Row="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Stretch="Uniform">
-            <Grid Width="600" Height="600">
+            <Grid>
                 <ItemsControl ItemsSource="{Binding Cards}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -92,7 +98,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemContainerStyle>
                         <Style TargetType="ContentPresenter">
-                            <Setter Property="Margin" Value="12" />
+                            <Setter Property="Margin" Value="5" />
                         </Style>
                     </ItemsControl.ItemContainerStyle>
 
@@ -100,12 +106,18 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Button Command="{Binding ClickCommand}">
-                                <Button.Background>
-                                    <MultiBinding Converter="{StaticResource FaceUpBrushConverter}">
-                                        <Binding Path="FaceUp" />
-                                        <Binding Path="Color" />
-                                    </MultiBinding>
-                                </Button.Background>
+                                <Button.Content>
+                                    <Image Stretch="Uniform"
+                                           VerticalAlignment="Stretch"
+                                           HorizontalAlignment="Stretch">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource FaceUpImageConverter}">
+                                                <Binding Path="FaceUp" />
+                                                <Binding Path="Image" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Button.Content>
                             </Button>
                             <!--  MiltiValueConverting  -->
                             <!--  https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.multibinding?view=windowsdesktop-9.0  -->
@@ -120,5 +132,27 @@
                 </ItemsControl>
             </Grid>
         </Viewbox>
+        <Label
+            x:Name="label"
+            Grid.Row="1"
+            Margin="0,20,20,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Content="Accuracy:" />
+        <Label 
+            Grid.Row="1"
+            Margin="0,60,20,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Content="{Binding Accuracy }" Height="30"/>
+        <!--<TextBox
+            x:Name="textBox"
+            Grid.Row="1"
+            Width="120"
+            Margin="657,114,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text="{Binding Accuracy}"
+            TextWrapping="Wrap" />-->
     </Grid>
 </UserControl>

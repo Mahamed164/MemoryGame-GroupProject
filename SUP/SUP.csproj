@@ -10,9 +10,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.9" />
-    <PackageReference Include="Npgsql" Version="9.0.3" />
+
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\backside.jpg" />
+    <Resource Include="Images\image1.png" />
+    <Resource Include="Images\image10.png" />
+    <Resource Include="Images\image2.png" />
+    <Resource Include="Images\image3.png" />
+    <Resource Include="Images\image4.png" />
+    <Resource Include="Images\image5.png" />
+    <Resource Include="Images\image6.png" />
+    <Resource Include="Images\image7.png" />
+    <Resource Include="Images\image8.png" />
+    <Resource Include="Images\image9.png" />
   </ItemGroup>
 
 </Project>
