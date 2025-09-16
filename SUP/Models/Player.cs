@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime;
+using System.Text;
+using System.Threading.Tasks;
+using PropertyChanged;
+using SUP.Models;
+using SUP.Services;
+
+
+namespace SUP.Models;
+[AddINotifyPropertyChangedInterface]
+public class Player
+{
+    public int Id { get; set; }
+    public string Nickname { get; set; }
+}
