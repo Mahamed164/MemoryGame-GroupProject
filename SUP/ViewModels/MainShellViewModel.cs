@@ -21,6 +21,9 @@ namespace SUP.ViewModels
         public ICommand SaveScoreCmd { get; }
         public ICommand HighScoreCmd { get; }
         EndViewModel EndViewModel { get; set; }
+        private StartViewModel _startview;
+        
+
 
         public MainShellViewModel()
         {
@@ -30,11 +33,12 @@ namespace SUP.ViewModels
             SaveScoreCmd = new RelayCommand(SaveScore);
             HighScoreCmd = new RelayCommand(OpenHighScores);
 
-            CurrentView = new StartViewModel(StartGameCmd, HighScoreCmd);
+            _startview = new StartViewModel(StartGameCmd, HighScoreCmd);
+            CurrentView = _startview;
         }
         public void StartGame(object parameter)
         {
-            CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd);
+            CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd, _startview.Level);
         }
 
         public void PassScoreToEndView(object parameter)
@@ -54,7 +58,7 @@ namespace SUP.ViewModels
 
         public void RestartGame(object parameter)
         {
-            CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd);
+            CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd, _startview.Level  );
         }
         public void SaveScore(object parameter)
         {

@@ -51,6 +51,27 @@
             FontSize="32"
             Text="Memory"
              />
+        <RadioButton
+     x:Name="rbtnLevelOne"
+     Margin="612,184,0,0"
+     HorizontalAlignment="Left"
+     VerticalAlignment="Top"
+     IsChecked="{Binding IsLevelOneSelected}"
+     Content="Level 1" />
+        <RadioButton
+     x:Name="rbtnLevelTwo"
+     Margin="612,211,0,0"
+     HorizontalAlignment="Left"
+     VerticalAlignment="Top"
+     Content="Level 2" 
+     IsChecked="{Binding IsLevelTwoSelected}"/>
+        <RadioButton
+     x:Name="rbtnLevelThree"
+     Margin="612,239,0,0"
+     HorizontalAlignment="Left"
+     VerticalAlignment="Top"
+     Content="Level 3" 
+     IsChecked="{Binding IsLevelThreeSelected}"/>
 
     </Grid>
 </UserControl>
