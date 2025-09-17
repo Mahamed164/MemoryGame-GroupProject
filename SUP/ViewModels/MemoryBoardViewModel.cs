@@ -34,6 +34,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
     public string Accuracy { get; set; } = "100%";
     int accuracy = 100;
     public int Level { get; set; }
+    
     public MockTimerFunction timer = new MockTimerFunction();
     public string TimerText { get; set; } = "00:00";
     public bool hasStarted = false;
@@ -47,6 +48,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
 
     public MemoryBoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level )
     {
+        Level = level;
         FinishGameCommand = finishGameCommand;
         RestartCmd = restartCmd;
         ConfigureCards();
@@ -74,8 +76,6 @@ public class MemoryBoardViewModel : ISupportsCardInput
 
         await TurnCardsAsync(card);
         CheckForCompleation();
-
-        
     }
 
     private async void CheckForCompleation()
