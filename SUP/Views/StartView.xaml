@@ -15,42 +15,62 @@
         </Grid.RowDefinitions>
         <TextBlock
             Grid.Row="1"
-            FontSize="20"
             HorizontalAlignment="Center"
-            Text="{Binding Greeting, UpdateSourceTrigger=PropertyChanged, FallbackValue=Spelarnamn:}"
-             />
+            FontSize="20"
+            Text="{Binding Greeting, UpdateSourceTrigger=PropertyChanged, FallbackValue=Spelarnamn:}" />
         <TextBox
             Grid.Row="1"
+            Width="150"
+            Height="40"
+            Margin="0,0,0,200"
             HorizontalAlignment="Center"
             FontSize="20"
-            Margin="0,0,0,200"
-            Width="150"
-            Height="40"
-            Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}"
-             />
+            Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}" />
         <Button
             Grid.Row="1"
-            Margin="0,0,0,95"
             Width="150"
             Height="40"
-            Command="{Binding StartGameCmd}"
+            Margin="0,0,0,95"
             Background="ForestGreen"
-            Content="Spela" 
-            />
+            Command="{Binding StartGameCmd}"
+            Content="Spela" />
         <Button
-    Grid.Row="1"
-    Width="150"
-    Height="40"
-    Command="{Binding HighScoreCmd}"
-    Background="Orange"
-    Content="Visa topplista" 
-    />
+            Grid.Row="1"
+            Width="150"
+            Height="40"
+            Background="Orange"
+            Command="{Binding HighScoreCmd}"
+            Content="Visa topplista" />
         <TextBlock
             Grid.Row="0"
             HorizontalAlignment="Center"
             FontSize="32"
-            Text="Memory"
-             />
+            Text="Memory" />
+        <RadioButton
+            x:Name="rbtnLevelOne"
+            Grid.Row="1"
+            Margin="584,54,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Level 1"
+            IsChecked="{Binding IsLevelOneSelected}" />
+        <RadioButton
+            x:Name="rbtnLevelTwo"
+            Grid.Row="1"
+            Margin="584,76,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Level 2"
+            IsChecked="{Binding IsLevelTwoSelected}" />
+        <RadioButton
+            x:Name="rbtnLevelThree"
+            Grid.Row="1"
+            Margin="584,102,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Level 3"
+            IsChecked="{Binding IsLevelThreeSelected}" />
+
 
     </Grid>
 </UserControl>

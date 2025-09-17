@@ -33,7 +33,8 @@ public class MemoryBoardViewModel : ISupportsCardInput
     int numOffGuesses;
     public string Accuracy { get; set; } = "100%";
     int accuracy = 100;
-
+    public int Level { get; set; }
+    
     public MockTimerFunction timer = new MockTimerFunction();
     public string TimerText { get; set; } = "00:00";
     public bool hasStarted = false;
@@ -45,8 +46,9 @@ public class MemoryBoardViewModel : ISupportsCardInput
     }
 
 
-    public MemoryBoardViewModel(ICommand finishGameCommand,ICommand restartCmd )
+    public MemoryBoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level )
     {
+        Level = level;
         FinishGameCommand = finishGameCommand;
         RestartCmd = restartCmd;
         ConfigureCards();
@@ -74,8 +76,6 @@ public class MemoryBoardViewModel : ISupportsCardInput
 
         await TurnCardsAsync(card);
         CheckForCompleation();
-
-        
     }
 
     private async void CheckForCompleation()
@@ -135,9 +135,8 @@ public class MemoryBoardViewModel : ISupportsCardInput
     
     private void ConfigureCards()
     {
-      
         completedPairs = 0;
-        var shuffled = MakeNumbersAndColors();
+        var shuffled = MakeNumbersAndColors(Level);
 
         Cards.Clear();
 
@@ -147,20 +146,31 @@ public class MemoryBoardViewModel : ISupportsCardInput
         }
     }
 
-    public List<Cards> MakeNumbersAndColors()
+    public List<Cards> MakeNumbersAndColors(int level)
     {
+        Level = level;
         Random random = new Random();
         _cards.Clear();
-
-        for (int i = 0; i < 10; i++)
+        int numberOfColors;
+        switch (Level)
+        {
+            default:
+            case 1:
+                numberOfColors = 6;
+                break;
+            case 2:
+                numberOfColors = 10;
+                break;
+            case 3:
+                numberOfColors = 15;
+                break;
+        }
+        for (int i = 0; i < numberOfColors; i++)
         {
             _cards.Add(new Cards(i));
             _cards.Add(new Cards(i));
-
         }
-
-        return  _cards.OrderBy(x => random.Next()).ToList();
-
+        return _cards = _cards.OrderBy(x => random.Next()).ToList();
     }
 
     

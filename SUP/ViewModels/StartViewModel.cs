@@ -14,6 +14,38 @@ namespace SUP.ViewModels
     [AddINotifyPropertyChangedInterface]
     public class StartViewModel
     {
+        public bool IsLevelOneSelected { get; set; }
+        public bool IsLevelTwoSelected { get; set; } = true;
+        public bool IsLevelThreeSelected { get; set; }
+        public int level;
+        public int Level
+        {
+            get
+            {
+                SetLevel();// https://softwareengineering.stackexchange.com/questions/225354/logic-inside-class-properties-setters-getters
+                return level;
+            }
+            set
+            {
+                level = value;
+            }
+        }
+
+        private void SetLevel()
+        {
+            if (IsLevelOneSelected == true)
+            {
+                level = 1;
+            }
+            else if (IsLevelTwoSelected == true)
+            {
+                level = 2;
+            }
+            else if (IsLevelThreeSelected == true)
+            {
+                level = 3;
+            }
+        }
         private string playerName;
 
         public string PlayerName
