@@ -14,8 +14,29 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <StackPanel
+            Grid.Row="0"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            <TextBlock Width="100" Height="40" Text="{Binding NumOfMoves}" TextAlignment="Center"/>
+            <TextBlock Width="100" Height="40" Text="{Binding NumOfMisses}" TextAlignment="Center"/>
+            <TextBlock Width="100" Height="40" Text="{Binding FullTimerText}" TextAlignment="Center"/>
+        </StackPanel>
 
-        
+
+
+
+
+
+        <Button
+            Grid.Row="2"
+            Width="200"
+            Height="50"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Command="{Binding SaveCurrentScoreCmd}"
+            Content="Spara poäng" />
+
 
     </Grid>
 </UserControl>
