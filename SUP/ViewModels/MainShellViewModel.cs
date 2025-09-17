@@ -35,7 +35,7 @@ namespace SUP.ViewModels
 
 
         private readonly GameHubDbServices _db;
-main
+
 
 
 
@@ -47,13 +47,13 @@ main
             SaveScoreCmd = new RelayCommand(SaveScore);
             HighScoreCmd = new RelayCommand(OpenHighScores);
 
-   
 
 
 
-            
+
+
             _db = db;
-main
+
             _startview = new StartViewModel(StartGameCmd, HighScoreCmd);
 
             CurrentView = _startview;
@@ -67,9 +67,9 @@ main
 
 
 
-        }
+
         public async void FinishGame(object parameter)
- main
+
         {
             var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
             var result = (ValueTuple<int, int, string>)parameter;
@@ -90,13 +90,13 @@ main
 
             CurrentView = new SaveScoreViewModel(Moves, Misses, TimerText);
 
-           
+
             try
             {
-                
+
                 var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
 
-              // Här kan vi utöka att spara utöver namn ex (moves, misses, tid osv) kanske?
+                // Här kan vi utöka att spara utöver namn ex (moves, misses, tid osv) kanske?
 
                 MessageBox.Show($"Ditt namn '{player.Nickname}' har sparats i databasen!", "Sparat");
             }
@@ -104,7 +104,7 @@ main
             {
                 MessageBox.Show("Kunde inte spara resultatet. Fel: " + ex.Message, "Fel");
             }
- main
+
         }
 
         public void OpenHighScores(object parameter)
