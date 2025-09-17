@@ -88,11 +88,11 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Stretch="Uniform">
-            <Grid>
+            <Grid Width="600" Height="600">
                 <ItemsControl ItemsSource="{Binding Cards}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid Columns="5" Rows="4" />
+                            <UniformGrid  />
 
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
