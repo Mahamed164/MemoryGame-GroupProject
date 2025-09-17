@@ -33,6 +33,7 @@ namespace SUP.ViewModels
                 }
             }
         }
+
         public string Greeting { get; set; }
         public ICommand StartGameCmd { get; }
         public ICommand HighScoreCmd { get; }
