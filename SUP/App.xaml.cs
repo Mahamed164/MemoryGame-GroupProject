@@ -22,7 +22,7 @@ public partial class App : Application
     {
         base.OnStartup(e);
         var config = new ConfigurationBuilder().AddUserSecrets<App>().Build();
-//.AddUserSecrets<App>().Build();
+        //.AddUserSecrets<App>().Build();
         var connectionString = config.GetConnectionString("Production");
         _dataSource = NpgsqlDataSource.Create(connectionString);
 

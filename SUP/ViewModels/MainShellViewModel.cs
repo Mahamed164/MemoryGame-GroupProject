@@ -22,9 +22,20 @@ namespace SUP.ViewModels
         public ICommand RestartCmd { get; }
         public ICommand SaveScoreCmd { get; }
         public ICommand HighScoreCmd { get; }
+        public ICommand SaveCurrentScoreCmd { get; }
         EndViewModel EndViewModel { get; set; }
         private StartViewModel _startview;
+
+
+        public int Misses { get; set; }
+        public int Moves { get; set; }
+        public string TimerText { get; set; }
+
+
+
+
         private readonly GameHubDbServices _db;
+main
 
 
 
@@ -35,39 +46,50 @@ namespace SUP.ViewModels
             RestartCmd = new RelayCommand(RestartGame);
             SaveScoreCmd = new RelayCommand(SaveScore);
             HighScoreCmd = new RelayCommand(OpenHighScores);
+
+   
+
+
+
             
             _db = db;
+main
             _startview = new StartViewModel(StartGameCmd, HighScoreCmd);
 
             CurrentView = _startview;
+
+
         }
         public void StartGame(object parameter)
         {
             CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd, _startview.Level);
         }
 
-        public void PassScoreToEndView(object parameter)
-        {
+
 
         }
         public async void FinishGame(object parameter)
+ main
         {
             var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
             var result = (ValueTuple<int, int, string>)parameter;
-            int misses = result.Item1;
-            int moves = result.Item2;
-            string timer = result.Item3;
-            EndViewModel = new EndViewModel(misses, moves, timer, SaveScoreCmd, RestartCmd, HighScoreCmd);
+            Misses = result.Item1;
+            Moves = result.Item2;
+            TimerText = result.Item3;
+            EndViewModel = new EndViewModel(Misses, Moves, TimerText, SaveScoreCmd, RestartCmd, HighScoreCmd);
             CurrentView = EndViewModel;
 
         }
 
         public void RestartGame(object parameter)
         {
-            CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd, _startview.Level  );
+            CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd, _startview.Level);
         }
         public async void SaveScore(object parameter)
         {
+
+            CurrentView = new SaveScoreViewModel(Moves, Misses, TimerText);
+
            
             try
             {
@@ -82,6 +104,7 @@ namespace SUP.ViewModels
             {
                 MessageBox.Show("Kunde inte spara resultatet. Fel: " + ex.Message, "Fel");
             }
+ main
         }
 
         public void OpenHighScores(object parameter)
@@ -92,6 +115,8 @@ namespace SUP.ViewModels
                 CurrentView = LatestView;
             }));
         }
+
+
 
     }
 }
