@@ -6,8 +6,7 @@
     xmlns:gameView="clr-namespace:SUP.Views"
     xmlns:local="clr-namespace:SUP"
     xmlns:scoreVM="clr-namespace:SUP.ViewModels.Scores"
-    xmlns:scoreView="clr-namespace:SUP.Views.Scores"
-    StartupUri="MainWindow.xaml">
+    xmlns:scoreView="clr-namespace:SUP.Views.Scores">
     <Application.Resources>
 
         <DataTemplate DataType="{x:Type gameVM:StartViewModel}">
