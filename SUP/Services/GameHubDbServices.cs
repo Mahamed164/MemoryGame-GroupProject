@@ -29,14 +29,13 @@ public class GameHubDbServices
     public async Task<Player> GetOrCreatePlayerAsync(string nickname)
     {
 
-        if(string.IsNullOrWhiteSpace(nickname)) throw new ArgumentNullException(nameof(nickname)); //guard
+        if (string.IsNullOrWhiteSpace(nickname)) throw new ArgumentNullException(nameof(nickname)); //guard
 
         const string sqlStmt = @"insert into player(nickname)
                         values (@nickname)
                         on conflict(nickname)
                         do update set nickname = Excluded.nickname
                         returning player_id, nickname";
-
 
         try
         {
@@ -58,8 +57,25 @@ public class GameHubDbServices
 
             throw new InvalidOperationException("Kunde inte skapa/hämta en spelare", ex);
         }
-        
-        
+    }
+    
+    public async Task<List<Player>> GetPlayersForHighScoreAsync()
+    {
+        const string sqlStmt = "select player_id, nickname from player order by nickname";
+        var players = new List<Player>();
 
+        await using var connection = await _dataSource.OpenConnectionAsync();
+        await using var command = new NpgsqlCommand(sqlStmt, connection);
+        using var reader = await command.ExecuteReaderAsync();
+
+        while (await reader.ReadAsync())
+        {
+            players.Add(new Player()
+            {
+                Id = reader.GetInt32(0),
+                Nickname = reader.GetString(1)
+            });
+        }
+        return players;
     }
 }

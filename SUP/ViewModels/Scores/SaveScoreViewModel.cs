@@ -18,10 +18,11 @@ public class SaveScoreViewModel
     public string PlayerName { get; set; }
     public int PlayerID { get; set; }
     public ICommand SaveCurrentScoreCmd { get; }
+    public ICommand HighScoreCmd { get; }
     public string NumOfMoves { get; set; }
     public string NumOfMisses { get; set; }
     public string FullTimerText { get; set; }
-    public SaveScoreViewModel(int moves, int misses, string timerText, string playerName, int playerID)
+    public SaveScoreViewModel(int moves, int misses, string timerText, string playerName, int playerID, ICommand highScoreCmd)
     {
         Moves = moves;
         Misses = misses;
@@ -31,6 +32,7 @@ public class SaveScoreViewModel
         SetScoreTexts();
         SaveCurrentScoreCmd = new RelayCommand(p => SaveCurrentScore());
 
+        HighScoreCmd = highScoreCmd;
     }
 
     public void SetScoreTexts()
