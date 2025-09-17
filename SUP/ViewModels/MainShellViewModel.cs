@@ -1,11 +1,13 @@
 ﻿using PropertyChanged;
 using SUP.Commands;
+using SUP.Services;
 using SUP.ViewModels.Scores;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace SUP.ViewModels
@@ -24,6 +26,7 @@ namespace SUP.ViewModels
         EndViewModel EndViewModel { get; set; }
         private StartViewModel _startview;
 
+
         public int Misses { get; set; }
         public int Moves { get; set; }
         public string TimerText { get; set; }
@@ -31,18 +34,28 @@ namespace SUP.ViewModels
 
 
 
+        private readonly GameHubDbServices _db;
+main
 
-        public MainShellViewModel()
+
+
+        public MainShellViewModel(GameHubDbServices db)
         {
             StartGameCmd = new RelayCommand(StartGame);
             FinishGameCmd = new RelayCommand(FinishGame);
             RestartCmd = new RelayCommand(RestartGame);
             SaveScoreCmd = new RelayCommand(SaveScore);
             HighScoreCmd = new RelayCommand(OpenHighScores);
+
    
 
 
+
+            
+            _db = db;
+main
             _startview = new StartViewModel(StartGameCmd, HighScoreCmd);
+
             CurrentView = _startview;
 
 
@@ -53,8 +66,12 @@ namespace SUP.ViewModels
         }
 
 
-        public void FinishGame(object parameter)
+
+        }
+        public async void FinishGame(object parameter)
+ main
         {
+            var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
             var result = (ValueTuple<int, int, string>)parameter;
             Misses = result.Item1;
             Moves = result.Item2;
@@ -68,9 +85,26 @@ namespace SUP.ViewModels
         {
             CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd, _startview.Level);
         }
-        public void SaveScore(object parameter)
+        public async void SaveScore(object parameter)
         {
+
             CurrentView = new SaveScoreViewModel(Moves, Misses, TimerText);
+
+           
+            try
+            {
+                
+                var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
+
+              // Här kan vi utöka att spara utöver namn ex (moves, misses, tid osv) kanske?
+
+                MessageBox.Show($"Ditt namn '{player.Nickname}' har sparats i databasen!", "Sparat");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Kunde inte spara resultatet. Fel: " + ex.Message, "Fel");
+            }
+ main
         }
 
         public void OpenHighScores(object parameter)
