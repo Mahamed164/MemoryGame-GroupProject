@@ -37,8 +37,6 @@ namespace SUP.ViewModels
         private readonly GameHubDbServices _db;
 
 
-
-
         public MainShellViewModel(GameHubDbServices db)
         {
             StartGameCmd = new RelayCommand(StartGame);
@@ -47,26 +45,16 @@ namespace SUP.ViewModels
             SaveScoreCmd = new RelayCommand(SaveScore);
             HighScoreCmd = new RelayCommand(OpenHighScores);
 
-
-
-
-
-
             _db = db;
 
             _startview = new StartViewModel(StartGameCmd, HighScoreCmd);
 
             CurrentView = _startview;
-
-
         }
         public void StartGame(object parameter)
         {
             CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd, _startview.Level);
         }
-
-
-
 
         public async void FinishGame(object parameter)
 
@@ -80,9 +68,7 @@ namespace SUP.ViewModels
             TimerText = result.Item3;
             EndViewModel = new EndViewModel(Misses, Moves, TimerText, SaveScoreCmd, RestartCmd, HighScoreCmd);
             CurrentView = EndViewModel;
-
         }
-
         public void RestartGame(object parameter)
         {
             CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd, _startview.Level);
@@ -90,12 +76,10 @@ namespace SUP.ViewModels
         public async void SaveScore(object parameter)
         {
 
-            CurrentView = new SaveScoreViewModel(Moves, Misses, TimerText, PlayerName, PlayerID);
-
+            CurrentView = new SaveScoreViewModel(Moves, Misses, TimerText, PlayerName, PlayerID, HighScoreCmd);
 
             try
             {
-
                 var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
 
                 // Här kan vi utöka att spara utöver namn ex (moves, misses, tid osv) kanske?
@@ -106,19 +90,15 @@ namespace SUP.ViewModels
             {
                 MessageBox.Show("Kunde inte spara resultatet. Fel: " + ex.Message, "Fel");
             }
-
         }
-
-        public void OpenHighScores(object parameter)
+        public async void OpenHighScores(object parameter)
         {
             LatestView = CurrentView;
+            var players = await _db.GetPlayersForHighScoreAsync();
             CurrentView = new HighScoreViewModel(new RelayCommand(p =>
             {
                 CurrentView = LatestView;
-            }));
+            }), players);
         }
-
-
-
     }
 }
