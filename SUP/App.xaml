@@ -5,6 +5,8 @@
     xmlns:gameVM="clr-namespace:SUP.ViewModels"
     xmlns:gameView="clr-namespace:SUP.Views"
     xmlns:local="clr-namespace:SUP"
+    xmlns:scoreVM="clr-namespace:SUP.ViewModels.Scores"
+    xmlns:scoreView="clr-namespace:SUP.Views.Scores"
     StartupUri="MainWindow.xaml">
     <Application.Resources>
 
@@ -19,9 +21,13 @@
         <DataTemplate DataType="{x:Type gameVM:EndViewModel}">
             <gameView:EndView />
         </DataTemplate>
-        
+
         <DataTemplate DataType="{x:Type gameVM:HighScoreViewModel}">
             <gameView:HighScoreView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type scoreVM:SaveScoreViewModel}">
+            <scoreView:SaveScoreView />
         </DataTemplate>
 
     </Application.Resources>
