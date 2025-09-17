@@ -30,8 +30,8 @@ namespace SUP.ViewModels
         public int Misses { get; set; }
         public int Moves { get; set; }
         public string TimerText { get; set; }
-
-
+        public string PlayerName {  get; set; }
+        public int PlayerID { get; set; }
 
 
         private readonly GameHubDbServices _db;
@@ -72,6 +72,8 @@ namespace SUP.ViewModels
 
         {
             var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
+            PlayerName = player.Nickname;
+            PlayerID = player.Id;
             var result = (ValueTuple<int, int, string>)parameter;
             Misses = result.Item1;
             Moves = result.Item2;
@@ -88,7 +90,7 @@ namespace SUP.ViewModels
         public async void SaveScore(object parameter)
         {
 
-            CurrentView = new SaveScoreViewModel(Moves, Misses, TimerText);
+            CurrentView = new SaveScoreViewModel(Moves, Misses, TimerText, PlayerName, PlayerID);
 
 
             try

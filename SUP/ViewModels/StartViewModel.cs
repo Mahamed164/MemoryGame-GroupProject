@@ -81,7 +81,7 @@ namespace SUP.ViewModels
                     MessageBox.Show("Vänligen ange ditt spelarnamn.", "Spelarnamn");
                     return;
                 }
-                startGameCmd.Execute(PlayerName);
+                startGameCmd.Execute(p);
             });
             Greeting = "Spelarnamn:";
             
