@@ -20,7 +20,7 @@ namespace SUP
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainShellViewModel();
+            
         }
 
        
