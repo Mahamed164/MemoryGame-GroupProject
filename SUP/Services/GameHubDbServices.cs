@@ -31,32 +31,64 @@ public class GameHubDbServices
 
         if (string.IsNullOrWhiteSpace(nickname)) throw new ArgumentNullException(nameof(nickname)); //guard
 
-        const string sqlStmt = @"insert into player(nickname)
-                        values (@nickname)
-                        on conflict(nickname)
-                        do update set nickname = Excluded.nickname
-                        returning player_id, nickname";
+        //statement 1 = om det inte redan finns en nickname som är det man skriver in
+        const string trySqlStmt = @"insert into player(nickname) 
+                                 select @nickname where not exists
+                                (select 1 from player where nickname = @nickname)
+                                returning player_id, nickname"; //försöker insert, men det funkar bara om nickname inte redan finns
+
+        //statement 2 = hämtar id och nickname på spelare där nickname i databasen är det samma som man skriver in i spelet (@nickname) -- istället för att insert
+        const string selectSqlStmt = @"select player_id, nickname
+                                    from player
+                                    where nickname = @nickname";
+
+        /* https://stackoverflow.com/questions/1952922/how-to-insert-a-record-or-update-if-it-already-exists
+         * https://www.sqltutorial.net/not-exists.html -- where not exists: "The subquery must return no result for the NOT EXISTS operator to be true. 
+         *                                                                   If the subquery returns any result, the NOT EXISTS operator is false, and the outer query will not return any rows."
+         
+        Gamla statement (har även använts som källa/inspiration): 
+        @"insert into player(nickname)
+        values (@nickname)
+        on duplicate key(nickname)
+        do update set nickname = excluded.nickname
+        returing player_id, nickname";
+          */
 
         try
         {
             await using var connection = await _dataSource.OpenConnectionAsync();
-            using var command = new NpgsqlCommand(sqlStmt, connection);
-            command.Parameters.AddWithValue("@nickname", nickname);
-
-            await using var reader = await command.ExecuteReaderAsync();
-            if (await reader.ReadAsync())
+            using var tryCommand = new NpgsqlCommand(trySqlStmt, connection);
             {
-                return new Player() { Id = reader.GetInt32(0), Nickname = reader.GetString(1) };
+                tryCommand.Parameters.AddWithValue("@nickname", nickname);
+
+                await using var reader = await tryCommand.ExecuteReaderAsync();
+                if (await reader.ReadAsync())
+                {
+                    return new Player() { Id = reader.GetInt32(0), Nickname = reader.GetString(1) };
+                }
+
+                //throw new InvalidOperationException("Något gick fel. Kunde inte skapa spelare");
             }
+            var selectCommand = new NpgsqlCommand(selectSqlStmt, connection);
+            {
+                selectCommand.Parameters.AddWithValue("@nickname", nickname);
 
+                await using var selectReader = await selectCommand.ExecuteReaderAsync();
+                if(await selectReader.ReadAsync())
+                {
+                    return new Player() { Id = selectReader.GetInt32(0), Nickname = selectReader.GetString(1) };
+                }
+            }
             throw new InvalidOperationException("Något gick fel. Kunde inte skapa spelare");
-
         }
+
         catch (PostgresException ex)
         {
 
             throw new InvalidOperationException("Kunde inte skapa/hämta en spelare", ex);
         }
+
+        
     }
     
     public async Task<List<Player>> GetPlayersForHighScoreAsync()
