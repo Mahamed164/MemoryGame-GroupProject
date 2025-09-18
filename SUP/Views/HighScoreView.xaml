@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
         <ListView
                 Grid.Row="0"
-                d:ItemsSource="{Binding HighScores}"
+                ItemsSource="{Binding HighScores}"
                 Background="#FFE689B4"
                 FontSize="20"
             VerticalAlignment="Stretch"
@@ -23,7 +23,7 @@
                 >
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Spelarnamn" DisplayMemberBinding="{Binding PlayerName}" Width="150"/>
+                        <GridViewColumn Header="Spelarnamn" DisplayMemberBinding="{Binding Nickname}" Width="150"/>
                         <GridViewColumn Header="Drag" DisplayMemberBinding="{Binding Moves}" Width="150"/>
                         <GridViewColumn Header="Missar" DisplayMemberBinding="{Binding Misses}" Width="150"/>
                         <GridViewColumn Header="Tid" DisplayMemberBinding="{Binding Time}" Width="150"/>

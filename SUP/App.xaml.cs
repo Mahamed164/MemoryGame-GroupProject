@@ -5,6 +5,7 @@ using System.Windows;
 using Npgsql;
 using SUP.Services;
 using SUP.Models;
+using SUP.ViewModels;
 
 
 
@@ -21,12 +22,17 @@ public partial class App : Application
     {
         base.OnStartup(e);
         var config = new ConfigurationBuilder().AddUserSecrets<App>().Build();
-//.AddUserSecrets<App>().Build();
+        //.AddUserSecrets<App>().Build();
         var connectionString = config.GetConnectionString("Production");
         _dataSource = NpgsqlDataSource.Create(connectionString);
 
         var db = new GameHubDbServices(_dataSource);
-        var player = await db.GetOrCreatePlayerAsync("test2");
+        var mainShellVm = new MainShellViewModel(db); 
+        var mainWindow = new MainWindow
+        {
+            DataContext = mainShellVm
+        };
+        mainWindow.Show();
 
-    }
+    }   
 }
