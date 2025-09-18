@@ -72,16 +72,24 @@
             HorizontalAlignment="Right"
             FontSize="32"
             Text="{Binding TimerText}" />
-
+        <Label
+            Grid.Row="1"
+            Margin="63,75,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="{Binding PlayerLabel}"
+            FontSize="15" />
 
         <Button
-    Grid.Row="2"
-    HorizontalAlignment="Center"
-    VerticalAlignment="Center"
-    Background="ForestGreen"
-    Command="{Binding RestartCmd}"
-    Content="Börja om"
-    FontSize="23" Height="52" Width="120" />
+            Grid.Row="2"
+            Width="120"
+            Height="52"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="ForestGreen"
+            Command="{Binding RestartCmd}"
+            Content="Börja om"
+            FontSize="23" />
 
         <Viewbox
             Grid.Row="1"
@@ -92,7 +100,7 @@
                 <ItemsControl ItemsSource="{Binding Cards}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid  />
+                            <UniformGrid />
 
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
@@ -107,9 +115,10 @@
                         <DataTemplate>
                             <Button Command="{Binding ClickCommand}">
                                 <Button.Content>
-                                    <Image Stretch="Uniform"
-                                           VerticalAlignment="Stretch"
-                                           HorizontalAlignment="Stretch">
+                                    <Image
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        Stretch="Uniform">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource FaceUpImageConverter}">
                                                 <Binding Path="FaceUp" />
@@ -132,27 +141,7 @@
                 </ItemsControl>
             </Grid>
         </Viewbox>
-        <Label
-            x:Name="label"
-            Grid.Row="1"
-            Margin="0,20,20,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Content="Accuracy:" />
-        <Label 
-            Grid.Row="1"
-            Margin="0,60,20,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Content="{Binding Accuracy }" Height="30"/>
-        <!--<TextBox
-            x:Name="textBox"
-            Grid.Row="1"
-            Width="120"
-            Margin="657,114,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Text="{Binding Accuracy}"
-            TextWrapping="Wrap" />-->
+       
+      
     </Grid>
 </UserControl>

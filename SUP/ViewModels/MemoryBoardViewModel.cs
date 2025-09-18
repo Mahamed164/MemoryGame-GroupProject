@@ -31,24 +31,38 @@ public class MemoryBoardViewModel : ISupportsCardInput
     EndViewModel endViewModel = new EndViewModel();
     int completedPairs;
     int numOffGuesses;
-    public string Accuracy { get; set; } = "100%";
-    int accuracy = 100;
+
+    
     public int Level { get; set; }
+    public PlayerInformation[] Players {  get; set; }
+    public int CurrentPlayer;
+    public string PlayerLabel { get; set; }
+    
     
     public MockTimerFunction timer = new MockTimerFunction();
     public string TimerText { get; set; } = "00:00";
     public bool hasStarted = false;
     public ICommand RestartCmd { get; }
+
+
     public MemoryBoardViewModel()
+
     {
        
 
     }
 
 
-    public MemoryBoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level )
+    public MemoryBoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level, List<string> playerList )
     {
         Level = level;
+        Players = new PlayerInformation[playerList.Count];
+       
+        for (int i = 0; i < playerList.Count; i++)
+        {
+            Players[i] = new() { Name = playerList[i] };
+        }
+        UpdatePlayerLabel();
         FinishGameCommand = finishGameCommand;
         RestartCmd = restartCmd;
         ConfigureCards();
@@ -88,18 +102,10 @@ public class MemoryBoardViewModel : ISupportsCardInput
 
     }
 
-    private int CalculateAccuracy()
+
+    private async Task TurnCardsAsync(CardViewModel card) // Kan man lägga multiplayer här?
     {
-        int accuracySubtract;
-        int amountOfPairs = _cards.Count / 2;
-        accuracySubtract = 100 / amountOfPairs;
-
-        return accuracySubtract;
-    }
-
-
-    private async Task TurnCardsAsync(CardViewModel card)
-    {
+       
         if (card.FaceUp)
         {
             return;
@@ -115,7 +121,9 @@ public class MemoryBoardViewModel : ISupportsCardInput
         if (turnedCards.Count == 2)
         {
             numOffGuesses++;
-            completedPairs++;
+            Players[CurrentPlayer].Guesses++;
+
+           
             await Task.Delay(800);
 
             // om korten inte matchar vänd tbx
@@ -123,16 +131,51 @@ public class MemoryBoardViewModel : ISupportsCardInput
             {
                 turnedCards[0].FaceUp = false;
                 turnedCards[1].FaceUp = false;
-                completedPairs--;
-                accuracy -= CalculateAccuracy();
-                Accuracy = $"{accuracy}%";
-               
-            }
-            turnedCards.Clear();
-        }
+                
 
+            }
+            else
+            { 
+                completedPairs++;
+                Players[CurrentPlayer].CorrectGuesses++;
+            } 
+        
+            CurrentPlayer = (CurrentPlayer + 1) % Players.Length;
+            turnedCards.Clear();
+
+        }
+        UpdatePlayerLabel();
     }
-    
+    private void UpdatePlayerLabel()
+    {
+        // Här vill jag att det ska vara 2 spelare som vardera har ANTAL DRAG och ANTAL KORREKTA PAR
+        // Varje spelare klickar på 2 kort och sedan går det vidare till nästas tur (visa spelarbyte med t.ex. fet stil på namn?)
+        // Den som har flest antal korrekta par vinner
+        // FRÅGOR????
+        // 1. Lägga in namn även på multiplayer eller blir man spelare 1 och 2
+        // 1.5 Hur ska det läggas in?? ska det dyka upp en till box för namn eller kan man återanvända namnboxen och fylla i en spelare i taget
+        // 2. Här vill jag att det ska vara 2 spelare som vardera har ANTAL DRAG och ANTAL KORREKTA PAR
+        // Varje spelare klickar på 2 kort och sedan går det vidare till nästas tur (visa spelarbyte med t.ex. fet stil på namn?)
+        // Den som har flest antal korrekta par vinner
+        // Vet inte om detta också ska ligga i databasen men det tar vi sen:)
+        
+        StringBuilder stringBuilder = new StringBuilder();
+        foreach (PlayerInformation player in Players)
+        { 
+            stringBuilder.AppendLine(player.Name);
+            stringBuilder.Append("Gissningar: ");
+            stringBuilder.AppendLine(player.Guesses.ToString());
+            stringBuilder.Append("Rätt gissningar: ");
+            stringBuilder.AppendLine(player.CorrectGuesses.ToString());
+            stringBuilder.Append("Precision: ");
+            stringBuilder.Append(player.Accuracy.ToString());
+            stringBuilder.AppendLine("%");
+            stringBuilder.AppendLine();
+            
+        }
+        PlayerLabel = stringBuilder.ToString();
+    }
+
     private void ConfigureCards()
     {
         completedPairs = 0;
@@ -145,6 +188,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
             Cards.Add(new CardViewModel(card, OnButtonClicked));
         }
     }
+ 
 
     public List<Cards> MakeNumbersAndColors(int level)
     {
@@ -175,7 +219,3 @@ public class MemoryBoardViewModel : ISupportsCardInput
 
     
 }
-
-
-
-

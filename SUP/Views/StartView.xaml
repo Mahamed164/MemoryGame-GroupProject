@@ -19,6 +19,7 @@
             FontSize="20"
             Text="{Binding Greeting, UpdateSourceTrigger=PropertyChanged, FallbackValue=Spelarnamn:}" />
         <TextBox
+            x:Name="txtPlayerName"
             Grid.Row="1"
             Width="150"
             Height="40"
@@ -33,6 +34,7 @@
             Margin="0,0,0,95"
             Background="ForestGreen"
             Command="{Binding StartGameCmd}"
+            IsEnabled="{Binding CanStart }"
             Content="Spela" />
         <Button
             Grid.Row="1"
@@ -53,6 +55,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Level 1"
+            GroupName="Level"
             IsChecked="{Binding IsLevelOneSelected}" />
         <RadioButton
             x:Name="rbtnLevelTwo"
@@ -61,6 +64,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Level 2"
+            GroupName="Level"
             IsChecked="{Binding IsLevelTwoSelected}" />
         <RadioButton
             x:Name="rbtnLevelThree"
@@ -69,7 +73,50 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="Level 3"
+            GroupName="Level"
             IsChecked="{Binding IsLevelThreeSelected}" />
+        <RadioButton
+            x:Name="rbtnSingle"
+            Grid.Row="1"
+            Margin="161,54,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="En spelare"
+            GroupName="Multiplayer"
+            IsChecked="{Binding IsSinglePlayerSelected}" />
+        <RadioButton
+            x:Name="rbtnMulti"
+            Grid.Row="1"
+            Margin="161,80,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Två spelare"
+            GroupName="Multiplayer"
+            IsChecked="{Binding IsMultiplayerSelected}" />
+        <ListBox
+            x:Name="lstPlayers"
+            Grid.Row="1"
+            Margin="144,112,548,169"
+            ItemsSource="{Binding PlayerList}"
+            Visibility="{Binding ShowList}" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+            
+        <Button
+            x:Name="btnAddPlayer"
+            Grid.Row="1"
+            Margin="480,58,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Lägg till spelare" 
+            Visibility="{Binding ShowList}" 
+            Command="{Binding AddPlayerCmd}"/>
 
 
     </Grid>

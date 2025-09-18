@@ -53,7 +53,7 @@ namespace SUP.ViewModels
         }
         public void StartGame(object parameter)
         {
-            CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd, _startview.Level);
+            CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList());
         }
 
         public async void FinishGame(object parameter)
@@ -71,7 +71,7 @@ namespace SUP.ViewModels
         }
         public void RestartGame(object parameter)
         {
-            CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd, _startview.Level);
+            CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd, _startview.Level , _startview.GetPlayerList() );
         }
         public async void SaveScore(object parameter)
         {
