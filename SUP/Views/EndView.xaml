@@ -56,6 +56,14 @@
             <Button
     Width="100"
     Height="40"
+    Margin="30"
+    Command="{Binding BackToStartCmd}"
+    Background="Red"
+    Content="Tillbaka till start" />
+            <Button
+                
+    Width="100"
+    Height="40"
     Background="Orange"
     Command="{Binding HighScoreCmd}"
     Content="Visa topplista" />
