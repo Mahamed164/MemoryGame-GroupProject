@@ -23,6 +23,7 @@ namespace SUP.ViewModels
         public ICommand SaveScoreCmd { get; }
         public ICommand HighScoreCmd { get; }
         public ICommand SaveCurrentScoreCmd { get; }
+        public ICommand BackToStartCmd { get; }
         EndViewModel EndViewModel { get; set; }
         private StartViewModel _startview;
 
@@ -46,6 +47,7 @@ namespace SUP.ViewModels
             RestartCmd = new RelayCommand(RestartGame);
             SaveScoreCmd = new RelayCommand(SaveScore);
             HighScoreCmd = new RelayCommand(OpenHighScores);
+            BackToStartCmd = new RelayCommand(BackToStart);
 
             _db = db;
 
@@ -71,7 +73,7 @@ namespace SUP.ViewModels
             TimerText = result.Item3;
             StartTime = result.Item4;
             EndTime = result.Item5;
-            EndViewModel = new EndViewModel(Misses, Moves, TimerText, StartTime, EndTime, SaveScoreCmd, RestartCmd, HighScoreCmd);
+            EndViewModel = new EndViewModel(Misses, Moves, TimerText, StartTime, EndTime, SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd);
             CurrentView = EndViewModel;
         }
         public void RestartGame(object parameter)
@@ -104,6 +106,10 @@ namespace SUP.ViewModels
             {
                 CurrentView = LatestView;
             }), players);
+        }
+        public void BackToStart(object parameter)
+        {
+            CurrentView = new StartViewModel(StartGameCmd, HighScoreCmd);
         }
     }
 }

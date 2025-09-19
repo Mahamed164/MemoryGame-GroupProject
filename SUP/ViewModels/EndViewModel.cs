@@ -24,17 +24,19 @@ public class EndViewModel
     public ICommand SaveScoreCmd { get; }
     public ICommand RestartCmd { get; }
     public ICommand HighScoreCmd { get; }
+    public ICommand BackToStartCmd { get; }
 
 
     public EndViewModel()
     {
 
     }
-    public EndViewModel(int misses, int moves, string timer, DateTime startTime, DateTime endTime, ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd)
+    public EndViewModel(int misses, int moves, string timer, DateTime startTime, DateTime endTime, ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd, ICommand backToStartCmd)
     {
         SaveScoreCmd = saveScoreCmd;
         RestartCmd = restartCmd;
         HighScoreCmd = highScoreCmd;
+        BackToStartCmd = backToStartCmd;
         Missed = misses;
         Moves = moves;
         TimerText = timer;
