@@ -42,14 +42,13 @@ public class EndViewModel
         TimerText = timer;
         StartTime = startTime;
         EndTime = endTime;
+        
 
         TimeAsText = SetTimerText();
         
     }
 
-    public void SetScore()
-    {
-    }
+
 
 
     public string SetTimerText()
