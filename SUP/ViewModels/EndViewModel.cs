@@ -16,18 +16,21 @@ public class EndViewModel
     public int Moves { get; set; }
 
     public string TimerText { get; set; }
+    public string TimeAsText { get; set; } 
+    public string TotalTimeInSeconds { get; set; }
+    public DateTime StartTime { get; set; }
+    public DateTime EndTime { get; set; }
 
     public ICommand SaveScoreCmd { get; }
     public ICommand RestartCmd { get; }
     public ICommand HighScoreCmd { get; }
 
-    public string TimeAsText { get; set; } 
 
     public EndViewModel()
     {
 
     }
-    public EndViewModel(int misses, int moves, string timer, ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd)
+    public EndViewModel(int misses, int moves, string timer, DateTime startTime, DateTime endTime, ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd)
     {
         SaveScoreCmd = saveScoreCmd;
         RestartCmd = restartCmd;
@@ -35,6 +38,9 @@ public class EndViewModel
         Missed = misses;
         Moves = moves;
         TimerText = timer;
+        StartTime = startTime;
+        EndTime = endTime;
+
         TimeAsText = SetTimerText();
         
     }
@@ -50,6 +56,8 @@ public class EndViewModel
 
         if(TimeSpan.TryParseExact(TimerText, format, null, out var span))
         {
+            TotalTimeInSeconds = span.TotalSeconds.ToString();
+
             if(span.TotalSeconds < 60) //Hämtar värdet av TimeSpan och retunerar totala sekunderna 
             {
                 return (int)span.TotalSeconds + " sekunder"; //ifall det är sekunder skriv tiden +  sekunder
