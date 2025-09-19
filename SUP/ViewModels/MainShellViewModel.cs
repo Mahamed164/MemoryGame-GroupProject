@@ -17,6 +17,18 @@ namespace SUP.ViewModels
     [AddINotifyPropertyChangedInterface]
     public class MainShellViewModel
     {
+        //från human benchmark video 8
+        private void OnMusicVolumeChanged() { _audio.SetMusicVolume((float)MusicVolume); }
+        private void OnSfxVolumeChanged() { _audio.SetSfxVolume((float)SfxVolume); }
+        private void OnMusicMutedChanged() { _audio.SetMusicMuted(MusicMuted); }
+        private void OnSfxMutedChanged() { _audio.SetSfxMuted(SfxMuted); }
+
+        //från humanbenchmark video 8
+        public double MusicVolume { get; set; } = 0.25;
+        public double SfxVolume { get; set; } = 0.50;
+        public bool MusicMuted { get; set; } = false;
+        public bool SfxMuted { get; set; } = false;
+
         public object CurrentView { get; set; }
         public object LatestView;
         public ICommand StartGameCmd { get; }
@@ -37,13 +49,14 @@ namespace SUP.ViewModels
         public int PlayerID { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-
+        
 
         private readonly GameHubDbServices _db;
+        private readonly IAudioService _audio;
 
-
-        public MainShellViewModel(GameHubDbServices db)
+        public MainShellViewModel(GameHubDbServices db, IAudioService audioService)
         {
+
             StartGameCmd = new RelayCommand(StartGame);
             FinishGameCmd = new RelayCommand(FinishGame);
             RestartCmd = new RelayCommand(RestartGame);
@@ -56,7 +69,23 @@ namespace SUP.ViewModels
             _startview = new StartViewModel(StartGameCmd, HighScoreCmd);
 
             CurrentView = _startview;
+            _audio = audioService;
+            ApplyAudioSettings();
+            _audio.SetMusicLoop("Assets/Sounds/game-mode-on-356552.mp3", autoPlay: true);
         }
+
+        //från humanbenchmark video 8
+
+        private void ApplyAudioSettings()
+        {
+            _audio.SetMusicVolume((float)MusicVolume);
+            _audio.SetSfxVolume((float)SfxVolume);
+            _audio.SetMusicMuted(MusicMuted);
+            _audio.SetSfxMuted(SfxMuted);
+
+        }
+
+
         public void StartGame(object parameter)
         {
             CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList());
