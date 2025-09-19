@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Npgsql;
 using SUP.Models;
 using PropertyChanged;
+using System.Windows;
 
 namespace SUP.Services;
 
@@ -74,7 +75,7 @@ public class GameHubDbServices
                 selectCommand.Parameters.AddWithValue("@nickname", nickname);
 
                 await using var selectReader = await selectCommand.ExecuteReaderAsync();
-                if(await selectReader.ReadAsync())
+                if (await selectReader.ReadAsync())
                 {
                     return new Player() { Id = selectReader.GetInt32(0), Nickname = selectReader.GetString(1) };
                 }
@@ -88,9 +89,9 @@ public class GameHubDbServices
             throw new InvalidOperationException("Kunde inte skapa/hämta en spelare", ex);
         }
 
-        
+
     }
-    
+
     public async Task<List<Player>> GetPlayersForHighScoreAsync()
     {
         const string sqlStmt = "select player_id, nickname from player order by nickname";
@@ -109,5 +110,132 @@ public class GameHubDbServices
             });
         }
         return players;
+    }
+
+    public async void SaveFullGameSession(DateTime startTime, DateTime endTime, int playerId, int timeAsInt, int numOfMoves, int numOfMisses)
+    {
+
+        int sessionId = await SaveAndGetSessionAsync(startTime, endTime);
+        SaveSessionParticipantAsync(sessionId, playerId);
+        SaveSessionScoreTime(sessionId, playerId, timeAsInt);
+        SaveSessionScoreMoves(sessionId, playerId, numOfMoves);
+        SaveSessionScoreMisses(sessionId, playerId, numOfMisses);
+
+    }
+
+    public async Task<int> SaveAndGetSessionAsync(DateTime startTime, DateTime endTime)
+    {
+
+        try
+        {
+            int sessionId = 0;
+
+            await using var connection = await _dataSource.OpenConnectionAsync();
+            await using var command = new NpgsqlCommand("INSERT INTO PUBLIC.SESSION " +
+                "(GAME_ID, STARTED_AT, ENDED_AT) " +
+                "VALUES " +
+                "((SELECT GAME_ID FROM GAME G WHERE NAME = 'G2Memory'), " +
+                "@STARTDATE, " +
+                "@ENDDATE) " +
+                "RETURNING SESSION_ID", connection);
+
+            command.Parameters.AddWithValue("STARTDATE", startTime);
+            command.Parameters.AddWithValue("ENDDATE", endTime);
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    sessionId = (int)reader["session_id"];
+                }
+            }
+            if (sessionId == 0)
+            {
+                MessageBox.Show("Session_Id fel");
+            }
+            return sessionId;
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
+    public async void SaveSessionParticipantAsync(int sessionId, int playerId)
+    {
+        try
+        {
+            await using var connection = await _dataSource.OpenConnectionAsync();
+            await using var command = new NpgsqlCommand("INSERT INTO SESSION_PARTICIPANT(SESSION_ID, PLAYER_ID) VALUES(@SESSION_ID, @PLAYER_ID)", connection);
+
+            command.Parameters.AddWithValue("SESSION_ID", sessionId);
+            command.Parameters.AddWithValue("PLAYER_ID", playerId);
+
+            var result = await command.ExecuteNonQueryAsync();
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
+    public async void SaveSessionScoreTime(int sessionId, int playerId, int timeAsInt)
+    {
+        try
+        {
+            await using var connection = await _dataSource.OpenConnectionAsync();
+            await using var command = new NpgsqlCommand("INSERT INTO SESSION_SCORE (SESSION_ID, PLAYER_ID, SCORE_TYPE_ID, VALUE) " +
+                "VALUES (@SESSION_ID, @PLAYER_ID, (SELECT SCORE_TYPE_ID FROM SCORE_TYPE WHERE CODE = 'Time'), @TIME_AS_INT)", connection);
+
+            command.Parameters.AddWithValue("SESSION_ID", sessionId);
+            command.Parameters.AddWithValue("PLAYER_ID", playerId);
+            command.Parameters.AddWithValue("TIME_AS_INT", timeAsInt);
+
+            var result = await command.ExecuteNonQueryAsync();
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
+    public async void SaveSessionScoreMoves(int sessionId, int playerId, int numOfMoves)
+    {
+        try
+        {
+            await using var connection = await _dataSource.OpenConnectionAsync();
+            await using var command = new NpgsqlCommand("INSERT INTO SESSION_SCORE (SESSION_ID, PLAYER_ID, SCORE_TYPE_ID, VALUE) " +
+                "VALUES (@SESSION_ID, @PLAYER_ID, (SELECT SCORE_TYPE_ID FROM SCORE_TYPE WHERE CODE = 'Moves'), @NUMOFMOVES)", connection);
+
+            command.Parameters.AddWithValue("SESSION_ID", sessionId);
+            command.Parameters.AddWithValue("PLAYER_ID", playerId);
+            command.Parameters.AddWithValue("NUMOFMOVES", numOfMoves);
+
+            var result = await command.ExecuteNonQueryAsync();
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
+    public async void SaveSessionScoreMisses(int sessionId, int playerId, int numOfMisses)
+    {
+        try
+        {
+            await using var connection = await _dataSource.OpenConnectionAsync();
+            await using var command = new NpgsqlCommand("INSERT INTO SESSION_SCORE (SESSION_ID, PLAYER_ID, SCORE_TYPE_ID, VALUE) " +
+                "VALUES (@SESSION_ID, @PLAYER_ID, (SELECT SCORE_TYPE_ID FROM SCORE_TYPE WHERE CODE = 'Misses'), @NUMOFMISSES)", connection);
+
+            command.Parameters.AddWithValue("SESSION_ID", sessionId);
+            command.Parameters.AddWithValue("PLAYER_ID", playerId);
+            command.Parameters.AddWithValue("NUMOFMISSES", numOfMisses);
+
+            var result = await command.ExecuteNonQueryAsync();
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
 }
