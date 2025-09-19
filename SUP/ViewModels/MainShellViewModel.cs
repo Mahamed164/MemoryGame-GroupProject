@@ -32,6 +32,8 @@ namespace SUP.ViewModels
         public string TimerText { get; set; }
         public string PlayerName {  get; set; }
         public int PlayerID { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
 
 
         private readonly GameHubDbServices _db;
@@ -62,11 +64,14 @@ namespace SUP.ViewModels
             var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
             PlayerName = player.Nickname;
             PlayerID = player.Id;
-            var result = (ValueTuple<int, int, string>)parameter;
+           
+            var result = (ValueTuple<int, int, string, DateTime, DateTime>)parameter;
             Misses = result.Item1;
             Moves = result.Item2;
             TimerText = result.Item3;
-            EndViewModel = new EndViewModel(Misses, Moves, TimerText, SaveScoreCmd, RestartCmd, HighScoreCmd);
+            StartTime = result.Item4;
+            EndTime = result.Item5;
+            EndViewModel = new EndViewModel(Misses, Moves, TimerText, StartTime, EndTime, SaveScoreCmd, RestartCmd, HighScoreCmd);
             CurrentView = EndViewModel;
         }
         public void RestartGame(object parameter)

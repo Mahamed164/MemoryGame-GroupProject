@@ -37,7 +37,8 @@ public class MemoryBoardViewModel : ISupportsCardInput
     public PlayerInformation[] Players {  get; set; }
     public int CurrentPlayer;
     public string PlayerLabel { get; set; }
-    
+    public DateTime StartTime { get; set; }
+    public DateTime EndTime { get; set; }
     
     public MockTimerFunction timer = new MockTimerFunction();
     public string TimerText { get; set; } = "00:00";
@@ -84,6 +85,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
 
         if (!hasStarted)
         {
+            StartTime = DateTime.Now;
             timer.Start();
             hasStarted = true;
         }
@@ -96,8 +98,10 @@ public class MemoryBoardViewModel : ISupportsCardInput
     {
         if (completedPairs == (Cards.Count/2))
         {
+            timer.Stop();
+            EndTime = DateTime.Now;
             int mistakes = numOffGuesses - (Cards.Count/2);
-            FinishGameCommand?.Execute((mistakes, numOffGuesses, TimerText));
+            FinishGameCommand?.Execute((mistakes, numOffGuesses, TimerText, StartTime, EndTime));
         }
 
     }
