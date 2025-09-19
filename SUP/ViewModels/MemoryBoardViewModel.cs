@@ -2,6 +2,7 @@
 using PropertyChanged;
 using SUP.Commands;
 using SUP.Common;
+using SUP.Services;
 using SUP.Views.Converters;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
     public ICommand RestartCmd { get; }
 
 
-    public MemoryBoardViewModel()
+    public MemoryBoardViewModel(IAudioService _audioService)
 
     {
        
@@ -54,7 +55,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
     }
 
 
-    public MemoryBoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level, List<string> playerList )
+    public MemoryBoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level, List<string> playerList)
     {
         Level = level;
         Players = new PlayerInformation[playerList.Count];
