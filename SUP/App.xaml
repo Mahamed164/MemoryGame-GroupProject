@@ -13,7 +13,7 @@
             <gameView:StartView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type gameVM:MemoryBoardViewModel}">
+        <DataTemplate DataType="{x:Type gameVM:BoardViewModel}">
             <gameView:BoardView />
         </DataTemplate>
 

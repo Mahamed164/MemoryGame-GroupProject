@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SUP.ViewModels
+namespace SUP.Services
 {
-    public class MockTimerFunction
+    public class GameTimer
     {
         public bool isRunning = false;
         public int seconds = 0;
@@ -48,4 +48,3 @@ namespace SUP.ViewModels
         }
     }
 }
-

@@ -26,7 +26,7 @@ public partial class App : Application
 
         _audio = new NAudioService();
 
-        var memoryGame = new MemoryBoardViewModel(_audio);
+        var memoryGame = new BoardViewModel(_audio);
 
         var config = new ConfigurationBuilder().AddUserSecrets<App>().Build();
         //.AddUserSecrets<App>().Build();

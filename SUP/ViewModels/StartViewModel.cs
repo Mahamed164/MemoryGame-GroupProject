@@ -18,8 +18,11 @@ namespace SUP.ViewModels
         public bool IsLevelOneSelected { get; set; }
         public bool IsLevelTwoSelected { get; set; } = true;
         public bool IsLevelThreeSelected { get; set; }
+
         public List <string> PlayerList { get; set; } = [];
+
         public int level;
+
         public int Level
         {
             get
@@ -29,7 +32,6 @@ namespace SUP.ViewModels
             }
             set
             {
-
                 level = value;
             }
         }
@@ -52,15 +54,13 @@ namespace SUP.ViewModels
         public bool IsSinglePlayerSelected { get; set; } = true;
         public bool IsMultiplayerSelected { get; set; }
       
-
         public List<string> GetPlayerList()
         {
             if (IsSinglePlayerSelected == true)
             {
                 List<string> playerName = new List<string>();
                 playerName.Add(PlayerName);
-                return playerName;
-                
+                return playerName; 
             }
             if (IsMultiplayerSelected == true)
             {
@@ -121,6 +121,7 @@ namespace SUP.ViewModels
         }
 
         public string Greeting { get; set; }
+
         public ICommand StartGameCmd { get; }
         public ICommand HighScoreCmd { get; }
         public ICommand AddPlayerCmd { get; }
@@ -136,25 +137,22 @@ namespace SUP.ViewModels
                     PlayerName = "";
                     PlayerList = PlayerList.ToList();
                 }
-
-                else { MessageBox.Show("Nu är ni redan två spelare!!"); }
-
+                else 
+                { 
+                    MessageBox.Show("Nu är ni redan två spelare!!"); 
+                }
             });
 
             StartGameCmd = new RelayCommand(p =>
             {
-                
                     if (string.IsNullOrWhiteSpace(PlayerName) && PlayerList.Count <2)
                     {
                         MessageBox.Show("Vänligen ange ditt spelarnamn.", "Spelarnamn");
                         return;
                     }
-
                 startGameCmd.Execute(p);
-
             });
             Greeting = "Spelarnamn:";
-            
         }
     }
 }

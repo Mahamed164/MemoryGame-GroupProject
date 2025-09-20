@@ -12,18 +12,9 @@
     Height="600"
     d:DataContext="{d:DesignInstance Type=vm:MainShellViewModel}"
     mc:Ignorable="d">
-    <Window.Resources>
-        <DataTemplate DataType="{x:Type vm:StartViewModel}">
-            <gameView:StartView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:MemoryBoardViewModel}">
-            <gameView:BoardView />
-        </DataTemplate>
-        
-    </Window.Resources>
-
+    
     <Grid>
         <ContentControl Content="{Binding CurrentView}" />
-        
     </Grid>
+
 </Window>

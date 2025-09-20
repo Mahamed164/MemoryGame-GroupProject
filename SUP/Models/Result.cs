@@ -4,16 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SUP.ViewModels
+namespace SUP.Models
 {
-
     public class Result
     {
         public int Misses { get; set; }
         public int Guesses { get; set; }
         public string TimerText { get; set; }
-
-
 
         public void SetResult(int misses, int guesses, string timeText)
         {
@@ -21,7 +18,5 @@ namespace SUP.ViewModels
             Guesses = guesses;
             TimerText = timeText;
         }
-
-       
     }
 }

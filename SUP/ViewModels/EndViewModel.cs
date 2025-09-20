@@ -11,13 +11,13 @@ namespace SUP.ViewModels;
 
 public class EndViewModel
 {
-    //MemoryBoardViewModel mBVM = new MemoryBoardViewModel();
     public int Missed { get; set; }
     public int Moves { get; set; }
 
     public string TimerText { get; set; }
     public string TimeAsText { get; set; } 
     public string TotalTimeInSeconds { get; set; }
+
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
 
@@ -26,30 +26,25 @@ public class EndViewModel
     public ICommand HighScoreCmd { get; }
     public ICommand BackToStartCmd { get; }
 
-
-    public EndViewModel()
-    {
-
-    }
     public EndViewModel(int misses, int moves, string timer, DateTime startTime, DateTime endTime, ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd, ICommand backToStartCmd)
     {
+        Missed = misses;
+        Moves = moves;
+
+        TimerText = timer;
+        StartTime = startTime;
+        EndTime = endTime;
+
         SaveScoreCmd = saveScoreCmd;
         RestartCmd = restartCmd;
         HighScoreCmd = highScoreCmd;
         BackToStartCmd = backToStartCmd;
-        Missed = misses;
-        Moves = moves;
-        TimerText = timer;
-        StartTime = startTime;
-        EndTime = endTime;
         
-
         TimeAsText = SetTimerText();
-        
     }
-
-
-
+    public EndViewModel()
+    {
+    }
 
     public string SetTimerText()
     {
@@ -74,17 +69,15 @@ public class EndViewModel
                     resultMins = " minut och "; /*+ secs + " sekunder";*/ //singular ifall det bara är en minut 
                     resultSecs = " sekunder";
 
-                }else
+                }
+                else
                 {
                     resultMins = " minuter och "; /*+ secs + " sekunder";*/ //plural ifall det är flera minuter 
                     resultSecs = " sekunder";
                 }
-
                 return mins + resultMins + secs + resultSecs;
             }
-
         }
-
         return TimerText;
 
         //Källa: https://learn.microsoft.com/en-us/dotnet/api/system.timespan.tryparse?view=net-9.0 - denna började jag med men insåg att det var hh:mm inte mm:ss som behvös i vårt spel
@@ -97,9 +90,5 @@ public class EndViewModel
          */
 
         //Allmän källa om TimeSpan: https://learn.microsoft.com/en-us/dotnet/api/system.timespan?view=net-9.0
-
     }
-
-
 }
-

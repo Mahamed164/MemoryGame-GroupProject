@@ -11,16 +11,8 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <!--  d:DataContext="{d:DesignInstance Type=vm:MemoryBoardViewModel}"  -->
-
-    <!--<UserControl.DataContext>
-        <vm:MemoryBoardViewModel />
-    </UserControl.DataContext>-->
-
     <UserControl.Resources>
         <converters:FaceUpImageConverter x:Key="FaceUpImageConverter" />
-
-
 
         <!--  Detta är kopierat från HumanBenchMark  -->
         <Style TargetType="Button">
@@ -49,10 +41,7 @@
         </Style>
     </UserControl.Resources>
 
-
-
     <Grid Background="#FFE689B4">
-        <!--  {Binding Feedback, Converter={StaticResource FeedbackToBrushConverter}, TargetNullValue=#FF69B4}  -->
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="3*" />
@@ -90,15 +79,16 @@
             Command="{Binding RestartCmd}"
             Content="Börja om"
             FontSize="23" />
-        
-        <Button Grid.Row="2"
-                Width="120"
-                Height="52"
-                HorizontalAlignment="Left"
-                Background="CornflowerBlue"
-                Content="Startmeny"
-                FontSize="23"
-                Command="{Binding BackToStartCmd}" />
+
+        <Button
+            Grid.Row="2"
+            Width="120"
+            Height="52"
+            HorizontalAlignment="Left"
+            Background="CornflowerBlue"
+            Command="{Binding BackToStartCmd}"
+            Content="Startmeny"
+            FontSize="23" />
 
         <Viewbox
             Grid.Row="1"
@@ -118,7 +108,6 @@
                             <Setter Property="Margin" Value="5" />
                         </Style>
                     </ItemsControl.ItemContainerStyle>
-
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -150,7 +139,5 @@
                 </ItemsControl>
             </Grid>
         </Viewbox>
-       
-      
     </Grid>
 </UserControl>
