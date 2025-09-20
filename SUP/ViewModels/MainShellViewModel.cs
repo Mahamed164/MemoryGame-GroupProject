@@ -94,9 +94,9 @@ namespace SUP.ViewModels
         public async void FinishGame(object parameter)
 
         {
-            var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
-            PlayerName = player.Nickname;
-            PlayerID = player.Id;
+            //var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
+            //PlayerName = player.Nickname;
+            //PlayerID = player.Id;
 
             var result = (ValueTuple<int, int, string, DateTime, DateTime>)parameter;
             Misses = result.Item1;
@@ -104,8 +104,24 @@ namespace SUP.ViewModels
             TimerText = result.Item3;
             StartTime = result.Item4;
             EndTime = result.Item5;
-            EndViewModel = new EndViewModel(Misses, Moves, TimerText, StartTime, EndTime, SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd);
+
+            if (_startview.IsMultiplayerSelected)
+            {
+                // Spara inte score som multiplayer
+                EndViewModel = new EndViewModel(Misses, Moves, TimerText, StartTime, EndTime, RestartCmd, BackToStartCmd, null, null); 
+            }
+            else
+            {
+                var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
+                PlayerName = player.Nickname;
+                PlayerID = player.Id;
+
+                EndViewModel = new EndViewModel(Misses, Moves, TimerText, StartTime, EndTime, SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd);
+            }
             CurrentView = EndViewModel;
+
+            //EndViewModel = new EndViewModel(Misses, Moves, TimerText, StartTime, EndTime, SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd);
+            //CurrentView = EndViewModel;
         }
         public void RestartGame(object parameter)
         {
@@ -149,7 +165,11 @@ namespace SUP.ViewModels
         }
         public void BackToStart(object parameter)
         {
-            CurrentView = new StartViewModel(StartGameCmd, HighScoreCmd);
+            _startview.PlayerName = "";
+            _startview.PlayerList.Clear();
+            _startview.Greeting = "Spelarnamn:";
+
+            CurrentView = _startview;
         }
     }
 }
