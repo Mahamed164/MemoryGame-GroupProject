@@ -43,20 +43,21 @@
             <Button
                 Width="100"
                 Height="40"
+                Margin="5"
                 Background="ForestGreen"
                 Command="{Binding RestartCmd}"
                 Content="Spela igen" />
             <Button
                 Width="100"
                 Height="40"
-                Margin="30"
+                Margin="5"
                 Background="CornflowerBlue"
                 Command="{Binding SaveScoreCmd}"
                 Content="Spara resultat" />
             <Button
     Width="100"
     Height="40"
-    Margin="30"
+                Margin="5"
     Command="{Binding BackToStartCmd}"
     Background="Red"
     Content="Tillbaka till start" />
@@ -64,6 +65,7 @@
                 
     Width="100"
     Height="40"
+                Margin="5"
     Background="Orange"
     Command="{Binding HighScoreCmd}"
     Content="Visa topplista" />

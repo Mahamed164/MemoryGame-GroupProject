@@ -90,6 +90,15 @@
             Command="{Binding RestartCmd}"
             Content="Börja om"
             FontSize="23" />
+        
+        <Button Grid.Row="2"
+                Width="120"
+                Height="52"
+                HorizontalAlignment="Left"
+                Background="CornflowerBlue"
+                Content="Startmeny"
+                FontSize="23"
+                Command="{Binding BackToStartCmd}" />
 
         <Viewbox
             Grid.Row="1"
