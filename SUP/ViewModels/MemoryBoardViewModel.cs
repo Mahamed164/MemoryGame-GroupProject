@@ -45,6 +45,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
     public string TimerText { get; set; } = "00:00";
     public bool hasStarted = false;
     public ICommand RestartCmd { get; }
+    public ICommand BackToStartCmd {  get; }
 
 
     public MemoryBoardViewModel(IAudioService _audioService)
@@ -55,7 +56,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
     }
 
 
-    public MemoryBoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level, List<string> playerList)
+    public MemoryBoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level, List<string> playerList, ICommand backToStartCmd)
     {
         Level = level;
         Players = new PlayerInformation[playerList.Count];
@@ -67,6 +68,7 @@ public class MemoryBoardViewModel : ISupportsCardInput
         UpdatePlayerLabel();
         FinishGameCommand = finishGameCommand;
         RestartCmd = restartCmd;
+        BackToStartCmd = backToStartCmd;
         ConfigureCards();
         timer.Reset();
         UpdateTimer();
