@@ -17,7 +17,7 @@
         <!--  Detta är kopierat från HumanBenchMark  -->
         <Style TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="Margin" Value="5" />
+            <Setter Property="Margin" Value="0" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -27,7 +27,7 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="#FFE4A7C3"
                             BorderThickness="2"
-                            CornerRadius="10">
+                            CornerRadius="15">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>
@@ -43,9 +43,9 @@
 
     <Grid Background="#FFE689B4">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="3*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock
@@ -60,42 +60,46 @@
             Margin="0,3,2,25"
             HorizontalAlignment="Right"
             FontSize="32"
-            Text="{Binding TimerText}" />
+            Text="{Binding TimerText, FallbackValue=99:99}" />
         <Label
             Grid.Row="1"
-            Margin="63,75,0,0"
+            Margin="30,75,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Content="{Binding PlayerLabel}"
+            Content="{Binding PlayerLabel, FallbackValue=Spelarens namn}"
             FontSize="15" />
-
         <Button
             Grid.Row="2"
             Width="120"
             Height="52"
+            Margin="125,0,0,8"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Background="ForestGreen"
             Command="{Binding RestartCmd}"
             Content="Börja om"
-            FontSize="23" />
+            FontSize="16" 
+            FontWeight="SemiBold"/>
 
         <Button
             Grid.Row="2"
             Width="120"
             Height="52"
-            HorizontalAlignment="Left"
+            Margin="0,0,125,8"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
             Background="CornflowerBlue"
             Command="{Binding BackToStartCmd}"
             Content="Startmeny"
-            FontSize="23" />
+            FontSize="16" 
+            FontWeight="SemiBold"/>
 
         <Viewbox
             Grid.Row="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Stretch="Uniform">
-            <Grid Width="600" Height="600">
+            <Grid>
                 <ItemsControl ItemsSource="{Binding Cards}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -103,12 +107,6 @@
 
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemContainerStyle>
-                        <Style TargetType="ContentPresenter">
-                            <Setter Property="Margin" Value="5" />
-                        </Style>
-                    </ItemsControl.ItemContainerStyle>
-
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Button Command="{Binding ClickCommand}">
