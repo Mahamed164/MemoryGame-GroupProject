@@ -5,12 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Npgsql;
 using SUP.Models;
-using PropertyChanged;
 using System.Windows;
 
 namespace SUP.Services;
-
-[AddINotifyPropertyChangedInterface]
 
 public class GameHubDbServices
 {
@@ -20,7 +17,6 @@ public class GameHubDbServices
     {
         _dataSource = dataSource;
     }
-
     /// <summary>
     /// skapar eller hämtar spelare utifrån nickname :) kopierat från YT
     /// </summary>
@@ -29,7 +25,6 @@ public class GameHubDbServices
     /// <exception cref="ArgumentNullException"></exception>
     public async Task<Player> GetOrCreatePlayerAsync(string nickname)
     {
-
         if (string.IsNullOrWhiteSpace(nickname)) throw new ArgumentNullException(nameof(nickname)); //guard
 
         //statement 1 = om det inte redan finns en nickname som är det man skriver in
@@ -46,7 +41,7 @@ public class GameHubDbServices
         /* https://stackoverflow.com/questions/1952922/how-to-insert-a-record-or-update-if-it-already-exists
          * https://www.sqltutorial.net/not-exists.html -- where not exists: "The subquery must return no result for the NOT EXISTS operator to be true. 
          *                                                                   If the subquery returns any result, the NOT EXISTS operator is false, and the outer query will not return any rows."
-         
+                                                                            
         Gamla statement (har även använts som källa/inspiration): 
         @"insert into player(nickname)
         values (@nickname)
@@ -67,9 +62,8 @@ public class GameHubDbServices
                 {
                     return new Player() { Id = reader.GetInt32(0), Nickname = reader.GetString(1) };
                 }
-
-                //throw new InvalidOperationException("Något gick fel. Kunde inte skapa spelare");
             }
+
             var selectCommand = new NpgsqlCommand(selectSqlStmt, connection);
             {
                 selectCommand.Parameters.AddWithValue("@nickname", nickname);
@@ -88,8 +82,6 @@ public class GameHubDbServices
 
             throw new InvalidOperationException("Kunde inte skapa/hämta en spelare", ex);
         }
-
-
     }
 
     public async Task<List<Player>> GetPlayersForHighScoreAsync()
@@ -114,18 +106,15 @@ public class GameHubDbServices
 
     public async void SaveFullGameSession(DateTime startTime, DateTime endTime, int playerId, int timeAsInt, int numOfMoves, int numOfMisses)
     {
-
         int sessionId = await SaveAndGetSessionAsync(startTime, endTime);
         SaveSessionParticipantAsync(sessionId, playerId);
         SaveSessionScoreTime(sessionId, playerId, timeAsInt);
         SaveSessionScoreMoves(sessionId, playerId, numOfMoves);
         SaveSessionScoreMisses(sessionId, playerId, numOfMisses);
-
     }
 
     public async Task<int> SaveAndGetSessionAsync(DateTime startTime, DateTime endTime)
     {
-
         try
         {
             int sessionId = 0;

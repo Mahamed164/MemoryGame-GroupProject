@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+
 namespace SUP.ViewModels.Scores;
 [AddINotifyPropertyChangedInterface]
 
@@ -31,7 +32,6 @@ public class SaveScoreViewModel
         PlayerID = playerID;
         SetScoreTexts();
         SaveCurrentScoreCmd = new RelayCommand(p => SaveCurrentScore());
-
         HighScoreCmd = highScoreCmd;
     }
 

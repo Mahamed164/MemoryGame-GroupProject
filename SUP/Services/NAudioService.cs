@@ -64,7 +64,6 @@ public sealed class NAudioService : IAudioService, IDisposable
             _musicReader = new AudioFileReader(fullPath);
             ISampleProvider loop = new LoopStream(_musicReader);
 
-
             loop = NormalizeToMixer(loop);
 
             _musicVolumeNode = new VolumeSampleProvider(loop);

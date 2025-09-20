@@ -14,7 +14,8 @@ namespace SUP.Views.Converters;
 
 [AddINotifyPropertyChangedInterface]
 
-public class FaceUpImageConverter : IMultiValueConverter // Samma som den tidigare FaceUpBrushConvertern fast med bild ist
+// Väldigt likt humanbenchmark sequence spelets kod
+public class FaceUpImageConverter : IMultiValueConverter
 {
     private static readonly ImageSource Backside = new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/backside.jpg", UriKind.Absolute));
 
@@ -31,7 +32,6 @@ public class FaceUpImageConverter : IMultiValueConverter // Samma som den tidiga
                 return Backside;
             }
         }
-
         return Backside;
     }
 

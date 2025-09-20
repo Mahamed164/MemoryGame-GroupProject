@@ -8,37 +8,52 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+
     <Grid Background="#FFE689B4">
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+
         <ListView
-                Grid.Row="0"
-                ItemsSource="{Binding HighScores}"
-                Background="#FFE689B4"
-                FontSize="20"
-            VerticalAlignment="Stretch"
+            Grid.Row="0"
             HorizontalAlignment="Stretch"
-                >
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Spelarnamn" DisplayMemberBinding="{Binding Nickname}" Width="150"/>
-                        <GridViewColumn Header="Drag" DisplayMemberBinding="{Binding Moves}" Width="150"/>
-                        <GridViewColumn Header="Missar" DisplayMemberBinding="{Binding Misses}" Width="150"/>
-                        <GridViewColumn Header="Tid" DisplayMemberBinding="{Binding Time}" Width="150"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-            <Button
-                Grid.Row="1"
-                Width="100"
-                Height="40"
-                Margin="30"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Background="ForestGreen"
-                Command="{Binding ReturnCmd}"
-                Content="Tillbaka till spelet" />
+            VerticalAlignment="Stretch"
+            Background="#FFE689B4"
+            FontSize="20"
+            ItemsSource="{Binding HighScores}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn
+                        Width="150"
+                        DisplayMemberBinding="{Binding Nickname}"
+                        Header="Spelarnamn" />
+                    <GridViewColumn
+                        Width="150"
+                        DisplayMemberBinding="{Binding Moves}"
+                        Header="Drag" />
+                    <GridViewColumn
+                        Width="150"
+                        DisplayMemberBinding="{Binding Misses}"
+                        Header="Missar" />
+                    <GridViewColumn
+                        Width="150"
+                        DisplayMemberBinding="{Binding Time}"
+                        Header="Tid" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Button
+            Grid.Row="1"
+            Width="100"
+            Height="40"
+            Margin="30"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Background="ForestGreen"
+            Command="{Binding ReturnCmd}"
+            Content="Tillbaka till spelet" />
+
     </Grid>
 </UserControl>

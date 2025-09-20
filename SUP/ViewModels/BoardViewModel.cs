@@ -2,6 +2,7 @@
 using PropertyChanged;
 using SUP.Commands;
 using SUP.Common;
+using SUP.Models;
 using SUP.Services;
 using SUP.Views.Converters;
 using System;
@@ -18,22 +19,22 @@ using System.Windows.Media;
 
 namespace SUP.ViewModels;
 [AddINotifyPropertyChangedInterface]
-public class MemoryBoardViewModel : ISupportsCardInput
+public class BoardViewModel : ISupportsCardInput
 {
     public ICommand PressCardIndexCommand { get; }
     public ICommand FinishGameCommand { get; }
     public ObservableCollection<CardViewModel> Cards { get; } = new();
 
-    
-
     // lista för att hålla koll på vilka kort som är vända
     private List<CardViewModel> turnedCards = new();
+
     List<Cards> _cards = new List<Cards>();
+
     EndViewModel endViewModel = new EndViewModel();
+
     int completedPairs;
     int numOffGuesses;
 
-    
     public int Level { get; set; }
     public PlayerInformation[] Players {  get; set; }
     public int CurrentPlayer;
@@ -41,22 +42,18 @@ public class MemoryBoardViewModel : ISupportsCardInput
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     
-    public MockTimerFunction timer = new MockTimerFunction();
+    public GameTimer timer = new GameTimer();
     public string TimerText { get; set; } = "00:00";
     public bool hasStarted = false;
+
     public ICommand RestartCmd { get; }
     public ICommand BackToStartCmd {  get; }
 
-
-    public MemoryBoardViewModel(IAudioService _audioService)
-
+    public BoardViewModel(IAudioService _audioService)
     {
-       
-
     }
 
-
-    public MemoryBoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level, List<string> playerList, ICommand backToStartCmd)
+    public BoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level, List<string> playerList, ICommand backToStartCmd)
     {
         Level = level;
         Players = new PlayerInformation[playerList.Count];
@@ -66,10 +63,13 @@ public class MemoryBoardViewModel : ISupportsCardInput
             Players[i] = new() { Name = playerList[i] };
         }
         UpdatePlayerLabel();
+
         FinishGameCommand = finishGameCommand;
         RestartCmd = restartCmd;
         BackToStartCmd = backToStartCmd;
+
         ConfigureCards();
+
         timer.Reset();
         UpdateTimer();
     }
@@ -82,17 +82,14 @@ public class MemoryBoardViewModel : ISupportsCardInput
             TimerText = timer.GetTime();
         }
     }
-
     private async void OnButtonClicked(CardViewModel card)
     {
-
         if (!hasStarted)
         {
             StartTime = DateTime.Now;
             timer.Start();
             hasStarted = true;
         }
-
         await TurnCardsAsync(card);
         CheckForCompleation();
     }
@@ -106,13 +103,9 @@ public class MemoryBoardViewModel : ISupportsCardInput
             int mistakes = numOffGuesses - (Cards.Count/2);
             FinishGameCommand?.Execute((mistakes, numOffGuesses, TimerText, StartTime, EndTime));
         }
-
     }
-
-
     private async Task TurnCardsAsync(CardViewModel card) // Kan man lägga multiplayer här?
-    {
-       
+    { 
         if (card.FaceUp)
         {
             return;
@@ -130,26 +123,22 @@ public class MemoryBoardViewModel : ISupportsCardInput
             numOffGuesses++;
             Players[CurrentPlayer].Guesses++;
 
-           
             await Task.Delay(800);
 
-            // om korten inte matchar vänd tbx
+            // om korten inte matchar vänd tillbaka
             if (turnedCards[0].Id != turnedCards[1].Id)
             {
                 turnedCards[0].FaceUp = false;
                 turnedCards[1].FaceUp = false;
-                
-
             }
             else
             { 
                 completedPairs++;
                 Players[CurrentPlayer].CorrectGuesses++;
             } 
-        
+
             CurrentPlayer = (CurrentPlayer + 1) % Players.Length;
             turnedCards.Clear();
-
         }
         UpdatePlayerLabel();
     }
@@ -178,7 +167,6 @@ public class MemoryBoardViewModel : ISupportsCardInput
             stringBuilder.Append(player.Accuracy.ToString());
             stringBuilder.AppendLine("%");
             stringBuilder.AppendLine();
-            
         }
         PlayerLabel = stringBuilder.ToString();
     }
@@ -196,13 +184,13 @@ public class MemoryBoardViewModel : ISupportsCardInput
         }
     }
  
-
     public List<Cards> MakeNumbersAndColors(int level)
     {
         Level = level;
         Random random = new Random();
         _cards.Clear();
         int numberOfColors;
+
         switch (Level)
         {
             default:
@@ -223,6 +211,4 @@ public class MemoryBoardViewModel : ISupportsCardInput
         }
         return _cards = _cards.OrderBy(x => random.Next()).ToList();
     }
-
-    
 }

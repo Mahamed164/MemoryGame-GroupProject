@@ -31,6 +31,7 @@ namespace SUP.ViewModels
 
         public object CurrentView { get; set; }
         public object LatestView;
+
         public ICommand StartGameCmd { get; }
         public ICommand FinishGameCmd { get; }
         public ICommand RestartCmd { get; }
@@ -38,25 +39,25 @@ namespace SUP.ViewModels
         public ICommand HighScoreCmd { get; }
         public ICommand SaveCurrentScoreCmd { get; }
         public ICommand BackToStartCmd { get; }
+
         EndViewModel EndViewModel { get; set; }
         private StartViewModel _startview;
 
-
         public int Misses { get; set; }
         public int Moves { get; set; }
+
         public string TimerText { get; set; }
         public string PlayerName { get; set; }
         public int PlayerID { get; set; }
+
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         
-
         private readonly GameHubDbServices _db;
         private readonly IAudioService _audio;
 
         public MainShellViewModel(GameHubDbServices db, IAudioService audioService)
         {
-
             StartGameCmd = new RelayCommand(StartGame);
             FinishGameCmd = new RelayCommand(FinishGame);
             RestartCmd = new RelayCommand(RestartGame);
@@ -74,31 +75,28 @@ namespace SUP.ViewModels
             _audio.SetMusicLoop("Assets/Sounds/game-mode-on-356552.mp3", autoPlay: true);
         }
 
-        //från humanbenchmark video 8
+        public MainShellViewModel()
+        {
+        }
 
+        //från humanbenchmark video 8
         private void ApplyAudioSettings()
         {
             _audio.SetMusicVolume((float)MusicVolume);
             _audio.SetSfxVolume((float)SfxVolume);
             _audio.SetMusicMuted(MusicMuted);
             _audio.SetSfxMuted(SfxMuted);
-
         }
-
 
         public void StartGame(object parameter)
         {
-            CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd);
+            CurrentView = new BoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd);
         }
 
         public async void FinishGame(object parameter)
-
         {
-            //var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
-            //PlayerName = player.Nickname;
-            //PlayerID = player.Id;
-
             var result = (ValueTuple<int, int, string, DateTime, DateTime>)parameter;
+
             Misses = result.Item1;
             Moves = result.Item2;
             TimerText = result.Item3;
@@ -119,20 +117,15 @@ namespace SUP.ViewModels
                 EndViewModel = new EndViewModel(Misses, Moves, TimerText, StartTime, EndTime, SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd);
             }
             CurrentView = EndViewModel;
-
-            //EndViewModel = new EndViewModel(Misses, Moves, TimerText, StartTime, EndTime, SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd);
-            //CurrentView = EndViewModel;
         }
+
         public void RestartGame(object parameter)
         {
-            CurrentView = new MemoryBoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd);
+            CurrentView = new BoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd);
         }
+
         public async void SaveScore(object parameter)
         {
-
-
-            //CurrentView = new SaveScoreViewModel(Moves, Misses, TimerText, PlayerName, PlayerID, HighScoreCmd);
-
             try
             {
                 var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
