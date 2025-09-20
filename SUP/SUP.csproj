@@ -10,6 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Images\image11.png" />
+    <None Remove="Assets\Images\image12.png" />
+    <None Remove="Assets\Images\image13.png" />
+    <None Remove="Assets\Images\image14.png" />
+    <None Remove="Assets\Images\image15.png" />
     <None Remove="Assets\Sounds\game-mode-on-356552.mp3" />
   </ItemGroup>
 
@@ -35,17 +40,32 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\backside.jpg" />
-    <Resource Include="Images\image1.png" />
-    <Resource Include="Images\image10.png" />
-    <Resource Include="Images\image2.png" />
-    <Resource Include="Images\image3.png" />
-    <Resource Include="Images\image4.png" />
-    <Resource Include="Images\image5.png" />
-    <Resource Include="Images\image6.png" />
-    <Resource Include="Images\image7.png" />
-    <Resource Include="Images\image8.png" />
-    <Resource Include="Images\image9.png" />
+    <Resource Include="Assets\Images\backside.jpg" />
+    <Resource Include="Assets\Images\image1.png" />
+    <Resource Include="Assets\Images\image10.png" />
+    <Resource Include="Assets\Images\image11.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\image12.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\image13.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\image14.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\image15.png">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\image2.png" />
+    <Resource Include="Assets\Images\image3.png" />
+    <Resource Include="Assets\Images\image4.png" />
+    <Resource Include="Assets\Images\image5.png" />
+    <Resource Include="Assets\Images\image6.png" />
+    <Resource Include="Assets\Images\image7.png" />
+    <Resource Include="Assets\Images\image8.png" />
+    <Resource Include="Assets\Images\image9.png" />
   </ItemGroup>
 
 </Project>
