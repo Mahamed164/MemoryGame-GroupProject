@@ -32,16 +32,21 @@ namespace SUP.ViewModels
         {
             _images = new ImageSource[]
             {
-                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Images/image1.png", UriKind.Absolute)),
-                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Images/image2.png", UriKind.Absolute)),
-                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Images/image3.png", UriKind.Absolute)),
-                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Images/image4.png", UriKind.Absolute)),
-                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Images/image5.png", UriKind.Absolute)),
-                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Images/image6.png", UriKind.Absolute)),
-                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Images/image7.png", UriKind.Absolute)),
-                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Images/image8.png", UriKind.Absolute)),
-                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Images/image9.png", UriKind.Absolute)),
-                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Images/image10.png", UriKind.Absolute)),
+                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/image1.png", UriKind.Absolute)),
+                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/image2.png", UriKind.Absolute)),
+                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/image3.png", UriKind.Absolute)),
+                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/image4.png", UriKind.Absolute)),
+                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/image5.png", UriKind.Absolute)),
+                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/image6.png", UriKind.Absolute)),
+                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/image7.png", UriKind.Absolute)),
+                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/image8.png", UriKind.Absolute)),
+                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/image9.png", UriKind.Absolute)),
+                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/image10.png", UriKind.Absolute)),
+                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/image11.png", UriKind.Absolute)),
+                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/image12.png", UriKind.Absolute)),
+                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/image13.png", UriKind.Absolute)),
+                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/image14.png", UriKind.Absolute)),
+                 new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/image15.png", UriKind.Absolute)),
 
                  /*https://stackoverflow.com/questions/20699572/what-is-difference-between-urikind-relative-and-urikind-absolute
                  UriKind.Relative: Relative Uri would be "relative to the project's structure,

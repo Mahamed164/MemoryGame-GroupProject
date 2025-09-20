@@ -16,7 +16,7 @@ namespace SUP.Views.Converters;
 
 public class FaceUpImageConverter : IMultiValueConverter // Samma som den tidigare FaceUpBrushConvertern fast med bild ist
 {
-    private static readonly ImageSource Backside = new BitmapImage(new Uri("pack://application:,,,/SUP;component/Images/backside.jpg", UriKind.Absolute));
+    private static readonly ImageSource Backside = new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/backside.jpg", UriKind.Absolute));
 
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
