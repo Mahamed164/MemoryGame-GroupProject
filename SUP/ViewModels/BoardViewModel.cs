@@ -8,6 +8,7 @@ using SUP.Views.Converters;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing.Imaging.Effects;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -35,7 +36,7 @@ public class BoardViewModel : ISupportsCardInput
     int completedPairs;
     int numOffGuesses;
 
-    public int Level { get; set; }
+    public int Level { get; set; } = 2; //den börjar på 2
     public PlayerInformation[] Players {  get; set; }
     public int CurrentPlayer;
     public string PlayerLabel { get; set; }
@@ -105,9 +106,16 @@ public class BoardViewModel : ISupportsCardInput
         }
     }
     private async Task TurnCardsAsync(CardViewModel card) // Kan man lägga multiplayer här?
-    { 
+    {
+        // if level = 1 --> inget kort som ska vändas tillbaka efter viss tid om man inte klickar på nytt kort
+        //if level = 2 --> if card = clicked --> kortet ska vändas tillbaka efter en delay (ex 500 ms)
+        //if level = 3 --> if card = clicked --> kortet ska vändas tillbaka efter en delay (ex 250 ms)
+        //https://www.mooict.com/c-tutorial-create-a-superhero-memory-game/ använda denna källa för att skapa detta
+
+
         if (card.FaceUp)
         {
+            
             return;
         }
         if (turnedCards.Count >= 2)
@@ -125,6 +133,26 @@ public class BoardViewModel : ISupportsCardInput
 
             await Task.Delay(800);
 
+            //int delay = 0; // denna gick inte... 
+
+            //switch (Level)
+            //{
+            //    case 1:
+            //        delay = 0;
+            //        break;
+            //        case 2:
+            //        delay = 500;
+            //        break;
+            //        case 3:
+            //        delay = 250;
+            //        break;
+            //}
+
+            //if(delay > 0)
+            //{
+            //    await Task.Delay(delay);
+            //}
+
             // om korten inte matchar vänd tillbaka
             if (turnedCards[0].Id != turnedCards[1].Id)
             {
@@ -141,6 +169,10 @@ public class BoardViewModel : ISupportsCardInput
             turnedCards.Clear();
         }
         UpdatePlayerLabel();
+
+    // You use the switch expression to evaluate a single expression from a list of candidate expressions based on a pattern match with an input expression.
+    // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/switch-expression 
+    // https://www.w3schools.com/cs/cs_switch.php
     }
     private void UpdatePlayerLabel()
     {
@@ -211,4 +243,18 @@ public class BoardViewModel : ISupportsCardInput
         }
         return _cards = _cards.OrderBy(x => random.Next()).ToList();
     }
+
+    //public async Task<Cards> MakeCardSpeedAsync(int level)
+    //{//tänker att level 1 inte behöver vändas tillbaka av sig självt iom att det ska vara så lätt som möjligt
+    //    Level = level;
+    //    int delayLevel2 = 500;
+    //    int delayLevel3 = 250;
+    //    if(level == 2)
+    //    {
+            
+    //    }
+
+    //    //om ett kort är klickat, if level = 1 hoppa över, if level = 2 ska den vändas tillbaka efter delay 500 (t.ex.)
+    //    //if level = 3 ska den vändas tillbaka efter delay 250 (t.ex) 
+    //}
 }
