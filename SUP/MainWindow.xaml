@@ -7,14 +7,47 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:SUP.ViewModels"
     xmlns:gameView="clr-namespace:SUP.Views"
+    xmlns:converters="clr-namespace:SUP.Views.Converters"
     Title="Memory"
     Width="800"
     Height="600"
     d:DataContext="{d:DesignInstance Type=vm:MainShellViewModel}"
     mc:Ignorable="d">
-    
+
+    <Window.Resources>
+        <converters:BoolToIconConverter x:Key="BoolToIconConverter"
+                                    OffUri="Assets/Sounds/SoundPng/soundOff.png"
+                                    OnUri="Assets/Sounds/SoundPng/soundOn.png"/>
+
+    </Window.Resources>
+
     <Grid>
         <ContentControl Content="{Binding CurrentView}" />
+
+
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+
+            <StackPanel Orientation="Vertical">
+                <ToggleButton Width="36" Height="36" Background="Transparent" BorderBrush="Transparent"
+                    IsChecked="{Binding MusicMuted, Mode=TwoWay}">
+                    <Image Source="{Binding MusicMuted, Converter={StaticResource BoolToIconConverter}}"  />
+                </ToggleButton>
+
+            </StackPanel>
+
+            <Slider Width="140"
+            Minimum="0"
+            Maximum="1"
+            Background="Transparent"
+            BorderBrush="RosyBrown"
+            Foreground="RosyBrown"
+                    Margin="10"
+            Value="{Binding MusicVolume, Mode=TwoWay}"/>
+        </StackPanel>
+
+
+
     </Grid>
 
 </Window>
