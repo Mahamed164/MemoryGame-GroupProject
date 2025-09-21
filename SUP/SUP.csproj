@@ -15,6 +15,8 @@
     <None Remove="Assets\Images\image13.png" />
     <None Remove="Assets\Images\image14.png" />
     <None Remove="Assets\Images\image15.png" />
+    <None Remove="Assets\Sounds\SoundPng\soundOff.png" />
+    <None Remove="Assets\Sounds\SoundPng\soundOn.png" />
     <None Remove="Assets\Sounds\game-mode-on-356552.mp3" />
   </ItemGroup>
 
@@ -66,6 +68,12 @@
     <Resource Include="Assets\Images\image7.png" />
     <Resource Include="Assets\Images\image8.png" />
     <Resource Include="Assets\Images\image9.png" />
+    <Resource Include="Assets\Sounds\SoundPng\soundOff.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Sounds\SoundPng\soundOn.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
