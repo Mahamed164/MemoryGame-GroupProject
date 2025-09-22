@@ -30,7 +30,8 @@
             Margin="0,0,0,200"
             HorizontalAlignment="Center"
             FontSize="20"
-            Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}" />
+            Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}"
+            BorderBrush="HotPink"/>
 
         <Button
             Grid.Row="1"
@@ -41,7 +42,7 @@
             Command="{Binding StartGameCmd}"
             Content="Spela"
             IsEnabled="{Binding CanStart}"
-            BorderBrush="Transparent"/>
+            BorderBrush="Transparent" FontFamily="Bernard MT Condensed" Foreground="White"/>
 
         <Button
             Grid.Row="1"
@@ -50,7 +51,7 @@
             Background="Orange"
             Command="{Binding HighScoreCmd}"
             Content="Visa topplista"
-            BorderBrush="Transparent"/>
+            BorderBrush="Transparent" FontFamily="Bernard MT Condensed" Foreground="White"/>
 
         <TextBlock
             Grid.Row="0"
@@ -67,7 +68,8 @@
             Content="Level 1"
             GroupName="Level"
             IsChecked="{Binding IsLevelOneSelected}"
-            Foreground="White"/>
+            Foreground="White"
+            BorderBrush="HotPink"/>
 
         <RadioButton
             x:Name="rbtnLevelTwo"
@@ -78,7 +80,8 @@
             Content="Level 2"
             GroupName="Level"
             IsChecked="{Binding IsLevelTwoSelected}"
-            Foreground="White"/>
+            Foreground="White"
+            BorderBrush="HotPink"/>
 
         <RadioButton
             x:Name="rbtnLevelThree"
@@ -89,7 +92,8 @@
             Content="Level 3"
             GroupName="Level"
             IsChecked="{Binding IsLevelThreeSelected}"
-            Foreground="White"/>
+            Foreground="White"
+            BorderBrush="HotPink"/>
 
         <RadioButton
             x:Name="rbtnSingle"
@@ -100,7 +104,8 @@
             Content="En spelare"
             GroupName="Multiplayer"
             IsChecked="{Binding IsSinglePlayerSelected}"
-            Foreground="White"/>
+            Foreground="White"
+            BorderBrush="HotPink"/>
 
         <RadioButton
             x:Name="rbtnMulti"
@@ -111,15 +116,17 @@
             Content="Två spelare"
             GroupName="Multiplayer"
             IsChecked="{Binding IsMultiplayerSelected}"
-            Foreground="White"/>
+            Foreground="White"
+            BorderBrush="HotPink"/>
 
         <ListBox
             x:Name="lstPlayers"
             Grid.Row="1"
             Margin="144,112,548,169"
             ItemsSource="{Binding PlayerList}"
-            Visibility="{Binding ShowList}">
-            <ListBox.ItemTemplate>
+            Visibility="{Binding ShowList}"
+            BorderBrush="HotPink">
+            <ListBox.ItemTemplate >
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding}" />
