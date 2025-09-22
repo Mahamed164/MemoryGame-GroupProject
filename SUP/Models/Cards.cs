@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SUP.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -15,6 +16,9 @@ namespace SUP.Models
         public ImageSource Image { get; set; }
         public bool FaceUp { get; set; }
 
+
+        
+
         //https://www.mooict.com/c-tutorial-create-a-superhero-memory-game/
         private static ImageSource[] _images;
 
@@ -23,6 +27,7 @@ namespace SUP.Models
             Id = id;
             Image = _images[id];
             FaceUp = false;
+            
         }
 
         static Cards()

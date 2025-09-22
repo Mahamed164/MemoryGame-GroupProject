@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using Microsoft.VisualBasic.Devices;
+using Npgsql;
 using PropertyChanged;
 using SUP.Commands;
 using SUP.Common;
@@ -11,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Drawing.Imaging.Effects;
 using System.Globalization;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,9 +24,13 @@ namespace SUP.ViewModels;
 [AddINotifyPropertyChangedInterface]
 public class BoardViewModel : ISupportsCardInput
 {
+    
+
+
     public ICommand PressCardIndexCommand { get; }
     public ICommand FinishGameCommand { get; }
     public ObservableCollection<CardViewModel> Cards { get; } = new();
+    
 
     // lista för att hålla koll på vilka kort som är vända
     private List<CardViewModel> turnedCards = new();
@@ -32,6 +38,8 @@ public class BoardViewModel : ISupportsCardInput
     List<Cards> _cards = new List<Cards>();
 
     EndViewModel endViewModel = new EndViewModel();
+
+    public MainShellViewModel MainShellVM { get; set; } = new();
 
     int completedPairs;
     int numOffGuesses;
@@ -50,11 +58,16 @@ public class BoardViewModel : ISupportsCardInput
     public ICommand RestartCmd { get; }
     public ICommand BackToStartCmd {  get; }
 
+    private readonly IAudioService _audio;
+
+    public event Action<string>? RequestStepSound;
+
     public BoardViewModel(IAudioService _audioService)
     {
+
     }
 
-    public BoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level, List<string> playerList, ICommand backToStartCmd)
+    public BoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level, List<string> playerList, ICommand backToStartCmd, IAudioService _audioService)
     {
         Level = level;
         Players = new PlayerInformation[playerList.Count];
@@ -73,7 +86,19 @@ public class BoardViewModel : ISupportsCardInput
 
         timer.Reset();
         UpdateTimer();
+
+        _audio = _audioService;
+
+        _audio.LoadSfx(new Dictionary<string, string>()
+        {
+            { "flipCard", "Assets/Sounds/Sfx/flipCard_edited.mp3" }
+        });
+
+        _audio.SetSfxVolume(1);
+        _audio.SetSfxMuted(false);
     }
+
+    
 
     private async void UpdateTimer()
     {
@@ -83,8 +108,11 @@ public class BoardViewModel : ISupportsCardInput
             TimerText = timer.GetTime();
         }
     }
-    private async void OnButtonClicked(CardViewModel card)
+    public async void OnButtonClicked(CardViewModel card)
     {
+        _audio.PlaySfx("flipCard");
+
+        
         if (!hasStarted)
         {
             StartTime = DateTime.Now;
@@ -133,25 +161,7 @@ public class BoardViewModel : ISupportsCardInput
 
             await Task.Delay(800);
 
-            //int delay = 0; // denna gick inte... 
-
-            //switch (Level)
-            //{
-            //    case 1:
-            //        delay = 0;
-            //        break;
-            //        case 2:
-            //        delay = 500;
-            //        break;
-            //        case 3:
-            //        delay = 250;
-            //        break;
-            //}
-
-            //if(delay > 0)
-            //{
-            //    await Task.Delay(delay);
-            //}
+            
 
             // om korten inte matchar vänd tillbaka
             if (turnedCards[0].Id != turnedCards[1].Id)
@@ -212,8 +222,16 @@ public class BoardViewModel : ISupportsCardInput
 
         foreach (var card in shuffled)
         {
+            
             Cards.Add(new CardViewModel(card, OnButtonClicked));
         }
+        //(var cardId in shuffled)
+        //for (int i = 0; i < shuffled.Count; i++)
+        //{
+        //    string sfx = $"memory.cardAll{i}";
+        //    var card = new Cards(i);
+        //    Cards.Add(new CardViewModel(card, OnButtonClicked, sfx));
+        //}
     }
  
     public List<Cards> MakeNumbersAndColors(int level)

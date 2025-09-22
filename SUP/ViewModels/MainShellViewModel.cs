@@ -3,6 +3,7 @@ using SUP.Commands;
 using SUP.Models;
 using SUP.Services;
 using SUP.ViewModels.Scores;
+using SUP.Views;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.ActiveDirectory;
@@ -11,17 +12,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Xml.Serialization;
 
 namespace SUP.ViewModels
 {
     [AddINotifyPropertyChangedInterface]
     public class MainShellViewModel
     {
-        //från human benchmark video 8
-        private void OnMusicVolumeChanged() { _audio.SetMusicVolume((float)MusicVolume); }
-        private void OnSfxVolumeChanged() { _audio.SetSfxVolume((float)SfxVolume); }
-        private void OnMusicMutedChanged() { _audio.SetMusicMuted(MusicMuted); }
-        private void OnSfxMutedChanged() { _audio.SetSfxMuted(SfxMuted); }
+        
 
         //från humanbenchmark video 8
         public double MusicVolume { get; set; } = 0.25;
@@ -42,6 +40,7 @@ namespace SUP.ViewModels
 
         EndViewModel EndViewModel { get; set; }
         private StartViewModel _startview;
+        
 
         public int Misses { get; set; }
         public int Moves { get; set; }
@@ -58,6 +57,15 @@ namespace SUP.ViewModels
         private readonly IAudioService _audio;
         List<SessionScores> _highScores;
 
+        //från human benchmark video 8
+        private void OnMusicVolumeChanged() { _audio.SetMusicVolume((float)MusicVolume); } 
+        private void OnSfxVolumeChanged() { _audio.SetSfxVolume((float)SfxVolume); }
+        private void OnMusicMutedChanged() { _audio.SetMusicMuted(MusicMuted); }
+        private void OnSfxMutedChanged() { _audio.SetSfxMuted(SfxMuted); }
+
+
+        //"efterlys stegljud"
+
         public MainShellViewModel(GameHubDbServices db, IAudioService audioService)
         {
             StartGameCmd = new RelayCommand(StartGame);
@@ -73,16 +81,14 @@ namespace SUP.ViewModels
 
             CurrentView = _startview;
             _audio = audioService;
-            ApplyAudioSettings();
+            
             _audio.SetMusicLoop("Assets/Sounds/game-mode-on-356552.mp3", autoPlay: true);
+            ApplyAudioSettings();
+
+
         }
 
-        public MainShellViewModel()
-        {
-        }
-
-        //från humanbenchmark video 8
-        private void ApplyAudioSettings()
+        private void ApplyAudioSettings() //metod för att höja, sänka och mute/unmute
         {
             _audio.SetMusicVolume((float)MusicVolume);
             _audio.SetSfxVolume((float)SfxVolume);
@@ -90,9 +96,16 @@ namespace SUP.ViewModels
             _audio.SetSfxMuted(SfxMuted);
         }
 
+
+
+        public MainShellViewModel()
+        {
+        }
+
+        
         public void StartGame(object parameter)
         {
-            CurrentView = new BoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd);
+            CurrentView = new BoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd, _audio);
         }
 
         public async void FinishGame(object parameter)
@@ -109,7 +122,7 @@ namespace SUP.ViewModels
             if (_startview.IsMultiplayerSelected)
             {
                 // Spara inte score som multiplayer
-                EndViewModel = new EndViewModel(Misses, Moves, TimerText, StartTime, EndTime, RestartCmd, BackToStartCmd, null, null); 
+                EndViewModel = new EndViewModel(Misses, Moves, true, TimerText, StartTime, EndTime, null, RestartCmd, null, BackToStartCmd); 
             }
             else
             {
@@ -117,14 +130,14 @@ namespace SUP.ViewModels
                 PlayerName = player.Nickname;
                 PlayerID = player.Id;
 
-                EndViewModel = new EndViewModel(Misses, Moves, TimerText, StartTime, EndTime, SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd);
+                EndViewModel = new EndViewModel(Misses, Moves, false, TimerText, StartTime, EndTime, SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd);
             }
             CurrentView = EndViewModel;
         }
 
         public void RestartGame(object parameter)
         {
-            CurrentView = new BoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd);
+            CurrentView = new BoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd, _audio);
         }
 
         public async void SaveScore(object parameter)
@@ -160,13 +173,17 @@ namespace SUP.ViewModels
            
             LatestView = CurrentView;
             var players = await _db.GetPlayersForHighScoreAsync();
+
             CurrentView = new HighScoreViewModel(new RelayCommand(p =>
             {
                 CurrentView = LatestView;
             }), players, level1Scores, level2Scores, level3Scores);
+
         }
         public void BackToStart(object parameter)
         {
+           
+
             _startview.PlayerName = "";
             _startview.PlayerList.Clear();
             _startview.Greeting = "Spelarnamn:";

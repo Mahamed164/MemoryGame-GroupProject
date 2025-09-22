@@ -19,7 +19,8 @@
             Grid.Row="1"
             HorizontalAlignment="Center"
             FontSize="20"
-            Text="{Binding Greeting, UpdateSourceTrigger=PropertyChanged, FallbackValue=Spelarnamn:}" />
+            Text="{Binding Greeting, UpdateSourceTrigger=PropertyChanged, FallbackValue=Spelarnamn:}"
+            Foreground="White"/>
 
         <TextBox
             x:Name="txtPlayerName"
@@ -29,7 +30,8 @@
             Margin="0,0,0,200"
             HorizontalAlignment="Center"
             FontSize="20"
-            Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}" />
+            Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}"
+            BorderBrush="HotPink"/>
 
         <Button
             Grid.Row="1"
@@ -39,7 +41,8 @@
             Background="ForestGreen"
             Command="{Binding StartGameCmd}"
             Content="Spela"
-            IsEnabled="{Binding CanStart}" />
+            IsEnabled="{Binding CanStart}"
+            BorderBrush="Transparent" FontFamily="Bernard MT Condensed" Foreground="White"/>
 
         <Button
             Grid.Row="1"
@@ -47,13 +50,14 @@
             Height="40"
             Background="Orange"
             Command="{Binding HighScoreCmd}"
-            Content="Visa topplista" />
+            Content="Visa topplista"
+            BorderBrush="Transparent" FontFamily="Bernard MT Condensed" Foreground="White"/>
 
         <TextBlock
             Grid.Row="0"
             HorizontalAlignment="Center"
-            FontSize="32"
-            Text="Memory" />
+            FontSize="48"
+            Text="Memory" Foreground="White" FontFamily="Bernard MT Condensed" />
 
         <RadioButton
             x:Name="rbtnLevelOne"
@@ -63,7 +67,9 @@
             VerticalAlignment="Top"
             Content="Level 1"
             GroupName="Level"
-            IsChecked="{Binding IsLevelOneSelected}" />
+            IsChecked="{Binding IsLevelOneSelected}"
+            Foreground="White"
+            BorderBrush="HotPink"/>
 
         <RadioButton
             x:Name="rbtnLevelTwo"
@@ -73,7 +79,9 @@
             VerticalAlignment="Top"
             Content="Level 2"
             GroupName="Level"
-            IsChecked="{Binding IsLevelTwoSelected}" />
+            IsChecked="{Binding IsLevelTwoSelected}"
+            Foreground="White"
+            BorderBrush="HotPink"/>
 
         <RadioButton
             x:Name="rbtnLevelThree"
@@ -83,7 +91,9 @@
             VerticalAlignment="Top"
             Content="Level 3"
             GroupName="Level"
-            IsChecked="{Binding IsLevelThreeSelected}" />
+            IsChecked="{Binding IsLevelThreeSelected}"
+            Foreground="White"
+            BorderBrush="HotPink"/>
 
         <RadioButton
             x:Name="rbtnSingle"
@@ -93,7 +103,9 @@
             VerticalAlignment="Top"
             Content="En spelare"
             GroupName="Multiplayer"
-            IsChecked="{Binding IsSinglePlayerSelected}" />
+            IsChecked="{Binding IsSinglePlayerSelected}"
+            Foreground="White"
+            BorderBrush="HotPink"/>
 
         <RadioButton
             x:Name="rbtnMulti"
@@ -103,15 +115,18 @@
             VerticalAlignment="Top"
             Content="Två spelare"
             GroupName="Multiplayer"
-            IsChecked="{Binding IsMultiplayerSelected}" />
+            IsChecked="{Binding IsMultiplayerSelected}"
+            Foreground="White"
+            BorderBrush="HotPink"/>
 
         <ListBox
             x:Name="lstPlayers"
             Grid.Row="1"
             Margin="144,112,548,169"
             ItemsSource="{Binding PlayerList}"
-            Visibility="{Binding ShowList}">
-            <ListBox.ItemTemplate>
+            Visibility="{Binding ShowList}"
+            BorderBrush="HotPink">
+            <ListBox.ItemTemplate >
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding}" />

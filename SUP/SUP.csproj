@@ -15,6 +15,8 @@
     <None Remove="Assets\Images\image13.png" />
     <None Remove="Assets\Images\image14.png" />
     <None Remove="Assets\Images\image15.png" />
+    <None Remove="Assets\Sounds\Sfx\flipcard-91468.mp3" />
+    <None Remove="Assets\Sounds\Sfx\flipCard_edited.mp3" />
     <None Remove="Assets\Sounds\SoundPng\soundOff.png" />
     <None Remove="Assets\Sounds\SoundPng\soundOn.png" />
     <None Remove="Assets\Sounds\game-mode-on-356552.mp3" />
@@ -22,6 +24,9 @@
 
   <ItemGroup>
     <Content Include="Assets\Sounds\game-mode-on-356552.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Sounds\Sfx\flipCard_edited.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
