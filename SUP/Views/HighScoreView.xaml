@@ -46,11 +46,11 @@
 
         <Button
             Grid.Row="1"
-            Width="100"
             Height="40"
-            Margin="30"
+            Margin="326,12,0,0"
+            Padding="20,0"
             HorizontalAlignment="Left"
-            VerticalAlignment="Center"
+            VerticalAlignment="Top"
             Background="ForestGreen"
             Command="{Binding ReturnCmd}"
             Content="Tillbaka till spelet" />
