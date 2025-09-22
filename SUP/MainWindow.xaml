@@ -30,7 +30,7 @@
 
             <StackPanel Orientation="Vertical">
                 <ToggleButton Width="36" Height="36" Background="Transparent" BorderBrush="Transparent"
-                    IsChecked="{Binding MusicMuted, Mode=TwoWay}">
+                    IsChecked="{Binding MusicMuted, Mode=TwoWay}" Margin="0,510,0,0">
                     <Image Source="{Binding MusicMuted, Converter={StaticResource BoolToIconConverter}}"  />
                 </ToggleButton>
 
@@ -42,7 +42,7 @@
             Background="Transparent"
             BorderBrush="RosyBrown"
             Foreground="RosyBrown"
-                    Margin="10"
+                    Margin="10,520,10,10"
             Value="{Binding MusicVolume, Mode=TwoWay}"/>
         </StackPanel>
 
