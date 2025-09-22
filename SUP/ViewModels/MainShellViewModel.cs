@@ -155,7 +155,7 @@ namespace SUP.ViewModels
                 MessageBox.Show("Kunde inte spara resultatet. Fel: " + ex.Message, "Fel");
             }
 
-            string format = @"ss";
+            string format = @"mm\:ss";
             int timeAsInt = 0;
             if (TimeSpan.TryParseExact(TimerText, format, null, out var span))
             {
@@ -165,11 +165,20 @@ namespace SUP.ViewModels
         }
         public async void OpenHighScores(object parameter)
         {
-            _highScores = await _db.GetHighScoreList(SelectedLevel); //SelectedLevel måste väljas på HighScoreView
+            List<SessionScores> level1Scores = await _db.GetHighScoreList(1);
+            List<SessionScores> level2Scores = await _db.GetHighScoreList(2);
+            List<SessionScores> level3Scores = await _db.GetHighScoreList(3);
+
+           
            
             LatestView = CurrentView;
             var players = await _db.GetPlayersForHighScoreAsync();
-            CurrentView = new HighScoreViewModel(BackToStartCmd, players);
+
+            CurrentView = new HighScoreViewModel(new RelayCommand(p =>
+            {
+                CurrentView = LatestView;
+            }), players, level1Scores, level2Scores, level3Scores);
+
         }
         public void BackToStart(object parameter)
         {

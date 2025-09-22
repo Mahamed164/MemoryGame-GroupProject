@@ -11,17 +11,56 @@
 
     <Grid Background="#FFE689B4">
         <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
             <RowDefinition Height="3*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ListView
+        <StackPanel
             Grid.Row="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Stretch"
+            Orientation="Horizontal">
+
+            <TextBlock
+                Margin="0,0,30,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="40"
+                Text="High Scores" />
+
+            <TextBlock
+                Margin="0,0,10,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Text="Svårighetsnivå" />
+
+            <ComboBox
+                x:Name="CBLevel"
+                Width="40"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                ItemsSource="{Binding Levels}"
+                SelectedItem="{Binding SelectedLevel, Mode=TwoWay}" />
+            <!--
+                https://learn.microsoft.com/en-us/dotnet/desktop/wpf/data/
+                https://stackoverflow.com/questions/2305179/what-are-the-various-wpf-binding-modes
+            -->
+
+
+        </StackPanel>
+
+
+
+
+        <ListView
+            Grid.Row="1"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Background="#FFE689B4"
             FontSize="20"
-            ItemsSource="{Binding HighScores}">
+            ItemsSource="{Binding CurrentHighScoreList}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn
@@ -38,14 +77,17 @@
                         Header="Missar" />
                     <GridViewColumn
                         Width="150"
-                        DisplayMemberBinding="{Binding Time}"
+                        DisplayMemberBinding="{Binding TimerText}"
                         Header="Tid" />
                 </GridView>
             </ListView.View>
         </ListView>
 
         <Button
-            Grid.Row="1"
+
+            Grid.Row="2"
+            Width="100"
+
             Height="40"
             Margin="326,12,0,0"
             Padding="20,0"
