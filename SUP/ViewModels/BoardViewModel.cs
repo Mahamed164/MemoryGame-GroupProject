@@ -58,15 +58,16 @@ public class BoardViewModel : ISupportsCardInput
     public ICommand RestartCmd { get; }
     public ICommand BackToStartCmd {  get; }
 
-    
+    private readonly IAudioService _audio;
 
     public event Action<string>? RequestStepSound;
 
     public BoardViewModel(IAudioService _audioService)
     {
+
     }
 
-    public BoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level, List<string> playerList, ICommand backToStartCmd)
+    public BoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level, List<string> playerList, ICommand backToStartCmd, IAudioService _audioService)
     {
         Level = level;
         Players = new PlayerInformation[playerList.Count];
@@ -86,7 +87,15 @@ public class BoardViewModel : ISupportsCardInput
         timer.Reset();
         UpdateTimer();
 
-        
+        _audio = _audioService;
+
+        _audio.LoadSfx(new Dictionary<string, string>()
+        {
+            { "flipCard", "Assets/Sounds/Sfx/flipCard_edited.mp3" }
+        });
+
+        _audio.SetSfxVolume(1);
+        _audio.SetSfxMuted(false);
     }
 
     
@@ -101,10 +110,9 @@ public class BoardViewModel : ISupportsCardInput
     }
     public async void OnButtonClicked(CardViewModel card)
     {
-        foreach(var cardId in Cards)
-        {
+        _audio.PlaySfx("flipCard");
 
-        }
+        
         if (!hasStarted)
         {
             StartTime = DateTime.Now;
