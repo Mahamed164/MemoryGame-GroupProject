@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Npgsql;
+using SUP.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Npgsql;
-using SUP.Models;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace SUP.Services;
 
@@ -104,13 +105,14 @@ public class GameHubDbServices
         return players;
     }
 
-    public async void SaveFullGameSession(DateTime startTime, DateTime endTime, int playerId, int timeAsInt, int numOfMoves, int numOfMisses)
+    public async void SaveFullGameSession(DateTime startTime, DateTime endTime, int playerId, int timeAsInt, int numOfMoves, int numOfMisses, int selectedLevel)
     {
         int sessionId = await SaveAndGetSessionAsync(startTime, endTime);
         SaveSessionParticipantAsync(sessionId, playerId);
         SaveSessionScoreTime(sessionId, playerId, timeAsInt);
         SaveSessionScoreMoves(sessionId, playerId, numOfMoves);
         SaveSessionScoreMisses(sessionId, playerId, numOfMisses);
+        SaveSessionScoreLevel(sessionId, playerId, selectedLevel);
     }
 
     public async Task<int> SaveAndGetSessionAsync(DateTime startTime, DateTime endTime)
@@ -221,6 +223,81 @@ public class GameHubDbServices
             command.Parameters.AddWithValue("NUMOFMISSES", numOfMisses);
 
             var result = await command.ExecuteNonQueryAsync();
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+    public async void SaveSessionScoreLevel(int sessionId, int playerId, int selectedLevel)
+    {
+        try
+        {
+            await using var connection = await _dataSource.OpenConnectionAsync();
+            await using var command = new NpgsqlCommand("INSERT INTO SESSION_SCORE (SESSION_ID, PLAYER_ID, SCORE_TYPE_ID, VALUE) " +
+                "VALUES (@SESSION_ID, @PLAYER_ID, (SELECT SCORE_TYPE_ID FROM SCORE_TYPE WHERE CODE = 'Level'), @Selected_Level) ", connection);
+
+            command.Parameters.AddWithValue("SESSION_ID", sessionId);
+            command.Parameters.AddWithValue("PLAYER_ID", playerId);
+            command.Parameters.AddWithValue("Selected_Level", selectedLevel);
+
+            var result = await command.ExecuteNonQueryAsync();
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+
+    }
+
+    public async Task<List<SessionScores>> GetHighScoreList(int level)
+    {
+        try
+        {
+            List<SessionScores> _sessionScores = new List<SessionScores>();
+            SessionScores sessionScore = null;
+
+            await using var connection = await _dataSource.OpenConnectionAsync();
+
+
+            using var command = new NpgsqlCommand(
+                "SELECT SS.SESSION_ID, P.NICKNAME AS NICKNAMES, S.STARTED_AT AS TIME_OF_PLAY, " +
+                "SUM(CASE WHEN SS.SCORE_TYPE_ID = 4 THEN SS.VALUE END) AS MOVES, " +
+                "SUM(CASE WHEN SS.SCORE_TYPE_ID = 5 THEN SS.VALUE END) AS MISSES, " +
+                "SUM(CASE WHEN SS.SCORE_TYPE_ID = 3 THEN SS.VALUE END) AS TIME, " +
+                "SUM(CASE WHEN SS.SCORE_TYPE_ID = 6 THEN SS.VALUE END) AS LEVEL " +
+                "FROM SESSION_SCORE SS " +
+                "JOIN PLAYER P ON SS.PLAYER_ID = P.PLAYER_ID " +
+                "JOIN PUBLIC.SESSION S ON S.SESSION_ID = SS.SESSION_ID " +
+                "GROUP BY SS.SESSION_ID, P.NICKNAME, S.STARTED_AT " +
+                "HAVING SUM(CASE WHEN SS.SCORE_TYPE_ID = 6 THEN SS.VALUE END) = @Level " +
+                "ORDER BY MOVES ASC, MISSES ASC, TIME ASC", connection);
+
+            command.Parameters.AddWithValue("Level", level);
+
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    int seconds = (int)reader["time"];
+                    string timer = TimeSpan.FromSeconds(seconds).ToString(@"mm\:ss");
+                    sessionScore = new SessionScores
+                    {
+                        SessionId = (int)reader["session_id"],
+                        Nickname = reader["nicknames"].ToString(),
+                        TimeOfPlay = (DateTime)reader["time_of_play"],
+                        Moves= (int)reader["moves"],
+                        Misses = (int)reader["misses"],
+                        Level = (int)reader["level"],
+                        TimerText = timer,
+                }
+                ;
+                    _sessionScores.Add(sessionScore);
+                }
+            }
+
+            return _sessionScores;
         }
         catch (Exception ex)
         {

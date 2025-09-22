@@ -52,9 +52,11 @@ namespace SUP.ViewModels
 
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public int SelectedLevel { get; set; }
         
         private readonly GameHubDbServices _db;
         private readonly IAudioService _audio;
+        List<SessionScores> _highScores;
 
         public MainShellViewModel(GameHubDbServices db, IAudioService audioService)
         {
@@ -95,13 +97,14 @@ namespace SUP.ViewModels
 
         public async void FinishGame(object parameter)
         {
-            var result = (ValueTuple<int, int, string, DateTime, DateTime>)parameter;
+            var result = (ValueTuple<int, int, string, DateTime, DateTime, int>)parameter;
 
             Misses = result.Item1;
             Moves = result.Item2;
             TimerText = result.Item3;
             StartTime = result.Item4;
             EndTime = result.Item5;
+            SelectedLevel = result.Item6;
 
             if (_startview.IsMultiplayerSelected)
             {
@@ -145,10 +148,12 @@ namespace SUP.ViewModels
             {
                 timeAsInt = (int)span.TotalSeconds;
             }
-            _db.SaveFullGameSession(StartTime, EndTime, PlayerID, timeAsInt, Moves, Misses);
+            _db.SaveFullGameSession(StartTime, EndTime, PlayerID, timeAsInt, Moves, Misses, SelectedLevel);
         }
         public async void OpenHighScores(object parameter)
         {
+            _highScores = await _db.GetHighScoreList(SelectedLevel); //SelectedLevel måste väljas på HighScoreView
+           
             LatestView = CurrentView;
             var players = await _db.GetPlayersForHighScoreAsync();
             CurrentView = new HighScoreViewModel(new RelayCommand(p =>

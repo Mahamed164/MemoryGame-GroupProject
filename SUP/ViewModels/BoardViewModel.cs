@@ -102,7 +102,7 @@ public class BoardViewModel : ISupportsCardInput
             timer.Stop();
             EndTime = DateTime.Now;
             int mistakes = numOffGuesses - (Cards.Count/2);
-            FinishGameCommand?.Execute((mistakes, numOffGuesses, TimerText, StartTime, EndTime));
+            FinishGameCommand?.Execute((mistakes, numOffGuesses, TimerText, StartTime, EndTime, Level));
         }
     }
     private async Task TurnCardsAsync(CardViewModel card) // Kan man lägga multiplayer här?
