@@ -151,13 +151,12 @@ namespace SUP.ViewModels
         {
             LatestView = CurrentView;
             var players = await _db.GetPlayersForHighScoreAsync();
-            CurrentView = new HighScoreViewModel(new RelayCommand(p =>
-            {
-                CurrentView = LatestView;
-            }), players);
+            CurrentView = new HighScoreViewModel(BackToStartCmd, players);
         }
         public void BackToStart(object parameter)
         {
+           
+
             _startview.PlayerName = "";
             _startview.PlayerList.Clear();
             _startview.Greeting = "Spelarnamn:";
