@@ -14,9 +14,18 @@ public class EndViewModel
     public int Missed { get; set; }
     public int Moves { get; set; }
 
+    public bool IsMultiplayer { get; set; }
+
     public string TimerText { get; set; }
     public string TimeAsText { get; set; } 
     public string TotalTimeInSeconds { get; set; }
+
+    public string endViewMessage;
+    public string EndViewMessage
+    {
+        get { return endViewMessage; }
+        set { endViewMessage = value; }
+    }
 
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
@@ -26,10 +35,12 @@ public class EndViewModel
     public ICommand HighScoreCmd { get; }
     public ICommand BackToStartCmd { get; }
 
-    public EndViewModel(int misses, int moves, string timer, DateTime startTime, DateTime endTime, ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd, ICommand backToStartCmd)
+    public EndViewModel(int misses, int moves, bool isMultiplayer, string timer, DateTime startTime, DateTime endTime, ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd, ICommand backToStartCmd)
     {
         Missed = misses;
         Moves = moves;
+
+        IsMultiplayer = isMultiplayer;
 
         TimerText = timer;
         StartTime = startTime;
@@ -41,7 +52,17 @@ public class EndViewModel
         BackToStartCmd = backToStartCmd;
         
         TimeAsText = SetTimerText();
+
+        if (IsMultiplayer)
+        {
+            EndViewMessage = "Spelare x vann med 10 missar på 30 drag (test)";
+        }
+        else
+        {
+            EndViewMessage = $"Du hittade alla kort med {Missed} missar på {Moves} drag!\nDet tog {TimeAsText}.\n\nBra jobbat!";
+        }
     }
+
     public EndViewModel()
     {
     }
