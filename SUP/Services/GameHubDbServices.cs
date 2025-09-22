@@ -250,6 +250,8 @@ public class GameHubDbServices
 
     }
 
+
+
     public async Task<List<SessionScores>> GetHighScoreList(int level)
     {
         try
@@ -280,20 +282,21 @@ public class GameHubDbServices
             {
                 while (reader.Read())
                 {
-                    int seconds = (int)reader["time"];
+                    int seconds = Convert.ToInt32(reader["time"]);
                     string timer = TimeSpan.FromSeconds(seconds).ToString(@"mm\:ss");
                     sessionScore = new SessionScores
                     {
-                        SessionId = (int)reader["session_id"],
+                        SessionId = Convert.ToInt32(reader["session_id"]),
                         Nickname = reader["nicknames"].ToString(),
                         TimeOfPlay = (DateTime)reader["time_of_play"],
-                        Moves= (int)reader["moves"],
-                        Misses = (int)reader["misses"],
-                        Level = (int)reader["level"],
+                        Moves = Convert.ToInt32(reader["moves"]),
+                        Misses = Convert.ToInt32(reader["misses"]),
+                        Level = Convert.ToInt32(reader["level"]),
                         TimerText = timer,
-                }
+                    }
                 ;
                     _sessionScores.Add(sessionScore);
+
                 }
             }
 
