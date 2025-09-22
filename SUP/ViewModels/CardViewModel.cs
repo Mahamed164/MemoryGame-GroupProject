@@ -20,6 +20,7 @@ public class CardViewModel
     public ICommand ClickCommand { get; set; }
     public bool FaceUp { get; set; }
     public ImageSource Image { get; set; }
+    
 
     public CardViewModel(Cards c, Action<CardViewModel> onClick)
     {
@@ -27,5 +28,8 @@ public class CardViewModel
         Image = c.Image;
         FaceUp = c.FaceUp;
         ClickCommand = new RelayCommand(_ => onClick(this)); //hela kortet får man info om, inte bara id som tidigare
+        
     }
+
+    
 }
