@@ -122,7 +122,7 @@ namespace SUP.ViewModels
             if (_startview.IsMultiplayerSelected)
             {
                 // Spara inte score som multiplayer
-                EndViewModel = new EndViewModel(Misses, Moves, TimerText, StartTime, EndTime, RestartCmd, BackToStartCmd, null, null); 
+                EndViewModel = new EndViewModel(Misses, Moves, true, TimerText, StartTime, EndTime, null, RestartCmd, null, BackToStartCmd); 
             }
             else
             {
@@ -130,7 +130,7 @@ namespace SUP.ViewModels
                 PlayerName = player.Nickname;
                 PlayerID = player.Id;
 
-                EndViewModel = new EndViewModel(Misses, Moves, TimerText, StartTime, EndTime, SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd);
+                EndViewModel = new EndViewModel(Misses, Moves, false, TimerText, StartTime, EndTime, SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd);
             }
             CurrentView = EndViewModel;
         }
