@@ -38,6 +38,7 @@ namespace SUP.ViewModels
         public ICommand SaveCurrentScoreCmd { get; }
         public ICommand BackToStartCmd { get; }
 
+
         EndViewModel EndViewModel { get; set; }
         private StartViewModel _startview;
         
@@ -74,6 +75,7 @@ namespace SUP.ViewModels
             SaveScoreCmd = new RelayCommand(SaveScore);
             HighScoreCmd = new RelayCommand(OpenHighScores);
             BackToStartCmd = new RelayCommand(BackToStart);
+           
 
             _db = db;
 
@@ -96,7 +98,7 @@ namespace SUP.ViewModels
             _audio.SetSfxMuted(SfxMuted);
         }
 
-
+       
 
         public MainShellViewModel()
         {
