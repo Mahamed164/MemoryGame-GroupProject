@@ -24,14 +24,10 @@ namespace SUP.ViewModels;
 [AddINotifyPropertyChangedInterface]
 public class BoardViewModel : ISupportsCardInput
 {
-    
-
-
     public ICommand PressCardIndexCommand { get; }
     public ICommand FinishGameCommand { get; }
     public ObservableCollection<CardViewModel> Cards { get; } = new();
     
-
     // lista för att hålla koll på vilka kort som är vända
     private List<CardViewModel> turnedCards = new();
 
@@ -67,7 +63,8 @@ public class BoardViewModel : ISupportsCardInput
 
     }
 
-    public BoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level, List<string> playerList, ICommand backToStartCmd, IAudioService _audioService)
+    public BoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level, 
+                            List<string> playerList, ICommand backToStartCmd, IAudioService _audioService)
     {
         Level = level;
         Players = new PlayerInformation[playerList.Count];
@@ -97,9 +94,6 @@ public class BoardViewModel : ISupportsCardInput
         _audio.SetSfxVolume(1);
         _audio.SetSfxMuted(false);
     }
-
-    
-
     private async void UpdateTimer()
     {
         while (true)
@@ -120,17 +114,17 @@ public class BoardViewModel : ISupportsCardInput
             hasStarted = true;
         }
         await TurnCardsAsync(card);
-        CheckForCompleation();
+        CheckForCompletion();
     }
 
-    private async void CheckForCompleation()
+    private async void CheckForCompletion()
     {
         if (completedPairs == (Cards.Count/2))
         {
             timer.Stop();
             EndTime = DateTime.Now;
             int mistakes = numOffGuesses - (Cards.Count/2);
-            FinishGameCommand?.Execute((mistakes, numOffGuesses, TimerText, StartTime, EndTime, Level));
+            FinishGameCommand?.Execute((mistakes, numOffGuesses, TimerText, StartTime, EndTime, Level, Players));
         }
     }
     private async Task TurnCardsAsync(CardViewModel card) // Kan man lägga multiplayer här?
@@ -156,27 +150,7 @@ public class BoardViewModel : ISupportsCardInput
 
         if (turnedCards.Count == 2)
         {
-            numOffGuesses++;
-            Players[CurrentPlayer].Guesses++;
-
-            await Task.Delay(800);
-
-            
-
-            // om korten inte matchar vänd tillbaka
-            if (turnedCards[0].Id != turnedCards[1].Id)
-            {
-                turnedCards[0].FaceUp = false;
-                turnedCards[1].FaceUp = false;
-            }
-            else
-            { 
-                completedPairs++;
-                Players[CurrentPlayer].CorrectGuesses++;
-            } 
-
-            CurrentPlayer = (CurrentPlayer + 1) % Players.Length;
-            turnedCards.Clear();
+            await CheckForMatchingCardsAsync();
         }
         UpdatePlayerLabel();
 
@@ -184,6 +158,30 @@ public class BoardViewModel : ISupportsCardInput
     // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/switch-expression 
     // https://www.w3schools.com/cs/cs_switch.php
     }
+
+    private async Task CheckForMatchingCardsAsync()
+    {
+        numOffGuesses++;
+        Players[CurrentPlayer].Guesses++;
+
+        await Task.Delay(800);
+
+        // om korten inte matchar vänd tillbaka
+        if (turnedCards[0].Id != turnedCards[1].Id)
+        {
+            turnedCards[0].FaceUp = false;
+            turnedCards[1].FaceUp = false;
+        }
+        else
+        {
+            completedPairs++;
+            Players[CurrentPlayer].CorrectGuesses++;
+        }
+
+        CurrentPlayer = (CurrentPlayer + 1) % Players.Length;
+        turnedCards.Clear();
+    }
+
     private void UpdatePlayerLabel()
     {
         // Här vill jag att det ska vara 2 spelare som vardera har ANTAL DRAG och ANTAL KORREKTA PAR
@@ -216,7 +214,7 @@ public class BoardViewModel : ISupportsCardInput
     private void ConfigureCards()
     {
         completedPairs = 0;
-        var shuffled = MakeNumbersAndColors(Level);
+        var shuffled = MakeCards(Level);
 
         Cards.Clear();
 
@@ -234,27 +232,27 @@ public class BoardViewModel : ISupportsCardInput
         //}
     }
  
-    public List<Cards> MakeNumbersAndColors(int level)
+    public List<Cards> MakeCards(int level)
     {
         Level = level;
         Random random = new Random();
         _cards.Clear();
-        int numberOfColors;
+        int numberOfCardPairs;
 
         switch (Level)
         {
             default:
             case 1:
-                numberOfColors = 6;
+                numberOfCardPairs = 6;
                 break;
             case 2:
-                numberOfColors = 10;
+                numberOfCardPairs = 10;
                 break;
             case 3:
-                numberOfColors = 15;
+                numberOfCardPairs = 15;
                 break;
         }
-        for (int i = 0; i < numberOfColors; i++)
+        for (int i = 0; i < numberOfCardPairs; i++)
         {
             _cards.Add(new Cards(i));
             _cards.Add(new Cards(i));
