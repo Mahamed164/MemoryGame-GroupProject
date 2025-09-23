@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using PropertyChanged;
+using SUP.Models;
 
 namespace SUP.ViewModels;
 [AddINotifyPropertyChangedInterface]
@@ -35,7 +36,10 @@ public class EndViewModel
     public ICommand HighScoreCmd { get; }
     public ICommand BackToStartCmd { get; }
 
-    public EndViewModel(int misses, int moves, bool isMultiplayer, string timer, DateTime startTime, DateTime endTime, ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd, ICommand backToStartCmd)
+    public EndViewModel(int misses, int moves, bool isMultiplayer, string timer, 
+                        DateTime startTime, DateTime endTime, 
+                        ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd, ICommand backToStartCmd, 
+                        PlayerInformation winningPlayer = null)
     {
         Missed = misses;
         Moves = moves;
@@ -55,7 +59,7 @@ public class EndViewModel
 
         if (IsMultiplayer)
         {
-            EndViewMessage = "Spelare x vann med 10 missar på 30 drag (test)";
+            EndViewMessage = $"Grattis {winningPlayer.Name}!\nDu vann med {winningPlayer.Accuracy}% precision\n{winningPlayer.CorrectGuesses}/{winningPlayer.Guesses} rätt!";
         }
         else
         {

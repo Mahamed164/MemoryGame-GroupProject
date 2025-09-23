@@ -19,8 +19,6 @@ namespace SUP.ViewModels
     [AddINotifyPropertyChangedInterface]
     public class MainShellViewModel
     {
-        
-
         //från humanbenchmark video 8
         public double MusicVolume { get; set; } = 0.25;
         public double SfxVolume { get; set; } = 0.50;
@@ -84,8 +82,6 @@ namespace SUP.ViewModels
             
             _audio.SetMusicLoop("Assets/Sounds/game-mode-on-356552.mp3", autoPlay: true);
             ApplyAudioSettings();
-
-
         }
 
         private void ApplyAudioSettings() //metod för att höja, sänka och mute/unmute
@@ -96,13 +92,10 @@ namespace SUP.ViewModels
             _audio.SetSfxMuted(SfxMuted);
         }
 
-
-
         public MainShellViewModel()
         {
         }
 
-        
         public void StartGame(object parameter)
         {
             CurrentView = new BoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd, _audio);
@@ -110,7 +103,7 @@ namespace SUP.ViewModels
 
         public async void FinishGame(object parameter)
         {
-            var result = (ValueTuple<int, int, string, DateTime, DateTime, int>)parameter;
+            var result = (ValueTuple<int, int, string, DateTime, DateTime, int, PlayerInformation[]>)parameter;
 
             Misses = result.Item1;
             Moves = result.Item2;
@@ -118,11 +111,13 @@ namespace SUP.ViewModels
             StartTime = result.Item4;
             EndTime = result.Item5;
             SelectedLevel = result.Item6;
+            var players = result.Item7;
 
             if (_startview.IsMultiplayerSelected)
             {
-                // Spara inte score som multiplayer
-                EndViewModel = new EndViewModel(Misses, Moves, true, TimerText, StartTime, EndTime, null, RestartCmd, null, BackToStartCmd); 
+                PlayerInformation winningPlayer = GetMultiplayerWinner(players);
+      
+                EndViewModel = MultiplayerEndViewModel(winningPlayer);
             }
             else
             {
@@ -130,9 +125,39 @@ namespace SUP.ViewModels
                 PlayerName = player.Nickname;
                 PlayerID = player.Id;
 
-                EndViewModel = new EndViewModel(Misses, Moves, false, TimerText, StartTime, EndTime, SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd);
+                EndViewModel = SingleplayerEndViewModel();
             }
             CurrentView = EndViewModel;
+        }
+
+        private EndViewModel SingleplayerEndViewModel()
+        {
+            return new EndViewModel(Misses, Moves, false, TimerText, StartTime, EndTime,
+                                         SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd);
+        }
+
+        private EndViewModel MultiplayerEndViewModel(PlayerInformation winningPlayer)
+        {
+            // Spara inte score som multiplayer
+            return new EndViewModel(Misses, Moves, true, TimerText, StartTime, EndTime,
+                                        null, RestartCmd, null, BackToStartCmd, winningPlayer);
+        }
+
+        private static PlayerInformation GetMultiplayerWinner(PlayerInformation[] players)
+        {
+            PlayerInformation winningPlayer = players[0];
+            for (int i = 1; i < players.Length; i++)
+            {
+                if (players[i].Accuracy > winningPlayer.Accuracy)
+                {
+                    winningPlayer = players[i];
+                }
+                else if (players[i].Accuracy == winningPlayer.Accuracy && players[i].Guesses < winningPlayer.Guesses) //tiebreaker på antal guessas
+                {
+                    winningPlayer = players[i];
+                }
+            }
+            return winningPlayer;
         }
 
         public void RestartGame(object parameter)
@@ -169,8 +194,6 @@ namespace SUP.ViewModels
             List<SessionScores> level2Scores = await _db.GetHighScoreList(2);
             List<SessionScores> level3Scores = await _db.GetHighScoreList(3);
 
-           
-           
             LatestView = CurrentView;
             var players = await _db.GetPlayersForHighScoreAsync();
 
@@ -182,8 +205,6 @@ namespace SUP.ViewModels
         }
         public void BackToStart(object parameter)
         {
-           
-
             _startview.PlayerName = "";
             _startview.PlayerList.Clear();
             _startview.Greeting = "Spelarnamn:";
