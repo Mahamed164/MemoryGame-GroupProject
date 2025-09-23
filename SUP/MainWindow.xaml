@@ -28,13 +28,11 @@
 
         <StackPanel Orientation="Horizontal" Grid.Row="0">
 
-            <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
                 <ToggleButton Width="36" Height="36" Background="Transparent" BorderBrush="Transparent"
                     IsChecked="{Binding MusicMuted, Mode=TwoWay}" Margin="0,510,0,0">
                     <Image Source="{Binding MusicMuted, Converter={StaticResource BoolToIconConverter}}"  />
                 </ToggleButton>
-
-            </StackPanel>
 
             <Slider Width="140"
             Minimum="0"
@@ -43,7 +41,9 @@
             BorderBrush="RosyBrown"
             Foreground="RosyBrown"
                     Margin="10,520,10,10"
-            Value="{Binding MusicVolume, Mode=TwoWay}"/>
+            Value="{Binding MusicVolume, Mode=TwoWay}" Height="20"/>
+            </StackPanel>
+
         </StackPanel>
 
 
