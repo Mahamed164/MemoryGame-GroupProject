@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.Devices;
+using NAudio.Dsp;
 using Npgsql;
 using PropertyChanged;
 using SUP.Commands;
@@ -107,8 +108,6 @@ public class BoardViewModel : ISupportsCardInput
     }
     public async void OnButtonClicked(CardViewModel card)
     {
-        _audio.PlaySfx("flipCard");
-
 
         if (!hasStarted)
         {
@@ -117,7 +116,11 @@ public class BoardViewModel : ISupportsCardInput
             hasStarted = true;
         }
         await TurnCardsAsync(card);
+
+
+
         CheckForCompletion();
+
     }
 
     private async void CheckForCompletion()
@@ -132,11 +135,11 @@ public class BoardViewModel : ISupportsCardInput
     }
     private async Task TurnCardsAsync(CardViewModel card) // Kan man lägga multiplayer här?
     {
-        // if level = 1 --> inget kort som ska vändas tillbaka efter viss tid om man inte klickar på nytt kort
-        //if level = 2 --> if card = clicked --> kortet ska vändas tillbaka efter en delay (ex 500 ms)
-        //if level = 3 --> if card = clicked --> kortet ska vändas tillbaka efter en delay (ex 250 ms)
-        //https://www.mooict.com/c-tutorial-create-a-superhero-memory-game/ använda denna källa för att skapa detta
-
+        
+        if (!card.FaceUp) 
+        {
+            _audio.PlaySfx("flipCard");
+        }
 
         if (card.FaceUp)
         {
@@ -167,11 +170,10 @@ public class BoardViewModel : ISupportsCardInput
         numOffGuesses++;
         Players[CurrentPlayer].Guesses++;
 
-        await Task.Delay(800);
-
         // om korten inte matchar vänd tillbaka
         if (turnedCards[0].Id != turnedCards[1].Id)
         {
+            await Task.Delay(800);
             turnedCards[0].FaceUp = false;
             turnedCards[1].FaceUp = false;
         }
