@@ -17,7 +17,10 @@
     </UserControl.Resources>
 
 
-    <Grid Background="#FFE689B4">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Assets/ViewDesign/background.png" />
+        </Grid.Background>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -33,12 +36,15 @@
             gif:ImageBehavior.AutoStart="{Binding PlayConfetti}"
             gif:ImageBehavior.RepeatBehavior="1x" />
 
-        <TextBlock
+        <Image
             Grid.Row="0"
+            Grid.RowSpan="3"
+            MaxWidth="300"
+            MaxHeight="80"
+            Margin="0,5,0,0"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="32"
-            Text="Memory" />
+            VerticalAlignment="Top"
+            Source="/Assets/ViewDesign/memorylogo.png" />
 
         <StackPanel
             Grid.Row="1"
@@ -72,24 +78,31 @@
                 Margin="5"
                 Background="ForestGreen"
                 Command="{Binding RestartCmd}"
-                Content="Spela igen" />
+                Content="Spela igen"
+                FontFamily="Bahnschrift Condensed"
+                FontSize="16"
+                Foreground="White" />
 
             <Button
                 Width="100"
                 Height="40"
                 Margin="5"
                 Background="CornflowerBlue"
-                Command="{Binding SaveScoreCmd}"
-                Content="Spara resultat"
-                Visibility="{Binding IsMultiplayer, Converter={StaticResource BoolToVisibilityConverter}}" />
-
+                Command="{Binding BackToStartCmd}"
+                Content="Startmeny"
+                FontFamily="Bahnschrift Condensed"
+                FontSize="16"
+                Foreground="White" />
             <Button
                 Width="100"
                 Height="40"
-                Margin="5"
-                Background="Red"
-                Command="{Binding BackToStartCmd}"
-                Content="Tillbaka till start" />
+                Background="#FFED6464"
+                Command="{Binding SaveScoreCmd}"
+                Content="Spara resultat"
+                FontFamily="Bahnschrift Condensed"
+                FontSize="16"
+                Foreground="White"
+                Visibility="{Binding IsMultiplayer, Converter={StaticResource BoolToVisibilityConverter}}" />
 
             <Button
                 Width="100"
@@ -98,6 +111,9 @@
                 Background="Orange"
                 Command="{Binding HighScoreCmd}"
                 Content="Visa topplista"
+                FontFamily="Bahnschrift Condensed"
+                FontSize="16"
+                Foreground="White"
                 Visibility="{Binding IsMultiplayer, Converter={StaticResource BoolToVisibilityConverter}}" />
 
             <!--

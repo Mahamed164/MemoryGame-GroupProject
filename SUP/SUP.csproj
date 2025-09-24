@@ -22,6 +22,8 @@
     <None Remove="Assets\Sounds\SoundPng\soundOff.png" />
     <None Remove="Assets\Sounds\SoundPng\soundOn.png" />
     <None Remove="Assets\Sounds\game-mode-on-356552.mp3" />
+    <None Remove="Assets\ViewDesign\background.png" />
+    <None Remove="Assets\ViewDesign\memorylogo.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +36,12 @@
     <Content Include="Assets\Sounds\Sfx\victory.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Assets\ViewDesign\memorylogo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\ViewDesign\background.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
