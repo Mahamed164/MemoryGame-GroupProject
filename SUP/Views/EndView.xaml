@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:SUP.Views.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:gif="http://wpfanimatedgif.codeplex.com"
     xmlns:local="clr-namespace:SUP.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:SUP.ViewModels"
@@ -17,11 +18,20 @@
 
 
     <Grid Background="#FFE689B4">
+
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <Image
+            x:Name="Confetti"
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            gif:ImageBehavior.AnimatedSource="{Binding SelectedImage}"
+            gif:ImageBehavior.AutoStart="{Binding PlayConfetti}"
+            gif:ImageBehavior.RepeatBehavior="1x" />
 
         <TextBlock
             Grid.Row="0"
@@ -90,6 +100,12 @@
                 Content="Visa topplista"
                 Visibility="{Binding IsMultiplayer, Converter={StaticResource BoolToVisibilityConverter}}" />
 
+            <!--
+                https://github.com/XamlAnimatedGif/WpfAnimatedGif/wiki
+                https://github.com/XamlAnimatedGif/WpfAnimatedGif/blob/master/WpfAnimatedGif.Demo/MainWindow.xaml
+            -->
+
         </StackPanel>
+
     </Grid>
 </UserControl>

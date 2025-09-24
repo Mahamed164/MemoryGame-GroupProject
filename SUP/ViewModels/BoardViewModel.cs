@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 
 namespace SUP.ViewModels;
@@ -57,6 +58,7 @@ public class BoardViewModel : ISupportsCardInput
 
     public ICommand RestartCmd { get; }
     public ICommand BackToStartCmd { get; }
+
 
     private readonly IAudioService _audio;
 
@@ -130,6 +132,7 @@ public class BoardViewModel : ISupportsCardInput
             timer.Stop();
             EndTime = DateTime.Now;
             int mistakes = numOffGuesses - (Cards.Count / 2);
+           await PlayConfettiGif();
             FinishGameCommand?.Execute((mistakes, numOffGuesses, TimerText, StartTime, EndTime, Level, Players));
         }
     }
@@ -317,6 +320,10 @@ public class BoardViewModel : ISupportsCardInput
             _cards.Add(new Cards(i));
         }
         return _cards = _cards.OrderBy(x => random.Next()).ToList();
+    }
+    public async Task PlayConfettiGif()
+    {
+     
     }
 
     //public async Task<Cards> MakeCardSpeedAsync(int level)

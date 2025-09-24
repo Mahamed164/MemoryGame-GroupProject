@@ -1,11 +1,15 @@
-﻿using System;
+﻿using PropertyChanged;
+using SUP.Models;
+using SUP.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using PropertyChanged;
-using SUP.Models;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 
 namespace SUP.ViewModels;
 [AddINotifyPropertyChangedInterface]
@@ -18,7 +22,7 @@ public class EndViewModel
     public bool IsMultiplayer { get; set; }
 
     public string TimerText { get; set; }
-    public string TimeAsText { get; set; } 
+    public string TimeAsText { get; set; }
     public string TotalTimeInSeconds { get; set; }
 
     public string endViewMessage;
@@ -35,26 +39,26 @@ public class EndViewModel
     public ICommand RestartCmd { get; }
     public ICommand HighScoreCmd { get; }
     public ICommand BackToStartCmd { get; }
+    public BitmapImage SelectedImage { get; set; }
+    public bool PlayConfetti { get; set; }
+    public GameTimer _timer = new GameTimer();
 
-    public EndViewModel(int misses, int moves, bool isMultiplayer, string timer, 
-                        DateTime startTime, DateTime endTime, 
-                        ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd, ICommand backToStartCmd, 
+    public EndViewModel(int misses, int moves, bool isMultiplayer, string timer,
+                        DateTime startTime, DateTime endTime,
+                        ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd, ICommand backToStartCmd,
                         PlayerInformation winningPlayer = null)
     {
+        PlayConfetti = true;
         Missed = misses;
         Moves = moves;
-
         IsMultiplayer = isMultiplayer;
-
         TimerText = timer;
         StartTime = startTime;
         EndTime = endTime;
-
         SaveScoreCmd = saveScoreCmd;
         RestartCmd = restartCmd;
         HighScoreCmd = highScoreCmd;
         BackToStartCmd = backToStartCmd;
-        
         TimeAsText = SetTimerText();
 
         if (IsMultiplayer)
@@ -65,6 +69,8 @@ public class EndViewModel
         {
             EndViewMessage = $"Du hittade alla kort med {Missed} missar på {Moves} drag!\nDet tog {TimeAsText}.\n\nBra jobbat!";
         }
+
+        ConfettiTimer();
     }
 
     public EndViewModel()
@@ -75,11 +81,11 @@ public class EndViewModel
     {
         string format = @"mm\:ss";
 
-        if(TimeSpan.TryParseExact(TimerText, format, null, out var span))
+        if (TimeSpan.TryParseExact(TimerText, format, null, out var span))
         {
             TotalTimeInSeconds = span.TotalSeconds.ToString();
 
-            if(span.TotalSeconds < 60) //Hämtar värdet av TimeSpan och retunerar totala sekunderna 
+            if (span.TotalSeconds < 60) //Hämtar värdet av TimeSpan och retunerar totala sekunderna 
             {
                 return (int)span.TotalSeconds + " sekunder"; //ifall det är sekunder skriv tiden +  sekunder
             }
@@ -116,4 +122,14 @@ public class EndViewModel
 
         //Allmän källa om TimeSpan: https://learn.microsoft.com/en-us/dotnet/api/system.timespan?view=net-9.0
     }
+
+    public async Task ConfettiTimer()
+    {
+        await Task.Delay(500);
+        SelectedImage = new BitmapImage(new Uri("/SUP;component/Assets/Gifs/congratulations-7600.gif", UriKind.Relative));
+
+        // https://github.com/XamlAnimatedGif/WpfAnimatedGif/blob/master/WpfAnimatedGif.Demo/MainWindow.xaml.cs
+        // https://stackoverflow.com/questions/210922/how-do-i-get-an-animated-gif-to-work-in-wpf
+    }
+
 }
