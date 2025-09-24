@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Gifs\congratulations-7600.gif" />
     <None Remove="Assets\Images\image11.png" />
     <None Remove="Assets\Images\image12.png" />
     <None Remove="Assets\Images\image13.png" />
@@ -53,6 +54,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Gifs\congratulations-7600.gif">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Images\backside.jpg" />
     <Resource Include="Assets\Images\image1.png" />
     <Resource Include="Assets\Images\image10.png" />
