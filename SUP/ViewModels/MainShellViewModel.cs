@@ -135,14 +135,14 @@ namespace SUP.ViewModels
         private EndViewModel SingleplayerEndViewModel()
         {
             return new EndViewModel(Misses, Moves, false, TimerText, StartTime, EndTime,
-                                         SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd);
+                                         SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd, audioService: _audio);
         }
 
         private EndViewModel MultiplayerEndViewModel(PlayerInformation winningPlayer)
         {
             // Spara inte score som multiplayer
             return new EndViewModel(Misses, Moves, true, TimerText, StartTime, EndTime,
-                                        null, RestartCmd, null, BackToStartCmd, winningPlayer);
+                                        null, RestartCmd, null, BackToStartCmd, winningPlayer, audioService: _audio);
         }
 
         private static PlayerInformation GetMultiplayerWinner(PlayerInformation[] players)

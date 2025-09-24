@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using PropertyChanged;
 using SUP.Models;
+using SUP.Services;
 
 namespace SUP.ViewModels;
 [AddINotifyPropertyChangedInterface]
 
 public class EndViewModel
 {
+    private readonly IAudioService _audio;
     public int Missed { get; set; }
     public int Moves { get; set; }
 
@@ -39,8 +41,10 @@ public class EndViewModel
     public EndViewModel(int misses, int moves, bool isMultiplayer, string timer, 
                         DateTime startTime, DateTime endTime, 
                         ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd, ICommand backToStartCmd, 
-                        PlayerInformation winningPlayer = null)
+                        PlayerInformation winningPlayer = null, IAudioService audioService = null)
     {
+        _audio = audioService;
+
         Missed = misses;
         Moves = moves;
 
@@ -65,6 +69,15 @@ public class EndViewModel
         {
             EndViewMessage = $"Du hittade alla kort med {Missed} missar på {Moves} drag!\nDet tog {TimeAsText}.\n\nBra jobbat!";
         }
+        _audio.LoadSfx(new Dictionary<string, string>()
+        {
+            { "victory", "Assets/Sounds/Sfx/victory.mp3" }
+        });
+
+        _audio.SetSfxVolume(1);
+        _audio.SetSfxMuted(false);
+
+        _audio.PlaySfx("victory");
     }
 
     public EndViewModel()

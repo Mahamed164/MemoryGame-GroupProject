@@ -17,8 +17,6 @@ namespace SUP.Models
         public bool FaceUp { get; set; }
 
 
-        
-
         //https://www.mooict.com/c-tutorial-create-a-superhero-memory-game/
         private static ImageSource[] _images;
 
