@@ -66,8 +66,17 @@
             Margin="30,75,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Content="{Binding PlayerLabel, FallbackValue=Spelarens namn}"
-            FontSize="15" />
+            Content="{Binding PlayerOneLabel, FallbackValue=Spelarens namn}"
+            FontSize="15"
+            FontWeight="{Binding PlayerOneHighlighted, FallbackValue=normal}" />
+        <Label
+            Grid.Row="1"
+            Margin="30,175,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="{Binding PlayerTwoLabel, FallbackValue=Spelarens namn}"
+            FontSize="15" 
+            FontWeight="{Binding PlayerTwoHighlighted, FallbackValue= normal}"/>
         <Button
             Grid.Row="2"
             Width="120"
@@ -78,8 +87,8 @@
             Background="ForestGreen"
             Command="{Binding RestartCmd}"
             Content="Börja om"
-            FontSize="16" 
-            FontWeight="SemiBold"/>
+            FontSize="16"
+            FontWeight="SemiBold" />
 
         <Button
             Grid.Row="2"
@@ -91,8 +100,8 @@
             Background="CornflowerBlue"
             Command="{Binding BackToStartCmd}"
             Content="Startmeny"
-            FontSize="16" 
-            FontWeight="SemiBold"/>
+            FontSize="16"
+            FontWeight="SemiBold" />
 
         <Viewbox
             Grid.Row="1"
