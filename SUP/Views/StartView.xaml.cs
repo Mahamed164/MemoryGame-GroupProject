@@ -29,5 +29,10 @@ namespace SUP.Views
         {
 
         }
+
+        private void Label_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+
+        }
     }
 }

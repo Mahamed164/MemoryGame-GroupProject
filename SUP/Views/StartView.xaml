@@ -105,10 +105,10 @@
                     Command="{Binding AddPlayerCmd}"
                     Content="Lägg till spelare"
                     Visibility="{Binding ShowList}" />
-                
-                
-                
-                <Label Content="LABEL" Margin="0,-100,0,0" HorizontalAlignment="Center" />
+
+
+
+                <Label Foreground ="MediumVioletRed" Content="{Binding PlayerNameMessage}" Margin="0,-100,0,0" HorizontalAlignment="Center" Width="auto"  />
 
             </StackPanel>
 

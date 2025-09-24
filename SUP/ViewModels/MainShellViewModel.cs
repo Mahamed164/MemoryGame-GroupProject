@@ -100,61 +100,72 @@ namespace SUP.ViewModels
         {
         }
 
-        public async void StartGame(object parameter)
+        private Regex regex = new Regex(@"^[0-9A-Za-z.\s_-]+$"); //https://stackoverflow.com/questions/13353663/what-is-the-regular-expression-to-allow-uppercase-lowercase-alphabetical-charac
+        private readonly string regexString = $"Tillåtna specialtecken: 0-9 . _ -";
+        private int maxLenght = 20;
+
+        public string? GetPlayerNameMessage(string inputName) //kan vara null
         {
-            int maxLenght = 20;
-            var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
-            PlayerName = player.Nickname;
-            Regex regex = new Regex(@"^[0-9A-Za-z.\s_-]+$"); //https://stackoverflow.com/questions/13353663/what-is-the-regular-expression-to-allow-uppercase-lowercase-alphabetical-charac
-            //MatchCollection matches = regex.Matches(PlayerName);
-            string regexString = $"Tillåtna specialtecken: 0-9 . _ -";
-            //&& PlayerName.Contains(regex.ToString())
-
-
             //string meddelanden som ska kopplas bindings till i startview
 
             string nameToLong = "För långt namn, max antal karaktärer är 20";
-            string nameSpace = "Inte tillåtet med mellanslag innan eller efter namn";
+            string nameSpace = "Ej mellanslag innan eller efter namn";
             string nameRegex = $"Ej tillånta tecken. \r\n{regexString}";
-            string nameSpaceRegex = $"Inte tillåtet med mellanslag innan eller efter namn \n" +
+            string nameSpaceRegex = $"Ej mellanslag innan eller efter namn.  \n \n" +
                 $"Tillåtna specialtecken: 0-9 . _ -";
+            
 
-
-
-            if (PlayerName.Length > maxLenght )
+            if (PlayerName.Length > maxLenght)
             {
-                MessageBox.Show(nameToLong);
+                //_startview.PlayerNameMessage = nameToLong;
+                //MessageBox.Show(nameToLong);
+                return nameToLong;
             }
 
             else if (PlayerName.StartsWith(" ") || PlayerName.EndsWith(" ") && !regex.IsMatch(PlayerName))
             {
-                MessageBox.Show(nameSpaceRegex);
+                //_startview.PlayerNameMessage = nameSpaceRegex;
+                //MessageBox.Show(nameSpaceRegex);
+                return nameSpaceRegex;
             }
 
-            else if(PlayerName.StartsWith(" ") || PlayerName.EndsWith(" "))
+            else if (PlayerName.StartsWith(" ") || PlayerName.EndsWith(" "))
             {
-                MessageBox.Show(nameSpace);
+                //_startview.PlayerNameMessage = nameSpace;
+                //MessageBox.Show(nameSpace);
+                return nameSpace;
             }
-           
 
             else if (PlayerName.StartsWith(" ") && PlayerName.EndsWith(" "))
             {
-                MessageBox.Show(nameSpace);
+                //_startview.PlayerNameMessage = nameSpace;
+                //MessageBox.Show(nameSpace);
+                return nameSpace;
             }
 
             else if (!regex.IsMatch(PlayerName))
             {
-                MessageBox.Show(nameRegex);
+                //_startview.PlayerNameMessage = nameRegex;
+                //MessageBox.Show(nameRegex);
+                return nameRegex;
             }
 
-            
+            return null;
 
+        }
 
+        public async void StartGame(object parameter)
+        {
+            //int maxLenght = 20;
+            var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
+            PlayerName = player.Nickname;
 
-            //källa else if https://www.w3schools.com/cs/cs_conditions_elseif.php 
-            //med bara if statements blev else alltid utfört om inte varenda if statement stämde
-            //https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/selection-statements 
-            //källa REGEX: https://forum.uipath.com/t/if-string-contains-space-in-the-end-or-in-the-beginning/390782/5 
+            var playerNameMessage = GetPlayerNameMessage(PlayerName);
+            if(playerNameMessage != null)
+            {
+                _startview.PlayerNameMessage = playerNameMessage;
+                return;
+            }
 
             else
             {
@@ -162,29 +173,10 @@ namespace SUP.ViewModels
 
             }
 
-            /*^ : start of string
-            [ : beginning of character group
-            a-z : any lowercase letter
-            A-Z : any uppercase letter
-            0-9 : any digit
-            _ : underscore
-            ] : end of character group
-            * : zero or more of the given characters
-            $ : end of string
-
-            
-            \w is equivalent to [A-Za-z0-9_]
-            Using the + quantifier you'll match one or more characters. 
-            If you want to accept an empty string too, use * instead.
-            https://stackoverflow.com/questions/336210/regular-expression-for-alphanumeric-and-underscores 
-             */
-
         }
 
-        private bool HasSpecialCharacters(string playerName)
-        {
-            return playerName.Any(ch => char.IsLetterOrDigit(ch));
-        }
+        
+
 
         public async void FinishGame(object parameter)
         {

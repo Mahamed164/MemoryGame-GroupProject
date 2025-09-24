@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using SUP.Models;
+using SUP.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,9 @@ namespace SUP.Services;
 public class GameHubDbServices
 {
     private readonly NpgsqlDataSource _dataSource;
+
+    public StartViewModel StartVM { get; set; }
+    
 
     public GameHubDbServices(NpgsqlDataSource dataSource)
     {
@@ -28,8 +32,8 @@ public class GameHubDbServices
     {
         if (string.IsNullOrWhiteSpace(nickname)) throw new ArgumentNullException(nameof(nickname)); //guard
 
-        //statement 1 = om det inte redan finns en nickname som är det man skriver in
-        const string trySqlStmt = @"insert into player(nickname) 
+            //statement 1 = om det inte redan finns en nickname som är det man skriver in
+            const string trySqlStmt = @"insert into player(nickname) 
                                  select @nickname where not exists
                                 (select 1 from player where nickname = @nickname)
                                 returning player_id, nickname"; //försöker insert, men det funkar bara om nickname inte redan finns
