@@ -164,11 +164,10 @@ public class BoardViewModel : ISupportsCardInput
         numOffGuesses++;
         Players[CurrentPlayer].Guesses++;
 
-        await Task.Delay(800);
-
         // om korten inte matchar vänd tillbaka
         if (turnedCards[0].Id != turnedCards[1].Id)
         {
+            await Task.Delay(800);
             turnedCards[0].FaceUp = false;
             turnedCards[1].FaceUp = false;
         }
