@@ -27,7 +27,7 @@ public class BoardViewModel : ISupportsCardInput
     public ICommand PressCardIndexCommand { get; }
     public ICommand FinishGameCommand { get; }
     public ObservableCollection<CardViewModel> Cards { get; } = new();
-    
+
     // lista för att hålla koll på vilka kort som är vända
     private List<CardViewModel> turnedCards = new();
 
@@ -41,18 +41,21 @@ public class BoardViewModel : ISupportsCardInput
     int numOffGuesses;
 
     public int Level { get; set; } = 2; //den börjar på 2
-    public PlayerInformation[] Players {  get; set; }
+    public PlayerInformation[] Players { get; set; }
     public int CurrentPlayer;
-    public string PlayerLabel { get; set; }
+    public string PlayerOneLabel { get; set; }
+    public string PlayerTwoLabel { get; set; }
+    public string PlayerOneHighlighted { get; set; }
+    public string PlayerTwoHighlighted { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
-    
+
     public GameTimer timer = new GameTimer();
     public string TimerText { get; set; } = "00:00";
     public bool hasStarted = false;
 
     public ICommand RestartCmd { get; }
-    public ICommand BackToStartCmd {  get; }
+    public ICommand BackToStartCmd { get; }
 
     private readonly IAudioService _audio;
 
@@ -63,12 +66,12 @@ public class BoardViewModel : ISupportsCardInput
 
     }
 
-    public BoardViewModel(ICommand finishGameCommand,ICommand restartCmd,int level, 
+    public BoardViewModel(ICommand finishGameCommand, ICommand restartCmd, int level,
                             List<string> playerList, ICommand backToStartCmd, IAudioService _audioService)
     {
         Level = level;
         Players = new PlayerInformation[playerList.Count];
-       
+
         for (int i = 0; i < playerList.Count; i++)
         {
             Players[i] = new() { Name = playerList[i] };
@@ -106,7 +109,7 @@ public class BoardViewModel : ISupportsCardInput
     {
         _audio.PlaySfx("flipCard");
 
-        
+
         if (!hasStarted)
         {
             StartTime = DateTime.Now;
@@ -119,11 +122,11 @@ public class BoardViewModel : ISupportsCardInput
 
     private async void CheckForCompletion()
     {
-        if (completedPairs == (Cards.Count/2))
+        if (completedPairs == (Cards.Count / 2))
         {
             timer.Stop();
             EndTime = DateTime.Now;
-            int mistakes = numOffGuesses - (Cards.Count/2);
+            int mistakes = numOffGuesses - (Cards.Count / 2);
             FinishGameCommand?.Execute((mistakes, numOffGuesses, TimerText, StartTime, EndTime, Level, Players));
         }
     }
@@ -137,7 +140,7 @@ public class BoardViewModel : ISupportsCardInput
 
         if (card.FaceUp)
         {
-            
+
             return;
         }
         if (turnedCards.Count >= 2)
@@ -154,9 +157,9 @@ public class BoardViewModel : ISupportsCardInput
         }
         UpdatePlayerLabel();
 
-    // You use the switch expression to evaluate a single expression from a list of candidate expressions based on a pattern match with an input expression.
-    // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/switch-expression 
-    // https://www.w3schools.com/cs/cs_switch.php
+        // You use the switch expression to evaluate a single expression from a list of candidate expressions based on a pattern match with an input expression.
+        // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/switch-expression 
+        // https://www.w3schools.com/cs/cs_switch.php
     }
 
     private async Task CheckForMatchingCardsAsync()
@@ -184,31 +187,85 @@ public class BoardViewModel : ISupportsCardInput
 
     private void UpdatePlayerLabel()
     {
-        // Här vill jag att det ska vara 2 spelare som vardera har ANTAL DRAG och ANTAL KORREKTA PAR
-        // Varje spelare klickar på 2 kort och sedan går det vidare till nästas tur (visa spelarbyte med t.ex. fet stil på namn?)
-        // Den som har flest antal korrekta par vinner
-        // FRÅGOR????
-        // 1. Lägga in namn även på multiplayer eller blir man spelare 1 och 2
-        // 1.5 Hur ska det läggas in?? ska det dyka upp en till box för namn eller kan man återanvända namnboxen och fylla i en spelare i taget
-        // 2. Här vill jag att det ska vara 2 spelare som vardera har ANTAL DRAG och ANTAL KORREKTA PAR
-        // Varje spelare klickar på 2 kort och sedan går det vidare till nästas tur (visa spelarbyte med t.ex. fet stil på namn?)
-        // Den som har flest antal korrekta par vinner
-        // Vet inte om detta också ska ligga i databasen men det tar vi sen:)
-        
         StringBuilder stringBuilder = new StringBuilder();
-        foreach (PlayerInformation player in Players)
-        { 
-            stringBuilder.AppendLine(player.Name);
-            stringBuilder.Append("Gissningar: ");
-            stringBuilder.AppendLine(player.Guesses.ToString());
-            stringBuilder.Append("Rätt gissningar: ");
-            stringBuilder.AppendLine(player.CorrectGuesses.ToString());
-            stringBuilder.Append("Precision: ");
-            stringBuilder.Append(player.Accuracy.ToString());
-            stringBuilder.AppendLine("%");
-            stringBuilder.AppendLine();
+        if (Players.Length == 1)
+        {
+            foreach (var player in Players)
+            {
+                stringBuilder.AppendLine(player.Name);
+                stringBuilder.Append("Gissningar: ");
+                stringBuilder.AppendLine(player.Guesses.ToString());
+                stringBuilder.Append("Rätt gissningar: ");
+                stringBuilder.AppendLine(player.CorrectGuesses.ToString());
+                stringBuilder.Append("Precision: ");
+                stringBuilder.Append(player.Accuracy.ToString());
+                stringBuilder.AppendLine("%");
+                stringBuilder.AppendLine();
+            }
+            PlayerOneLabel = stringBuilder.ToString();
         }
-        PlayerLabel = stringBuilder.ToString();
+        else
+        {
+            if (0 == (CurrentPlayer + 1) % Players.Length)
+            {
+                PlayerOneHighlighted = "Normal";
+                PlayerTwoHighlighted = "Bold";
+
+                foreach (var player in Players)
+                {
+                    stringBuilder.AppendLine(player.Name);
+                    stringBuilder.Append("Gissningar: ");
+                    stringBuilder.AppendLine(player.Guesses.ToString());
+                    stringBuilder.Append("Rätt gissningar: ");
+                    stringBuilder.AppendLine(player.CorrectGuesses.ToString());
+                    stringBuilder.Append("Precision: ");
+                    stringBuilder.Append(player.Accuracy.ToString());
+                    stringBuilder.AppendLine("%");
+                    stringBuilder.AppendLine();
+                    if (player == Players[0])
+                    {
+                        PlayerOneLabel = stringBuilder.ToString();
+                        stringBuilder.Clear();
+                    }
+                    else if (player == Players[1])
+                    {
+                        PlayerTwoLabel = stringBuilder.ToString();
+                        stringBuilder.Clear();
+                    }
+                }
+            }
+            else if (1 == (CurrentPlayer + 1) % Players.Length)
+            {
+                PlayerTwoHighlighted = "Normal";
+                PlayerOneHighlighted = "Bold";
+
+                foreach (var player in Players)
+                {
+                    stringBuilder.AppendLine(player.Name);
+                    stringBuilder.Append("Gissningar: ");
+                    stringBuilder.AppendLine(player.Guesses.ToString());
+                    stringBuilder.Append("Rätt gissningar: ");
+                    stringBuilder.AppendLine(player.CorrectGuesses.ToString());
+                    stringBuilder.Append("Precision: ");
+                    stringBuilder.Append(player.Accuracy.ToString());
+                    stringBuilder.AppendLine("%");
+                    stringBuilder.AppendLine();
+
+                    if (player == Players[1])
+                    {
+                        PlayerTwoLabel = stringBuilder.ToString();
+                        stringBuilder.Clear();
+                    }
+                    else if (player == Players[0])
+                    {
+                        PlayerOneLabel = stringBuilder.ToString();
+                        stringBuilder.Clear();
+                    }
+                }
+            }
+
+        }
+    
     }
 
     private void ConfigureCards()
