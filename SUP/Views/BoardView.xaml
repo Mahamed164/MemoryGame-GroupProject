@@ -7,7 +7,6 @@
     xmlns:local="clr-namespace:SUP.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:SUP.ViewModels"
-  
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -27,8 +26,7 @@
                             Padding="4,2"
                             Background="{TemplateBinding Background}"
                             BorderBrush="#FFE4A7C3"
-                            BorderThickness="2"
-                            CornerRadius="15">
+                            BorderThickness="2">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>
@@ -42,18 +40,27 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Background="#FFE689B4">
+    <Grid>
+
+        <Grid.Background>
+            <ImageBrush ImageSource="/Assets/ViewDesign/background.png" />
+        </Grid.Background>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock
+        <Image
             Grid.Row="0"
+            Grid.RowSpan="3"
+            MaxWidth="300"
+            MaxHeight="80"
+            Margin="0,5,0,0"
             HorizontalAlignment="Center"
-            FontSize="32"
-            Text="Memory" />
+            VerticalAlignment="Top"
+            Source="/Assets/ViewDesign/memorylogo.png" />
         <TextBlock
             Grid.Row="0"
             Width="114"
@@ -68,7 +75,8 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="{Binding PlayerOneLabel, FallbackValue=Spelarens namn}"
-            FontSize="15"
+            FontSize="18"
+            FontFamily="Bahnschrift Condensed"
             FontWeight="{Binding PlayerOneHighlighted, FallbackValue=normal}" />
         <Label
             Grid.Row="1"
@@ -76,35 +84,38 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="{Binding PlayerTwoLabel, FallbackValue=Spelarens namn}"
-            FontSize="15" 
-            FontWeight="{Binding PlayerTwoHighlighted, FallbackValue= normal}"/>
+            FontSize="18"
+            FontFamily="Bahnschrift Condensed"
+            FontWeight="{Binding PlayerTwoHighlighted, FallbackValue=normal}" />
         <Button
             Grid.Row="2"
-            Width="120"
-            Height="52"
+            Width="100"
+            Height="40"
             Margin="125,0,0,8"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Background="ForestGreen"
             Command="{Binding RestartCmd}"
             Content="Börja om"
+            FontFamily="Bahnschrift Condensed"
             FontSize="16"
-            FontWeight="SemiBold" />
+            Foreground="White" />
 
         <Button
             Grid.Row="2"
-            Width="120"
-            Height="52"
+            Width="100"
+            Height="40"
             Margin="0,0,125,8"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Background="CornflowerBlue"
             Command="{Binding BackToStartCmd}"
             Content="Startmeny"
+            FontFamily="Bahnschrift Condensed"
             FontSize="16"
-            FontWeight="SemiBold" />
+            Foreground="White" />
 
-        
+
 
         <Viewbox
             Grid.Row="1"

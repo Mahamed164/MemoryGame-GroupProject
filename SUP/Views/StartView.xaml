@@ -9,20 +9,54 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            Name="border"
+                            Width="130"
+                            Height="40"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="#FFE4A7C3"
+                            BorderThickness="2"
+                            CornerRadius="30">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="Purple" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
 
-    <Grid Background="#FFE689B4">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Assets/ViewDesign/background.png" />
+        </Grid.Background>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="6*" />
         </Grid.RowDefinitions>
 
-        <TextBlock
+        <Image
             Grid.Row="0"
+            Grid.RowSpan="3"
+            MaxWidth="300"
+            MaxHeight="80"
+            Margin="0,5,0,0"
             HorizontalAlignment="Center"
-            FontFamily="Bernard MT Condensed"
-            FontSize="48"
-            Foreground="White"
-            Text="Memory" />
+            VerticalAlignment="Top"
+            Source="/Assets/ViewDesign/memorylogo.png" />
+
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -41,6 +75,8 @@
                     BorderBrush="HotPink"
                     Content="En spelare"
                     FlowDirection="RightToLeft"
+                    FontFamily="Bahnschrift Condensed"
+                    FontSize="16"
                     Foreground="White"
                     GroupName="Multiplayer"
                     IsChecked="{Binding IsSinglePlayerSelected}" />
@@ -54,6 +90,8 @@
                     BorderBrush="HotPink"
                     Content="Två spelare"
                     FlowDirection="RightToLeft"
+                    FontFamily="Bahnschrift Condensed"
+                    FontSize="16"
                     Foreground="White"
                     GroupName="Multiplayer"
                     IsChecked="{Binding IsMultiplayerSelected}" />
@@ -63,8 +101,11 @@
                     Grid.Row="1"
                     Width="Auto"
                     HorizontalAlignment="Right"
-                    BorderBrush="HotPink"
-                    FontSize="20"
+                    Background="{x:Null}"
+                    BorderBrush="{x:Null}"
+                    FontFamily="Bahnschrift Condensed"
+                    FontSize="18"
+                    Foreground="Purple"
                     ItemsSource="{Binding PlayerList}"
                     Visibility="{Binding ShowList}">
                     <ListBox.ItemTemplate>
@@ -76,65 +117,77 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </StackPanel>
-            
+
 
             <StackPanel Grid.Row="0" Grid.Column="1">
                 <TextBlock
-                    
-                    TextWrapping="Wrap"
                     Margin="15,30,15,10"
                     HorizontalAlignment="Center"
-                    FontSize="20"
+                    FontFamily="Bahnschrift Condensed"
+                    FontSize="25"
                     Foreground="White"
-                    Text="{Binding Greeting, UpdateSourceTrigger=PropertyChanged, FallbackValue=Spelarnamn:}" />
+                    Text="{Binding Greeting, UpdateSourceTrigger=PropertyChanged, FallbackValue=Spelarnamn:}"
+                    TextWrapping="Wrap" />
 
                 <TextBox
                     x:Name="txtPlayerName"
                     Height="40"
                     Margin="20,0,20,10"
                     HorizontalAlignment="Stretch"
+                    Background="FloralWhite"
                     BorderBrush="HotPink"
                     FontSize="20"
                     Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}" />
                 <Button
                     x:Name="btnAddPlayer"
                     Grid.Row="1"
-                    Margin="0,0,0,100"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
+                    Background="DodgerBlue"
                     Command="{Binding AddPlayerCmd}"
                     Content="Lägg till spelare"
+                    FontFamily="Bahnschrift Condensed"
+                    FontSize="16"
+                    Foreground="White"
                     Visibility="{Binding ShowList}" />
 
 
 
-                <Label Foreground ="MediumVioletRed" Content="{Binding PlayerNameMessage}" Margin="0,-100,0,0" HorizontalAlignment="Center" Width="auto"  />
+                <Label
+                    Width="auto"
+                    Margin="0,-100,0,0"
+                    HorizontalAlignment="Center"
+                    Content="{Binding PlayerNameMessage}"
+                    Foreground="MediumVioletRed" />
 
             </StackPanel>
 
-            <StackPanel Grid.Column="1" VerticalAlignment="Bottom">
+            <StackPanel Grid.Column="1" Margin="0,225,0,0">
                 <Button
                     Width="150"
                     Height="40"
                     Margin="0,0,0,10"
                     Background="ForestGreen"
                     BorderBrush="Transparent"
+                    Click="Button_Click_1"
                     Command="{Binding StartGameCmd}"
                     Content="Spela"
-                    FontFamily="Bernard MT Condensed"
+                    FontFamily="Bahnschrift Condensed"
+                    FontSize="16"
                     Foreground="White"
                     IsEnabled="{Binding CanStart}" />
 
                 <Button
-                    Margin="0,0,0,50"
                     Width="150"
                     Height="40"
+                    Margin="0,0,0,50"
                     VerticalAlignment="Bottom"
                     Background="Orange"
                     BorderBrush="Transparent"
                     Command="{Binding HighScoreCmd}"
                     Content="Visa topplista"
-                    FontFamily="Bernard MT Condensed"
+                    FontFamily="Bahnschrift Condensed"
+                    FontSize="16"
                     Foreground="White" />
             </StackPanel>
             <StackPanel Grid.Column="2">
@@ -146,6 +199,8 @@
                     VerticalAlignment="Top"
                     BorderBrush="HotPink"
                     Content="Level 1"
+                    FontFamily="Bahnschrift Condensed"
+                    FontSize="16"
                     Foreground="White"
                     GroupName="Level"
                     IsChecked="{Binding IsLevelOneSelected}" />
@@ -158,6 +213,8 @@
                     VerticalAlignment="Top"
                     BorderBrush="HotPink"
                     Content="Level 2"
+                    FontFamily="Bahnschrift Condensed"
+                    FontSize="16"
                     Foreground="White"
                     GroupName="Level"
                     IsChecked="{Binding IsLevelTwoSelected}" />
@@ -170,20 +227,12 @@
                     VerticalAlignment="Top"
                     BorderBrush="HotPink"
                     Content="Level 3"
+                    FontFamily="Bahnschrift Condensed"
+                    FontSize="16"
                     Foreground="White"
                     GroupName="Level"
                     IsChecked="{Binding IsLevelThreeSelected}" />
             </StackPanel>
         </Grid>
-
-
-
-
-
-
-
-
-
-
     </Grid>
 </UserControl>

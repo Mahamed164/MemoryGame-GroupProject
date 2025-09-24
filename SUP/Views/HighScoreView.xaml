@@ -9,7 +9,11 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <Grid Background="#FFE689B4">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Assets/ViewDesign/background.png" />
+        </Grid.Background>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="3*" />
@@ -24,17 +28,18 @@
 
             <TextBlock
                 Margin="0,0,30,0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
+                FontFamily="Bahnschrift Condensed"
                 FontSize="40"
-                Text="High Scores" />
+                Foreground="White"
+                Text="Topplista" />
 
             <TextBlock
                 Margin="0,0,10,0"
-                HorizontalAlignment="Center"
                 VerticalAlignment="Center"
+                FontFamily="Bahnschrift Condensed"
                 FontSize="20"
-                Text="Svårighetsnivå" />
+                Foreground="White"
+                Text="Level:" />
 
             <ComboBox
                 x:Name="CBLevel"
@@ -60,9 +65,23 @@
             Grid.Row="1"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Background="#FFE689B4"
+            Background="Transparent"
             FontSize="20"
             ItemsSource="{Binding CurrentHighScoreList}">
+
+            <ListView.Resources>
+                <Style TargetType="GridViewColumnHeader">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFFFB2E3" Offset="0"/>
+                                <GradientStop Color="#FFFF82D2" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.Resources>
+            
             <ListView.View>
                 <GridView>
                     <GridViewColumn
@@ -87,15 +106,18 @@
 
         <Button
             Grid.Row="2"
-            Width="148"
+            Width="150"
             Height="40"
-            Margin="10,0,10,10"
+            Margin="10,7,10,10"
             Padding="20,0"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             Background="ForestGreen"
             Command="{Binding ReturnCmd}"
-            Content="Tillbaka till spelet" />
+            Content="Tillbaka till spelet"
+            FontFamily="Bahnschrift Condensed"
+            FontSize="16"
+            Foreground="White" />
 
     </Grid>
 </UserControl>
