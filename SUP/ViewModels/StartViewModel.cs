@@ -1,14 +1,18 @@
-﻿using System;
+﻿using Npgsql;
+using PropertyChanged;
+using SUP.Commands;
+using SUP.Services;
+using SUP.Views;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using PropertyChanged;
-using SUP.Commands;
 
 namespace SUP.ViewModels
 {
@@ -20,6 +24,9 @@ namespace SUP.ViewModels
         public bool IsLevelThreeSelected { get; set; }
 
         public List <string> PlayerList { get; set; } = [];
+
+        public string PlayerNameMessage { get; set; } //för binding i mainshellviewmodel
+        
 
         public int level;
 
@@ -126,24 +133,39 @@ namespace SUP.ViewModels
         public ICommand HighScoreCmd { get; }
         public ICommand AddPlayerCmd { get; }
 
+
+        //sparar för att det ska fortsättas 
+
+        //private Regex regex = new Regex(@"^[0-9A-Za-z.\s_-]+$"); //https://stackoverflow.com/questions/13353663/what-is-the-regular-expression-to-allow-uppercase-lowercase-alphabetical-charac
+        //private readonly string regexString = $"Tillåtna specialtecken: 0-9 . _ -";
+        //private int maxLenght = 20;
+
+        
+        
         public StartViewModel(ICommand startGameCmd, ICommand highScoreCmd )
         {
             HighScoreCmd = highScoreCmd;
-            AddPlayerCmd = new RelayCommand(p =>
-            {
-                if (PlayerList.Count < 2)
-                {
-                    PlayerList.Add(PlayerName);
-                    PlayerName = "";
-                    PlayerList = PlayerList.ToList();
-                }
-                else 
-                { 
-                    MessageBox.Show("Nu är ni redan två spelare!!"); 
-                }
-            });
 
-            StartGameCmd = new RelayCommand(p =>
+            
+            
+                AddPlayerCmd = new RelayCommand(p =>
+                {
+                    if (PlayerList.Count < 2)
+                    {
+                        PlayerList.Add(PlayerName);
+                        PlayerName = "";
+                        PlayerList = PlayerList.ToList();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nu är ni redan två spelare!!");
+                    }
+                });
+        
+
+
+
+        StartGameCmd = new RelayCommand(p =>
             {
                     if (string.IsNullOrWhiteSpace(PlayerName) && PlayerList.Count <2)
                     {
