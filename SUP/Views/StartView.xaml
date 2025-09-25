@@ -10,7 +10,7 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <Style TargetType="Button">
+        <!--<Style TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Margin" Value="0" />
             <Setter Property="Template">
@@ -34,7 +34,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style>-->
     </UserControl.Resources>
 
     <Grid>
@@ -130,16 +130,26 @@
                     Text="{Binding Greeting, UpdateSourceTrigger=PropertyChanged, FallbackValue=Spelarnamn:}"
                     TextWrapping="Wrap" />
 
+                <Border Background="FloralWhite" BorderBrush="HotPink"  CornerRadius="10" BorderThickness="3" Margin="20,-5,20,10" Height="50">
+                 
                 <TextBox
                     x:Name="txtPlayerName"
+                    SelectionBrush="Transparent"
+                    BorderThickness="0"
                     Height="40"
-                    Margin="20,0,20,10"
+                    Margin="20,7.5,20,10"
                     HorizontalAlignment="Stretch"
-                    Background="FloralWhite"
-                    BorderBrush="HotPink"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
                     FontSize="20"
-                    Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}" />
+                    Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}" >
+                        <TextBox.Style>
+                            <Style/>
+                        </TextBox.Style>
 
+                    </TextBox>
+                </Border>
+                
                 <Label
                     Grid.Column="1"
                     Width="auto"
@@ -161,6 +171,8 @@
                      Margin="0,0,0,10"
                     Grid.Row="1"
                     Grid.Column="1"
+                    Width="150"
+                    Height="40"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Background="DodgerBlue"
@@ -169,12 +181,22 @@
                     FontFamily="Bahnschrift Condensed"
                     FontSize="16"
                     Foreground="White"
-                    Visibility="{Binding ShowList}" />
+                    BorderBrush="Transparent"
+                    Visibility="{Binding ShowList}"
+                    >
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="20" />
+                        </Style>
+                    </Button.Resources>
+                </Button>
                 <Button
                     x:Name="btnRemovePlayer"
                      Margin="0,0,0,10"
                     Grid.Row="1"
                     Grid.Column="1"
+                    Width="150"
+                    Height="40"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Background="Red"
@@ -183,7 +205,15 @@
                     FontFamily="Bahnschrift Condensed"
                     FontSize="16"
                     Foreground="White"
-                    Visibility="{Binding ShowList}" />
+                    Visibility="{Binding ShowList}" 
+                    BorderBrush="Transparent"
+                    >
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="20" />
+                        </Style>
+                    </Button.Resources>
+                </Button>
 
                 <Button
                     Width="150"
@@ -197,7 +227,13 @@
                     FontFamily="Bahnschrift Condensed"
                     FontSize="16"
                     Foreground="White"
-                    IsEnabled="{Binding CanStart}" />
+                    IsEnabled="{Binding CanStart}" >
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="20" />
+                        </Style>
+                    </Button.Resources>
+                </Button>
 
                 <Button
                     Width="150"
@@ -210,12 +246,15 @@
                     Content="Visa topplista"
                     FontFamily="Bahnschrift Condensed"
                     FontSize="16"
-                    Foreground="White" />
-
-
+                    Foreground="White" >
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="20" />
+                        </Style>
+                    </Button.Resources>
+                </Button>
 
             </StackPanel>
-
 
             <StackPanel Grid.Column="2">
                 <RadioButton
