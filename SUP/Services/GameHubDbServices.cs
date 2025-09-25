@@ -30,6 +30,9 @@ public class GameHubDbServices
     /// <exception cref="ArgumentNullException"></exception>
     public async Task<Player> GetOrCreatePlayerAsync(string nickname)
     {
+        //condition för singleplayer // multiplayer
+
+        
         if (string.IsNullOrWhiteSpace(nickname)) throw new ArgumentNullException(nameof(nickname)); //guard
 
             //statement 1 = om det inte redan finns en nickname som är det man skriver in

@@ -1,6 +1,7 @@
 ﻿using Npgsql;
 using PropertyChanged;
 using SUP.Commands;
+using SUP.Models;
 using SUP.Services;
 using SUP.Views;
 using System;
@@ -13,20 +14,29 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Xml.Serialization;
+
+
 
 namespace SUP.ViewModels
 {
     [AddINotifyPropertyChangedInterface]
     public class StartViewModel
     {
+
+        
+
         public bool IsLevelOneSelected { get; set; }
         public bool IsLevelTwoSelected { get; set; } = true;
         public bool IsLevelThreeSelected { get; set; }
 
         public List <string> PlayerList { get; set; } = [];
 
-        public string PlayerNameMessage { get; set; } //för binding i mainshellviewmodel
-        
+        public string PlayerNameMessage { get; set; }
+        private string playerName { get; set; }
+
+
+        public string MultiPlayerNameMessage { get; set; }
 
         public int level;
 
@@ -103,7 +113,6 @@ namespace SUP.ViewModels
             }
         }
 
-        private string playerName;
 
         public string PlayerName
         {
@@ -131,7 +140,12 @@ namespace SUP.ViewModels
 
         public ICommand StartGameCmd { get; }
         public ICommand HighScoreCmd { get; }
-        public ICommand AddPlayerCmd { get; }
+        public ICommand AddPlayerCmd { get; set; }
+
+
+        public MainShellViewModel MainShellVM  = new();
+        
+
 
 
         //sparar för att det ska fortsättas 
@@ -140,41 +154,137 @@ namespace SUP.ViewModels
         //private readonly string regexString = $"Tillåtna specialtecken: 0-9 . _ -";
         //private int maxLenght = 20;
 
-        
-        
-        public StartViewModel(ICommand startGameCmd, ICommand highScoreCmd )
+        private readonly GameHubDbServices _db;
+
+        public StartViewModel(ICommand startGameCmd, ICommand highScoreCmd, GameHubDbServices db)
         {
+            _db = db;
             HighScoreCmd = highScoreCmd;
 
-            
-            
-                AddPlayerCmd = new RelayCommand(p =>
+            //AddPlayerCmd = new RelayCommand(AddPlayer);
+
+
+            //knappen ska kontrollera texten
+            //om bra --> lägg till
+            // om dålig --> felmeddelande
+
+            //problem:
+            /*
+             * 1. den hoppar över metoden AddPlayer!!
+             */
+
+
+            AddPlayerCmd = new RelayCommand(CheckPlayerName);
+
+            //if(AddPlayer != null)
+            //{
+            //    if (PlayerList.Count < 2)
+            //    {
+            //        PlayerList.Add(PlayerName);
+            //        PlayerName = "";
+            //        PlayerList = PlayerList.ToList();
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("Nu är ni redan två spelare!!");
+            //    }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("test");//AddPlayerCmd = new RelayCommand(MainShellVM.AddPlayer);
+            //}
+
+
+
+                StartGameCmd = new RelayCommand(p =>
                 {
-                    if (PlayerList.Count < 2)
-                    {
-                        PlayerList.Add(PlayerName);
-                        PlayerName = "";
-                        PlayerList = PlayerList.ToList();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Nu är ni redan två spelare!!");
-                    }
-                });
-        
-
-
-
-        StartGameCmd = new RelayCommand(p =>
-            {
-                    if (string.IsNullOrWhiteSpace(PlayerName) && PlayerList.Count <2)
+                    if (string.IsNullOrWhiteSpace(PlayerName) && PlayerList.Count < 2)
                     {
                         MessageBox.Show("Vänligen ange ditt spelarnamn.", "Spelarnamn");
                         return;
                     }
-                startGameCmd.Execute(p);
-            });
+                    startGameCmd.Execute(p);
+                });
             Greeting = "Spelarnamn:";
         }
+
+        public Player player { get; set; } = new();
+
+        public async void CheckPlayerName(object parameter)
+        {
+            //lägg till knappen gör playername tom
+
+
+            //var player = await _db.GetOrCreatePlayerAsync(PlayerName);
+            
+
+
+            var multiplayerNameMessage = MainShellVM.GetPlayerNameMessage(PlayerName);
+            
+            if (multiplayerNameMessage != null)
+            {
+                MultiPlayerNameMessage = multiplayerNameMessage;
+                return;
+            }
+            else
+            {
+                if (PlayerList.Count < 2)
+                {
+                    PlayerList.Add(PlayerName);
+                    PlayerName = "";
+                    PlayerList = PlayerList.ToList();
+                }
+                else
+                {
+                    MessageBox.Show("Nu är ni redan två spelare!!");
+                }
+            }
+
+
+            //hur kan den åka in i Addplayer direkt?
+            //slå ihop metoderna?
+
+            //MainShellVM.AddPlayer();
+            //if (MainShellVM.AddPlayer == null)
+            //{
+            //    if (PlayerList.Count < 2)
+            //    {
+            //        PlayerList.Add(PlayerName);
+            //        PlayerName = "";
+            //        PlayerList = PlayerList.ToList();
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("Nu är ni redan två spelare!!");
+            //    }
+            //}
+            //else
+            //{
+            //    //MultiPlayerNameMessage = playerNameMessage;
+
+            //    MessageBox.Show("test");//AddPlayerCmd = new RelayCommand(MainShellVM.AddPlayer);
+            //}
+        }
+
+        //public async void AddPlayer(object parameter)
+        //{
+
+        //    var player = await _db.GetOrCreatePlayerAsync(PlayerName);
+        //    PlayerName = player.Nickname;
+
+        //    var playerNameMessage = MainShellVM.GetPlayerNameMessage(PlayerName);
+        //    if (playerNameMessage != null)
+        //    {
+                
+        //        MultiPlayerNameMessage = playerNameMessage;
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("addplayer test");
+        //    }
+
+        //}
+
     }
 }

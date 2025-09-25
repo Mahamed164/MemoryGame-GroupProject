@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Serialization;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace SUP.ViewModels
 {
@@ -79,7 +80,7 @@ namespace SUP.ViewModels
 
             _db = db;
 
-            _startview = new StartViewModel(StartGameCmd, HighScoreCmd);
+            _startview = new StartViewModel(StartGameCmd, HighScoreCmd, db);
 
             CurrentView = _startview;
             _audio = audioService;
@@ -114,49 +115,53 @@ namespace SUP.ViewModels
             string nameSpaceRegex = $"Ej mellanslag innan eller efter namn.  \n \n" +
                 $"Tillåtna specialtecken: 0-9 . _ -";
             
+            
 
-            if (PlayerName.Length > maxLenght)
+            if (inputName.Length > maxLenght)
             {
                 //_startview.PlayerNameMessage = nameToLong;
                 //MessageBox.Show(nameToLong);
                 return nameToLong;
             }
 
-            else if (PlayerName.StartsWith(" ") || PlayerName.EndsWith(" ") && !regex.IsMatch(PlayerName))
+            else if (inputName.StartsWith(" ") || inputName.EndsWith(" ") && !regex.IsMatch(inputName))
             {
                 //_startview.PlayerNameMessage = nameSpaceRegex;
                 //MessageBox.Show(nameSpaceRegex);
                 return nameSpaceRegex;
             }
 
-            else if (PlayerName.StartsWith(" ") || PlayerName.EndsWith(" "))
+            else if (inputName.StartsWith(" ") || inputName.EndsWith(" "))
             {
                 //_startview.PlayerNameMessage = nameSpace;
                 //MessageBox.Show(nameSpace);
                 return nameSpace;
             }
 
-            else if (PlayerName.StartsWith(" ") && PlayerName.EndsWith(" "))
+            else if (inputName.StartsWith(" ") && inputName.EndsWith(" "))
             {
                 //_startview.PlayerNameMessage = nameSpace;
                 //MessageBox.Show(nameSpace);
                 return nameSpace;
             }
 
-            else if (!regex.IsMatch(PlayerName))
+            else if (!regex.IsMatch(inputName))
             {
                 //_startview.PlayerNameMessage = nameRegex;
                 //MessageBox.Show(nameRegex);
                 return nameRegex;
             }
 
-            return null;
+            return null; 
 
         }
 
         public async void StartGame(object parameter)
         {
-            //int maxLenght = 20;
+            
+
+            //lägg till condition för single/multiplayer
+
             var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
             PlayerName = player.Nickname;
 
@@ -175,7 +180,34 @@ namespace SUP.ViewModels
 
         }
 
-        
+        //public async void AddPlayer()
+        //{
+
+        //    var player = await _db.GetOrCreatePlayerAsync(PlayerName);
+        //    PlayerName = player.Nickname;
+
+        //    var playerNameMessage = GetPlayerNameMessage(PlayerName);
+        //    if (playerNameMessage != null)
+        //    {
+
+        //        _startview.MultiPlayerNameMessage = playerNameMessage;
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("addplayer test");
+        //    }
+
+        //}
+
+        //public ICommand AddPlayerCmd { get; set; }
+
+
+
+
+
+
+
 
 
         public async void FinishGame(object parameter)
