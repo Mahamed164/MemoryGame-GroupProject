@@ -158,6 +158,12 @@ namespace SUP.ViewModels
 
         public async void StartGame(object parameter)
         {
+            if (_startview.IsMultiplayerSelected) 
+            {
+                CurrentView = new BoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd, _audio); 
+                return; 
+            }
+
             //int maxLenght = 20;
             var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
             PlayerName = player.Nickname;

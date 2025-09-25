@@ -151,6 +151,12 @@ namespace SUP.ViewModels
 
             AddPlayerCmd = new RelayCommand(p =>
             {
+
+                if (PlayerList.Contains(PlayerName))
+                {
+                    MessageBox.Show("Det namnet är redan taget! Välj ett annat.");
+                    return;
+                }
                 if (PlayerList.Count < 2)
                 {
                     PlayerList.Add(PlayerName);
@@ -159,7 +165,7 @@ namespace SUP.ViewModels
                 }
                 else
                 {
-                    MessageBox.Show("Nu är ni redan två spelare!!");
+                    MessageBox.Show("Nu är ni redan två spelare! Klicka på spela när ni är redo.");
                 }
             });
             RemovePlayerCmd = new RelayCommand(p =>
