@@ -39,6 +39,7 @@ namespace SUP.ViewModels
         public ICommand SaveCurrentScoreCmd { get; }
         public ICommand BackToStartCmd { get; }
         public ICommand ReturnCmd { get; }
+        public ICommand RulesCmd { get; }
 
 
         EndViewModel EndViewModel { get; set; }
@@ -78,11 +79,16 @@ namespace SUP.ViewModels
             HighScoreCmd = new RelayCommand(OpenHighScores);
             BackToStartCmd = new RelayCommand(BackToStart);
             ReturnCmd = new RelayCommand(Return);
-           
+
+            RulesCmd = new RelayCommand(_ =>
+            {
+                CurrentView = new RulesViewModel(BackToStartCmd);
+            });
+
 
             _db = db;
 
-            _startview = new StartViewModel(StartGameCmd, HighScoreCmd, db);
+            _startview = new StartViewModel(StartGameCmd, HighScoreCmd, RulesCmd, db);
 
             CurrentView = _startview;
             _audio = audioService;

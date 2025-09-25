@@ -144,6 +144,7 @@ namespace SUP.ViewModels
 
         public ICommand StartGameCmd { get; }
         public ICommand HighScoreCmd { get; }
+        public ICommand RulesCmd {  get; }
 
 
 
@@ -165,18 +166,17 @@ namespace SUP.ViewModels
 
         private readonly GameHubDbServices _db;
 
-        public StartViewModel(ICommand startGameCmd, ICommand highScoreCmd, GameHubDbServices db)
+        public StartViewModel(ICommand startGameCmd, ICommand highScoreCmd, ICommand rulesCmd, GameHubDbServices db)
 
         {
             _db = db;
             HighScoreCmd = highScoreCmd;
+            RulesCmd = rulesCmd;
 
 
             AddPlayerCmd = new RelayCommand(CheckPlayerName);
 
-                
-
-
+        
             RemovePlayerCmd = new RelayCommand(p =>
             {
 
