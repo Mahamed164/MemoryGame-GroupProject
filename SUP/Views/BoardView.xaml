@@ -149,7 +149,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button Command="{Binding ClickCommand}" BorderBrush="Transparent">
+                            <Button Command="{Binding ClickCommand}" BorderBrush="Transparent" Background="#FFFFFF">
 
                                 <Button.Content>
                                     <Border CornerRadius="20">
@@ -171,7 +171,7 @@
                                 <Button.Resources>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="BorderBrush" Value="Transparent"  /> <!--denna gör inget som syns-->
-                                        <Setter Property="Margin" Value="5"/>
+                                        <Setter Property="Margin" Value="7"/>
                                         <Setter Property="CornerRadius" Value="20"/>
                                     </Style>
                                 </Button.Resources>
