@@ -77,11 +77,18 @@
                 Height="40"
                 Margin="5"
                 Background="ForestGreen"
+                BorderBrush="Transparent"
                 Command="{Binding RestartCmd}"
                 Content="Spela igen"
                 FontFamily="Bahnschrift Condensed"
                 FontSize="16"
-                Foreground="White" />
+                Foreground="White" >
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="20" />
+                    </Style>
+                </Button.Resources>
+            </Button>
 
             <Button
                 Width="100"
@@ -92,7 +99,14 @@
                 Content="Startmeny"
                 FontFamily="Bahnschrift Condensed"
                 FontSize="16"
-                Foreground="White" />
+                Foreground="White"
+                BorderBrush="Transparent">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="20" />
+                    </Style>
+                </Button.Resources>
+            </Button>
             <Button
                 Width="100"
                 Height="40"
@@ -102,7 +116,14 @@
                 FontFamily="Bahnschrift Condensed"
                 FontSize="16"
                 Foreground="White"
-                Visibility="{Binding IsMultiplayer, Converter={StaticResource BoolToVisibilityConverter}}" />
+                BorderBrush="Transparent"
+                Visibility="{Binding IsMultiplayer, Converter={StaticResource BoolToVisibilityConverter}}" >
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="20" />
+                    </Style>
+                </Button.Resources>
+            </Button>
 
             <Button
                 Width="100"
@@ -114,7 +135,15 @@
                 FontFamily="Bahnschrift Condensed"
                 FontSize="16"
                 Foreground="White"
-                Visibility="{Binding IsMultiplayer, Converter={StaticResource BoolToVisibilityConverter}}" />
+                Visibility="{Binding IsMultiplayer, Converter={StaticResource BoolToVisibilityConverter}}"
+                BorderBrush="Transparent">
+                
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="20" />
+                    </Style>
+                </Button.Resources>
+            </Button>
 
             <!--
                 https://github.com/XamlAnimatedGif/WpfAnimatedGif/wiki
