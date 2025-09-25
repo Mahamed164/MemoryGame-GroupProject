@@ -37,6 +37,7 @@ namespace SUP.ViewModels
         public ICommand HighScoreCmd { get; }
         public ICommand SaveCurrentScoreCmd { get; }
         public ICommand BackToStartCmd { get; }
+        public ICommand ReturnCmd { get; }
 
 
         EndViewModel EndViewModel { get; set; }
@@ -75,6 +76,7 @@ namespace SUP.ViewModels
             SaveScoreCmd = new RelayCommand(SaveScore);
             HighScoreCmd = new RelayCommand(OpenHighScores);
             BackToStartCmd = new RelayCommand(BackToStart);
+            ReturnCmd = new RelayCommand(Return);
            
 
             _db = db;
@@ -274,10 +276,7 @@ namespace SUP.ViewModels
             LatestView = CurrentView;
             var players = await _db.GetPlayersForHighScoreAsync();
 
-            CurrentView = new HighScoreViewModel(new RelayCommand(p =>
-            {
-                CurrentView = LatestView;
-            }), players, level1Scores, level2Scores, level3Scores);
+            CurrentView = new HighScoreViewModel(ReturnCmd, players, level1Scores, level2Scores, level3Scores);
 
         }
         public void BackToStart(object parameter)
@@ -287,6 +286,10 @@ namespace SUP.ViewModels
             _startview.Greeting = "Spelarnamn:";
 
             CurrentView = _startview;
+        }
+        public void Return(object parameter)
+        {
+            CurrentView = LatestView;
         }
     }
 }
