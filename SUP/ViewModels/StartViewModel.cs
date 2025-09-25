@@ -23,10 +23,10 @@ namespace SUP.ViewModels
         public bool IsLevelTwoSelected { get; set; } = true;
         public bool IsLevelThreeSelected { get; set; }
 
-        public List <string> PlayerList { get; set; } = [];
+        public List<string> PlayerList { get; set; } = [];
 
         public string PlayerNameMessage { get; set; } //för binding i mainshellviewmodel
-        
+
 
         public int level;
 
@@ -60,14 +60,14 @@ namespace SUP.ViewModels
         }
         public bool IsSinglePlayerSelected { get; set; } = true;
         public bool IsMultiplayerSelected { get; set; }
-      
+
         public List<string> GetPlayerList()
         {
             if (IsSinglePlayerSelected == true)
             {
                 List<string> playerName = new List<string>();
                 playerName.Add(PlayerName);
-                return playerName; 
+                return playerName;
             }
             if (IsMultiplayerSelected == true)
             {
@@ -99,7 +99,7 @@ namespace SUP.ViewModels
                 {
                     return true;
                 }
-                    return false;
+                return false;
             }
         }
 
@@ -112,13 +112,13 @@ namespace SUP.ViewModels
             {
                 playerName = value;
 
-                if (string.IsNullOrEmpty(playerName) && PlayerList.Count ==0)
+                if (string.IsNullOrEmpty(playerName) && PlayerList.Count == 0)
                 {
                     Greeting = "Spelarnamn:";
                 }
                 else if (IsMultiplayerSelected == true)
                 {
-                    Greeting = "Hej " +  string.Join(" & ", PlayerList) + ", klicka på spela när du är redo!";
+                    Greeting = "Hej " + string.Join(" & ", PlayerList) + ", klicka på spela när du är redo!";
                 }
                 else
                 {
@@ -132,6 +132,7 @@ namespace SUP.ViewModels
         public ICommand StartGameCmd { get; }
         public ICommand HighScoreCmd { get; }
         public ICommand AddPlayerCmd { get; }
+        public ICommand RemovePlayerCmd { get; }
 
 
         //sparar för att det ska fortsättas 
@@ -140,41 +141,46 @@ namespace SUP.ViewModels
         //private readonly string regexString = $"Tillåtna specialtecken: 0-9 . _ -";
         //private int maxLenght = 20;
 
-        
-        
-        public StartViewModel(ICommand startGameCmd, ICommand highScoreCmd )
+
+
+        public StartViewModel(ICommand startGameCmd, ICommand highScoreCmd)
         {
             HighScoreCmd = highScoreCmd;
 
-            
-            
-                AddPlayerCmd = new RelayCommand(p =>
-                {
-                    if (PlayerList.Count < 2)
-                    {
-                        PlayerList.Add(PlayerName);
-                        PlayerName = "";
-                        PlayerList = PlayerList.ToList();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Nu är ni redan två spelare!!");
-                    }
-                });
-        
 
 
-
-        StartGameCmd = new RelayCommand(p =>
+            AddPlayerCmd = new RelayCommand(p =>
             {
-                    if (string.IsNullOrWhiteSpace(PlayerName) && PlayerList.Count <2)
-                    {
-                        MessageBox.Show("Vänligen ange ditt spelarnamn.", "Spelarnamn");
-                        return;
-                    }
-                startGameCmd.Execute(p);
+                if (PlayerList.Count < 2)
+                {
+                    PlayerList.Add(PlayerName);
+                    PlayerName = "";
+                    PlayerList = PlayerList.ToList();
+                }
+                else
+                {
+                    MessageBox.Show("Nu är ni redan två spelare!!");
+                }
             });
-            Greeting = "Spelarnamn:";
-        }
+            RemovePlayerCmd = new RelayCommand(p =>
+            {
+
+                MessageBox.Show($"Nu är spelaren {PlayerName} borttagen");
+                PlayerList.Remove(PlayerName);
+                PlayerList = PlayerList.ToList();
+            });
+
+                StartGameCmd = new RelayCommand(p =>
+                        {
+                            if (string.IsNullOrWhiteSpace(PlayerName) && PlayerList.Count < 2)
+                            {
+                                MessageBox.Show("Vänligen ange ditt spelarnamn.", "Spelarnamn");
+                                return;
+                            }
+                            startGameCmd.Execute(p);
+                        });
+                Greeting = "Spelarnamn:";
+            }
     }
+    
 }
