@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <None Remove="Assets\Gifs\congratulations-7600.gif" />
+    <None Remove="Assets\Images\backside.jpg" />
     <None Remove="Assets\Images\image11.png" />
     <None Remove="Assets\Images\image12.png" />
     <None Remove="Assets\Images\image13.png" />
@@ -37,6 +38,9 @@
     <Content Include="Assets\Sounds\Sfx\victory.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Assets\Images\backside.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\ViewDesign\infoicon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -69,7 +73,6 @@
     <Resource Include="Assets\Gifs\congratulations-7600.gif">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Assets\Images\backside.jpg" />
     <Resource Include="Assets\Images\image1.png" />
     <Resource Include="Assets\Images\image10.png" />
     <Resource Include="Assets\Images\image11.png">
