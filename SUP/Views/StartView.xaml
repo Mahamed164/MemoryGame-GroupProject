@@ -303,10 +303,11 @@
                     GroupName="Level"
                     IsChecked="{Binding IsLevelThreeSelected}" />
                 <Button
-                    Width="100"
-                    Height="100"
-                    HorizontalAlignment="Right"
-                    Margin="0,150,0,0"
+                    Width="50"
+                    Height="50"
+                    HorizontalAlignment="right"
+                    VerticalAlignment="Top"
+                    Margin="0,-190,10,0"
                     Background="Transparent"
                     BorderBrush="Transparent"
                     Command="{Binding RulesCmd}"
