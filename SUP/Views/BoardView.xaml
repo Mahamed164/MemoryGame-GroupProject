@@ -15,7 +15,7 @@
         <converters:FaceUpImageConverter x:Key="FaceUpImageConverter" />
 
         <!--  Detta är kopierat från HumanBenchMark  -->
-        <Style TargetType="Button">
+        <!--<Style TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Margin" Value="0" />
             <Setter Property="Template">
@@ -37,7 +37,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style>-->
     </UserControl.Resources>
 
     <Grid>
@@ -75,8 +75,8 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="{Binding PlayerOneLabel, FallbackValue=Spelarens namn}"
-            FontSize="18"
-            FontFamily="Bahnschrift Condensed"
+            FontSize="13"
+            FontFamily="Bahnschrift"
             FontWeight="{Binding PlayerOneHighlighted, FallbackValue=normal}" />
         <Label
             Grid.Row="1"
@@ -84,8 +84,8 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="{Binding PlayerTwoLabel, FallbackValue=Spelarens namn}"
-            FontSize="18"
-            FontFamily="Bahnschrift Condensed"
+            FontSize="13"
+            FontFamily="Bahnschrift"
             FontWeight="{Binding PlayerTwoHighlighted, FallbackValue=normal}" />
         <Button
             Grid.Row="2"
@@ -99,7 +99,14 @@
             Content="Börja om"
             FontFamily="Bahnschrift Condensed"
             FontSize="16"
-            Foreground="White" />
+            Foreground="White"
+            BorderBrush="Transparent">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="20" />
+                </Style>
+            </Button.Resources>
+        </Button>
 
         <Button
             Grid.Row="2"
@@ -113,9 +120,14 @@
             Content="Startmeny"
             FontFamily="Bahnschrift Condensed"
             FontSize="16"
-            Foreground="White" />
-
-
+            Foreground="White"
+            BorderBrush="Transparent">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="20" />
+                </Style>
+            </Button.Resources>
+        </Button>
 
         <Viewbox
             Grid.Row="1"
@@ -123,6 +135,11 @@
             VerticalAlignment="Center"
             Stretch="Uniform">
             <Grid>
+                <Border x:Name="Radius" CornerRadius="20">
+                    
+                </Border>
+                
+                    
                 <ItemsControl ItemsSource="{Binding Cards}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -132,20 +149,32 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button Command="{Binding ClickCommand}">
+                            <Button Command="{Binding ClickCommand}" BorderBrush="Transparent">
+
                                 <Button.Content>
+                                    <Border CornerRadius="20">
                                     <Image
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         Stretch="Uniform">
+
                                         <Image.Source>
+                                            
                                             <MultiBinding Converter="{StaticResource FaceUpImageConverter}">
                                                 <Binding Path="FaceUp" />
                                                 <Binding Path="Image" />
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
+                                    </Border>
                                 </Button.Content>
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="BorderBrush" Value="Transparent"  /> <!--denna gör inget som syns-->
+                                        <Setter Property="Margin" Value="5"/>
+                                        <Setter Property="CornerRadius" Value="20"/>
+                                    </Style>
+                                </Button.Resources>
                             </Button>
                             <!--  MiltiValueConverting  -->
                             <!--  https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.multibinding?view=windowsdesktop-9.0  -->
@@ -158,6 +187,7 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+                
             </Grid>
         </Viewbox>
     </Grid>

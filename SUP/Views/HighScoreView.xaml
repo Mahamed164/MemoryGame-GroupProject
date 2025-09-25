@@ -104,7 +104,7 @@
             </ListView.View>
         </ListView>
 
-        <Button
+        <Button 
             Grid.Row="2"
             Width="150"
             Height="40"
@@ -117,7 +117,18 @@
             Content="Tillbaka till spelet"
             FontFamily="Bahnschrift Condensed"
             FontSize="16"
-            Foreground="White" />
+            Foreground="White">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="20" />
+                </Style>       
+            </Button.Resources>
+        </Button>
+            
+            
+
+        
+        
 
     </Grid>
 </UserControl>
