@@ -38,34 +38,76 @@
 
         <Button
             Grid.Row="2"
-            Width="100"
+            Width="150"
             Height="40"
-            Margin="5"
-            HorizontalAlignment="left"
+            Margin="10,7,10,10"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
             Background="CornflowerBlue"
             Command="{Binding BackToStartCmd}"
             Content="Startmeny"
             FontFamily="Bahnschrift Condensed"
             FontSize="16"
-            Foreground="White" />
-        <TextBox
+            Foreground="White">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="20" />
+                </Style>
+            </Button.Resources>
+        </Button>
+        <!--<Button 
+      Grid.Row="2"
+      Width="150"
+      Height="40"
+      Margin="10,7,10,10"
+      Padding="20,0"
+      HorizontalAlignment="Right"
+      VerticalAlignment="Center"
+      Background="ForestGreen"
+      Command="{Binding ReturnCmd}"
+      Content="Tillbaka till spelet"
+      FontFamily="Bahnschrift Condensed"
+      FontSize="16"
+      Foreground="White">-->
+
+
+            <TextBlock
             Grid.Row="1"
             Width="300"
             Height="340"
+            Margin="330,0,0,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam et dolor in ligula tempus mattis vel nec quam. Vivamus nec arcu congue, mollis sapien et, luctus enim. Nam magna sapien, aliquam vitae tincidunt fringilla, egestas eu dui. Vivamus a congue massa. Duis ut mi sit amet nisi fermentum posuere a aliquet elit. Morbi fermentum condimentum dolor, in vehicula ex lobortis eget. Fusce interdum dictum sapien, a convallis nisi vestibulum vel. Nam ac augue gravida, tempor justo in, sagittis ante. In semper erat in mauris ultricies congue."
-            TextWrapping="Wrap"
-            Margin="330,0,0,0" Opacity="0.4"/>
-        <TextBox
+            Background="White"
+            Opacity="0.4">
+            <!--  https://stackoverflow.com/questions/26337355/textblock-text-with-multiple-font-properties  -->
+            <Run
+                FontSize="18"
+                FontWeight="Bold"
+                Text=" Regler för Memory" />
+            <Run
+                FontSize="14"
+                FontWeight="SemiBold"
+                Text="&#x0a;&#x0a; • Vänd två kort per drag&#x0a; • Om korten matchar får du behålla paret&#x0a; • Om korten inte matchar vänds de tillbaka&#x0a; • Spelet är slut när du har vänt upp alla kort&#x0a;&#x0a; • Placeringen i topplistan baseras på:&#x0a;      1. Minst antal drag&#x0a;      2. Minst antal missade drag&#x0a;      3. Kortast tid&#x0a;&#x0a; • I multiplayer är vinnaren den med högst&#x0a;   precision, och vid lika den med färre antal&#x0a;   drag" />
+
+        </TextBlock>
+        <TextBlock
             Grid.Row="1"
             Width="300"
             Height="340"
             Margin="0,0,330,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam et dolor in ligula tempus mattis vel nec quam. Vivamus nec arcu congue, mollis sapien et, luctus enim. Nam magna sapien, aliquam vitae tincidunt fringilla, egestas eu dui. Vivamus a congue massa. Duis ut mi sit amet nisi fermentum posuere a aliquet elit. Morbi fermentum condimentum dolor, in vehicula ex lobortis eget. Fusce interdum dictum sapien, a convallis nisi vestibulum vel. Nam ac augue gravida, tempor justo in, sagittis ante. In semper erat in mauris ultricies congue."
-            
-            TextWrapping="Wrap" Opacity="0.4" />
+            Background="White"
+            Opacity="0.4">
+            <Run
+                FontSize="18"
+                FontWeight="Bold"
+                Text=" Hur man börjar spela" />
+            <Run
+                FontSize="14"
+                FontWeight="SemiBold"
+                Text="&#x0a;&#x0a; 1. Välj antal spelare&#x0a; 2. Välj svårighetsgrad (12, 20, eller 30 kort)&#x0a; 3. Skriv in spelarnamn&#x0a; 4. Klicka på 'Spela' för att starta!  &#x0a;"/>
+        </TextBlock>
     </Grid>
 </UserControl>
