@@ -130,30 +130,36 @@
                     Text="{Binding Greeting, UpdateSourceTrigger=PropertyChanged, FallbackValue=Spelarnamn:}"
                     TextWrapping="Wrap" />
 
-                <Border Background="FloralWhite" BorderBrush="HotPink"  CornerRadius="10" BorderThickness="3" Margin="20,-5,20,10" Height="50">
-                 
-                <TextBox
-                    x:Name="txtPlayerName"
-                    SelectionBrush="Transparent"
-                    BorderThickness="0"
-                    Height="40"
-                    Margin="20,7.5,20,10"
-                    HorizontalAlignment="Stretch"
-                    Background="Transparent"
-                    BorderBrush="Transparent"
-                    FontSize="20"
-                    Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}" >
+                <Border
+                    Height="50"
+                    Margin="20,-5,20,10"
+                    Background="FloralWhite"
+                    BorderBrush="HotPink"
+                    BorderThickness="3"
+                    CornerRadius="10">
+
+                    <TextBox
+                        x:Name="txtPlayerName"
+                        Height="40"
+                        Margin="20,7.5,20,10"
+                        HorizontalAlignment="Stretch"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        FontSize="20"
+                        SelectionBrush="Transparent"
+                        Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.Style>
-                            <Style/>
+                            <Style />
                         </TextBox.Style>
 
                     </TextBox>
                 </Border>
-                
+
                 <Label
                     Grid.Column="1"
                     Width="auto"
-                     Margin="0,10,0,10"
+                    Margin="0,10,0,10"
                     HorizontalAlignment="Center"
                     Content="{Binding PlayerNameMessage}"
                     Foreground="MediumVioletRed" />
@@ -161,29 +167,28 @@
                 <Label
                     Grid.Column="1"
                     Width="auto"
-                  Margin="0,10,0,10"
+                    Margin="0,10,0,10"
                     HorizontalAlignment="Center"
                     Content="{Binding MultiPlayerNameMessage}"
                     Foreground="MediumVioletRed" />
 
                 <Button
                     x:Name="btnAddPlayer"
-                     Margin="0,0,0,10"
                     Grid.Row="1"
                     Grid.Column="1"
                     Width="150"
                     Height="40"
+                    Margin="0,0,0,10"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Background="DodgerBlue"
+                    BorderBrush="Transparent"
                     Command="{Binding AddPlayerCmd}"
                     Content="Lägg till spelare"
                     FontFamily="Bahnschrift Condensed"
                     FontSize="16"
                     Foreground="White"
-                    BorderBrush="Transparent"
-                    Visibility="{Binding ShowList}"
-                    >
+                    Visibility="{Binding ShowList}">
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
                             <Setter Property="CornerRadius" Value="20" />
@@ -192,22 +197,21 @@
                 </Button>
                 <Button
                     x:Name="btnRemovePlayer"
-                     Margin="0,0,0,10"
                     Grid.Row="1"
                     Grid.Column="1"
                     Width="150"
                     Height="40"
+                    Margin="0,0,0,10"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Background="Red"
+                    BorderBrush="Transparent"
                     Command="{Binding RemovePlayerCmd}"
                     Content="Ta bort spelare"
                     FontFamily="Bahnschrift Condensed"
                     FontSize="16"
                     Foreground="White"
-                    Visibility="{Binding ShowList}" 
-                    BorderBrush="Transparent"
-                    >
+                    Visibility="{Binding ShowList}">
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
                             <Setter Property="CornerRadius" Value="20" />
@@ -227,7 +231,7 @@
                     FontFamily="Bahnschrift Condensed"
                     FontSize="16"
                     Foreground="White"
-                    IsEnabled="{Binding CanStart}" >
+                    IsEnabled="{Binding CanStart}">
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
                             <Setter Property="CornerRadius" Value="20" />
@@ -246,7 +250,7 @@
                     Content="Visa topplista"
                     FontFamily="Bahnschrift Condensed"
                     FontSize="16"
-                    Foreground="White" >
+                    Foreground="White">
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
                             <Setter Property="CornerRadius" Value="20" />
@@ -298,6 +302,21 @@
                     Foreground="White"
                     GroupName="Level"
                     IsChecked="{Binding IsLevelThreeSelected}" />
+                <Button
+                    Width="100"
+                    Height="100"
+                    HorizontalAlignment="Right"
+                    Margin="0,150,0,0"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Command="{Binding RulesCmd}"
+                    FontFamily="Bahnschrift Condensed"
+                    FontSize="16"
+                    Foreground="White">
+                    <Button.Content>
+                        <Image Source="/Assets/ViewDesign/infoicon.png" Stretch="Uniform" />
+                    </Button.Content>
+                </Button>
             </StackPanel>
         </Grid>
     </Grid>
