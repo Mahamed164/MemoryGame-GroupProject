@@ -172,147 +172,11 @@ namespace SUP.ViewModels
             HighScoreCmd = highScoreCmd;
 
 
-            //AddPlayerCmd = new RelayCommand(AddPlayer);
-
-
-            //knappen ska kontrollera texten
-            //om bra --> lägg till
-            // om dålig --> felmeddelande
-
-            //problem:
-            /*
-             * 1. den hoppar över metoden AddPlayer!!
-             */
-
-
             AddPlayerCmd = new RelayCommand(CheckPlayerName);
 
-            //if(AddPlayer != null)
-            //{
-            //    if (PlayerList.Count < 2)
-            //    {
-            //        PlayerList.Add(PlayerName);
-            //        PlayerName = "";
-            //        PlayerList = PlayerList.ToList();
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("Nu är ni redan två spelare!!");
-            //    }
-            //}
-            //else
-            //{
-            //    MessageBox.Show("test");//AddPlayerCmd = new RelayCommand(MainShellVM.AddPlayer);
-            //}
-
-
-
-                StartGameCmd = new RelayCommand(p =>
-                {
-                    if (string.IsNullOrWhiteSpace(PlayerName) && PlayerList.Count < 2)
-                    {
-                        MessageBox.Show("Vänligen ange ditt spelarnamn.", "Spelarnamn");
-                        return;
-                    }
-                    startGameCmd.Execute(p);
-                });
-            Greeting = "Spelarnamn:";
-        }
-
-        public Player player { get; set; } = new();
-
-        public async void CheckPlayerName(object parameter)
-        {
-            //lägg till knappen gör playername tom
-
-
-            //var player = await _db.GetOrCreatePlayerAsync(PlayerName);
-            
-
-
-            var multiplayerNameMessage = MainShellVM.GetPlayerNameMessage(PlayerName);
-            
-            if (multiplayerNameMessage != null)
-            {
-                MultiPlayerNameMessage = multiplayerNameMessage;
-                return;
-            }
-            else
-            {
-
-
-
-            AddPlayerCmd = new RelayCommand(p =>
-            {
-
-                if (PlayerList.Contains(PlayerName))
-                {
-                    MessageBox.Show("Det namnet är redan taget! Välj ett annat.");
-                    return;
-                }
-
-                if (PlayerList.Count < 2)
-                {
-                    PlayerList.Add(PlayerName);
-                    PlayerName = "";
-                    PlayerList = PlayerList.ToList();
-                }
-                else
-                {
-
-                }
-            }
-
-
-            //hur kan den åka in i Addplayer direkt?
-            //slå ihop metoderna?
-
-            //MainShellVM.AddPlayer();
-            //if (MainShellVM.AddPlayer == null)
-            //{
-            //    if (PlayerList.Count < 2)
-            //    {
-            //        PlayerList.Add(PlayerName);
-            //        PlayerName = "";
-            //        PlayerList = PlayerList.ToList();
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("Nu är ni redan två spelare!!");
-            //    }
-            //}
-            //else
-            //{
-            //    //MultiPlayerNameMessage = playerNameMessage;
-
-            //    MessageBox.Show("test");//AddPlayerCmd = new RelayCommand(MainShellVM.AddPlayer);
-            //}
-        }
-
-        //public async void AddPlayer(object parameter)
-        //{
-
-        //    var player = await _db.GetOrCreatePlayerAsync(PlayerName);
-        //    PlayerName = player.Nickname;
-
-        //    var playerNameMessage = MainShellVM.GetPlayerNameMessage(PlayerName);
-        //    if (playerNameMessage != null)
-        //    {
                 
-        //        MultiPlayerNameMessage = playerNameMessage;
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("addplayer test");
-        //    }
-
-        //}
 
 
-                    MessageBox.Show("Nu är ni redan två spelare! Klicka på spela när ni är redo.");
-                }
-            });
             RemovePlayerCmd = new RelayCommand(p =>
             {
 
@@ -321,17 +185,45 @@ namespace SUP.ViewModels
                 PlayerList = PlayerList.ToList();
             });
 
-                StartGameCmd = new RelayCommand(p =>
-                        {
-                            if (string.IsNullOrWhiteSpace(PlayerName) && PlayerList.Count < 2)
-                            {
-                                MessageBox.Show("Vänligen ange ditt spelarnamn.", "Spelarnamn");
-                                return;
-                            }
-                            startGameCmd.Execute(p);
-                        });
-                Greeting = "Spelarnamn:";
+            StartGameCmd = new RelayCommand(p =>
+            {
+                if (string.IsNullOrWhiteSpace(PlayerName) && PlayerList.Count < 2)
+                {
+                    MessageBox.Show("Vänligen ange ditt spelarnamn.", "Spelarnamn");
+                    return;
+                }
+                startGameCmd.Execute(p);
+            });
+            Greeting = "Spelarnamn:";
+        }
+
+        
+        public Player player { get; set; } = new();
+
+        public async void CheckPlayerName(object parameter)
+        {
+            var multiplayerNameMessage = MainShellVM.GetPlayerNameMessage(PlayerName);
+
+            if (multiplayerNameMessage != null)
+            {
+                MultiPlayerNameMessage = multiplayerNameMessage;
+                return;
             }
+            else
+            {
+                if (PlayerList.Count < 2)
+                {
+                    PlayerList.Add(PlayerName);
+                    PlayerName = "";
+                    PlayerList = PlayerList.ToList();
+                }
+                else
+                {
+                    MessageBox.Show("Nu är ni redan två spelare!!");
+                }
+            }
+
+        }
 
     }
     
