@@ -107,6 +107,7 @@
                     FontSize="18"
                     Foreground="Purple"
                     ItemsSource="{Binding PlayerList}"
+                    SelectedItem="{Binding PlayerName}"
                     Visibility="{Binding ShowList}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -146,6 +147,18 @@
                     Background="DodgerBlue"
                     Command="{Binding AddPlayerCmd}"
                     Content="Lägg till spelare"
+                    FontFamily="Bahnschrift Condensed"
+                    FontSize="16"
+                    Foreground="White"
+                    Visibility="{Binding ShowList}" />
+                <Button
+                    x:Name="btnRemovePlayer"
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Background="Red"
+                    Command="{Binding RemovePlayerCmd}"
+                    Content="Ta bort spelare"
                     FontFamily="Bahnschrift Condensed"
                     FontSize="16"
                     Foreground="White"
