@@ -38,13 +38,13 @@ public class GameHubDbServices
             //statement 1 = om det inte redan finns en nickname som är det man skriver in
             const string trySqlStmt = @"insert into player(nickname) 
                                  select @nickname where not exists
-                                (select 1 from player where nickname = @nickname)
+                                (select 1 from player where lower(nickname) = lower(@nickname))
                                 returning player_id, nickname"; //försöker insert, men det funkar bara om nickname inte redan finns
 
         //statement 2 = hämtar id och nickname på spelare där nickname i databasen är det samma som man skriver in i spelet (@nickname) -- istället för att insert
         const string selectSqlStmt = @"select player_id, nickname
                                     from player
-                                    where nickname = @nickname";
+                                    where LOWER(nickname) = LOWER(@nickname)";
 
         /* https://stackoverflow.com/questions/1952922/how-to-insert-a-record-or-update-if-it-already-exists
          * https://www.sqltutorial.net/not-exists.html -- where not exists: "The subquery must return no result for the NOT EXISTS operator to be true. 
