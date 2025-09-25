@@ -44,25 +44,26 @@ namespace SUP.ViewModels
 
         EndViewModel EndViewModel { get; set; }
         private StartViewModel _startview;
-        
+
 
         public int Misses { get; set; }
         public int Moves { get; set; }
 
         public string TimerText { get; set; }
-        public string PlayerName { get; set; } 
+        public string PlayerName { get; set; }
         public int PlayerID { get; set; }
 
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public int SelectedLevel { get; set; }
-        
+        public int CurrentSessionId { get; set; }
+
         private readonly GameHubDbServices _db;
         private readonly IAudioService _audio;
         List<SessionScores> _highScores;
 
         //från human benchmark video 8
-        private void OnMusicVolumeChanged() { _audio.SetMusicVolume((float)MusicVolume); } 
+        private void OnMusicVolumeChanged() { _audio.SetMusicVolume((float)MusicVolume); }
         private void OnSfxVolumeChanged() { _audio.SetSfxVolume((float)SfxVolume); }
         private void OnMusicMutedChanged() { _audio.SetMusicMuted(MusicMuted); }
         private void OnSfxMutedChanged() { _audio.SetSfxMuted(SfxMuted); }
@@ -92,7 +93,7 @@ namespace SUP.ViewModels
 
             CurrentView = _startview;
             _audio = audioService;
-            
+
             _audio.SetMusicLoop("Assets/Sounds/game-mode-on-356552.mp3", autoPlay: true);
             ApplyAudioSettings();
         }
@@ -122,8 +123,8 @@ namespace SUP.ViewModels
             string nameRegex = $"Ej tillånta tecken. \r\n{regexString}";
             string nameSpaceRegex = $"Ej mellanslag innan eller efter namn.  \n \n" +
                 $"Tillåtna specialtecken: 0-9 . _ -";
-            
-            
+
+
 
             if (inputName.Length > maxLenght)
             {
@@ -160,17 +161,17 @@ namespace SUP.ViewModels
                 return nameRegex;
             }
 
-            return null; 
+            return null;
 
         }
 
         public async void StartGame(object parameter)
         {
 
-            if (_startview.IsMultiplayerSelected) 
+            if (_startview.IsMultiplayerSelected)
             {
-                CurrentView = new BoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd, _audio); 
-                return; 
+                CurrentView = new BoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd, _audio);
+                return;
             }
 
             //int maxLenght = 20;
@@ -179,7 +180,7 @@ namespace SUP.ViewModels
             PlayerName = player.Nickname;
 
             var playerNameMessage = GetPlayerNameMessage(PlayerName);
-            if(playerNameMessage != null)
+            if (playerNameMessage != null)
             {
                 _startview.PlayerNameMessage = playerNameMessage;
                 return;
@@ -238,7 +239,7 @@ namespace SUP.ViewModels
             if (_startview.IsMultiplayerSelected)
             {
                 PlayerInformation winningPlayer = GetMultiplayerWinner(players);
-      
+
                 EndViewModel = MultiplayerEndViewModel(winningPlayer);
             }
             else
@@ -247,13 +248,15 @@ namespace SUP.ViewModels
                 PlayerName = player.Nickname;
                 PlayerID = player.Id;
 
-                EndViewModel = SingleplayerEndViewModel();
+                EndViewModel = await SingleplayerEndViewModel();
             }
             CurrentView = EndViewModel;
         }
 
-        private EndViewModel SingleplayerEndViewModel()
+        private async Task<EndViewModel> SingleplayerEndViewModel()
         {
+
+            CurrentSessionId = await _db.GetNewSessionId(StartTime, EndTime);
             return new EndViewModel(Misses, Moves, false, TimerText, StartTime, EndTime,
                                          SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd, audioService: _audio);
         }
@@ -308,7 +311,7 @@ namespace SUP.ViewModels
             {
                 timeAsInt = (int)span.TotalSeconds;
             }
-            _db.SaveFullGameSession(StartTime, EndTime, PlayerID, timeAsInt, Moves, Misses, SelectedLevel);
+            _db.SaveFullGameSession(CurrentSessionId, StartTime, EndTime, PlayerID, timeAsInt, Moves, Misses, SelectedLevel);
         }
         public async void OpenHighScores(object parameter)
         {

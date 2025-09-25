@@ -86,7 +86,7 @@ public class BoardViewModel : ISupportsCardInput
         BackToStartCmd = backToStartCmd;
 
         ConfigureCards();
-
+        
         timer.Reset();
         UpdateTimer();
 
