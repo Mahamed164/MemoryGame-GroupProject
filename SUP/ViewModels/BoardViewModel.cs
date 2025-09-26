@@ -26,13 +26,13 @@ namespace SUP.ViewModels;
 [AddINotifyPropertyChangedInterface]
 public class BoardViewModel : ISupportsCardInput
 {
-    //ICOMMANDS
+    // Commands
     public ICommand PressCardIndexCommand { get; }
     public ICommand FinishGameCommand { get; }
     public ICommand RestartCmd { get; }
     public ICommand BackToStartCmd { get; }
 
-    //Prop
+    // Properties
     public MainShellViewModel MainShellVM { get; set; } = new();
     public int Level { get; set; } = 2; //den börjar på 2
     public PlayerInformation[] Players { get; set; }
@@ -44,18 +44,18 @@ public class BoardViewModel : ISupportsCardInput
     public DateTime EndTime { get; set; }
     public string TimerText { get; set; } = "00:00";
 
-    //Variabler
+    // Variabler
     public GameTimer timer = new GameTimer();
     public bool hasStarted = false;
     public int CurrentPlayer;
     int completedPairs;
     int numOffGuesses;
-    private List<CardViewModel> turnedCards = new();
-    List<Cards> _cards = new List<Cards>();// detta är en variabel som vi använder för att kunna skapa en lista med korrekt antal kort beroende på levelval
-    public ObservableCollection<CardViewModel> Cards { get; } = new();//De kort som visas på memorybrädet
 
+    private List<CardViewModel> turnedCards = new(); // Lista över alla vända kort
+    List<Cards> _cards = new List<Cards>(); // Lista med kort som innehåller datan från Cards-Model
+    public ObservableCollection<CardViewModel> Cards { get; } = new(); // De kort som visas på memorybrädet
 
-    //LJUDRELATERAT
+    // Ljudrelaterat
     private readonly IAudioService _audio;
     public event Action<string>? RequestStepSound;
 
@@ -122,11 +122,7 @@ public class BoardViewModel : ISupportsCardInput
             hasStarted = true;
         }
         await TurnCardsAsync(card);
-
-
-
         CheckForCompletion();
-
     }
 
     private async void CheckForCompletion()
@@ -173,7 +169,7 @@ public class BoardViewModel : ISupportsCardInput
         numOffGuesses++;
         Players[CurrentPlayer].Guesses++;
 
-        // om korten inte matchar vänd tillbaka
+        // Om korten inte matchar vänd tillbaka
         if (turnedCards[0].Id != turnedCards[1].Id)
         {
             await Task.Delay(800);
@@ -232,7 +228,6 @@ public class BoardViewModel : ISupportsCardInput
                 {
                     CreateStringBuilderForPlayerLabel(stringBuilder, player);
 
-
                     if (player == Players[1])
                     {
                         PlayerTwoLabel = stringBuilder.ToString();
@@ -245,9 +240,7 @@ public class BoardViewModel : ISupportsCardInput
                     }
                 }
             }
-
         }
-
     }
 
     private static void CreateStringBuilderForPlayerLabel(StringBuilder stringBuilder, PlayerInformation player)
@@ -274,7 +267,6 @@ public class BoardViewModel : ISupportsCardInput
         {
             Cards.Add(new CardViewModel(card, OnButtonClicked));
         }
-
     }
 
     public List<Cards> CreatePairsFromLevel(int level)
@@ -300,6 +292,11 @@ public class BoardViewModel : ISupportsCardInput
                 // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/switch-expression 
                 // https://www.w3schools.com/cs/cs_switch.php
         }
+        return AddCards(random, numberOfCardPairs);
+    }
+
+    private List<Cards> AddCards(Random random, int numberOfCardPairs)
+    {
         for (int i = 0; i < numberOfCardPairs; i++)
         {
             _cards.Add(new Cards(i));

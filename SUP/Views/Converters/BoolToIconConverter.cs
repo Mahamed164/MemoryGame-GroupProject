@@ -15,7 +15,11 @@ namespace SUP.Views.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value is not bool isMuted) return Binding.DoNothing;
+            if (value is not bool isMuted)
+            {
+                return Binding.DoNothing;
+            }
+
             if (isMuted)
             {
                 return new Uri(OffUri, UriKind.Relative);

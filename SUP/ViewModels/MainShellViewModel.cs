@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Configuration;
 using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace SUP.ViewModels
     [AddINotifyPropertyChangedInterface]
     public class MainShellViewModel
     {
+        // Commands
         public ICommand StartGameCmd { get; }
         public ICommand FinishGameCmd { get; }
         public ICommand RestartCmd { get; }
@@ -33,13 +35,12 @@ namespace SUP.ViewModels
         public ICommand RulesCmd { get; }
 
 
-
-
-        //från human benchmark video 8
+        //Ljud - Från human benchmark video 8
         public double MusicVolume { get; set; } = 0.25;
         public double SfxVolume { get; set; } = 0.50;
         public bool MusicMuted { get; set; } = false;
         public bool SfxMuted { get; set; } = false;
+
 
         EndViewModel EndViewModel { get; set; }
         public object CurrentView { get; set; }
@@ -47,13 +48,12 @@ namespace SUP.ViewModels
         public int Moves { get; set; }
         public string TimerText { get; set; }
         public string PlayerName { get; set; }
-        //public int PlayerID { get; set; }
+        public int PlayerID { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public int SelectedLevel { get; set; }
-        //public int CurrentSessionId { get; set; }
+        public int CurrentSessionId { get; set; }
         public Result CurrentResult { get; set; }
-        public IdForPlayerAndSession IdForPlayerAndSession { get; set; }
 
         private readonly GameHubDbServices _db;
         private readonly IAudioService _audio;
@@ -74,13 +74,7 @@ namespace SUP.ViewModels
             HighScoreCmd = new RelayCommand(OpenHighScores);
             BackToStartCmd = new RelayCommand(BackToStart);
             ReturnCmd = new RelayCommand(Return);
-
-            RulesCmd = new RelayCommand(_ =>
-            {
-                CurrentView = new RulesViewModel(BackToStartCmd);
-            });
-
-            IdForPlayerAndSession = new IdForPlayerAndSession(0,0);
+            RulesCmd = new RelayCommand(OpenRules);
 
             _db = db;
 
@@ -93,7 +87,7 @@ namespace SUP.ViewModels
             ApplyAudioSettings();
         }
 
-        private void ApplyAudioSettings() //metod för att höja, sänka och mute/unmute
+        private void ApplyAudioSettings() // Metod för att höja, sänka och mute/unmute
         {
             _audio.SetMusicVolume((float)MusicVolume);
             _audio.SetSfxVolume((float)SfxVolume);
@@ -111,14 +105,11 @@ namespace SUP.ViewModels
 
         public string? ControlPlayerNameMessage(string inputName) //kan vara null
         {
-            //string meddelanden som ska kopplas bindings till i startview
-
             string nameToLong = "För långt namn, max antal karaktärer är 20";
             string nameSpace = "Ej mellanslag före eller efter namn";
             string nameRegex = $"Ej tillåtna tecken! \r\n{regexString}";
             string nameSpaceRegex = $"Ej mellanslag före eller efter namn.  \n \n" +
                 $"Tillåtna specialtecken: 0-9 . _ -";
-
 
             if (inputName.Length > maxLenght)
             {
@@ -144,14 +135,11 @@ namespace SUP.ViewModels
             {
                 return nameRegex;
             }
-
             return null;
-
         }
 
         public async void StartGame(object parameter)
         {
-
             if (_startview.IsMultiplayerSelected)
             {
                 CurrentView = new BoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd, _audio);
@@ -167,13 +155,10 @@ namespace SUP.ViewModels
             {
                 return;
             }
-
             else
             {
                 CurrentView = new BoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd, _audio);
-
             }
-
         }
 
         public async void FinishGame(object parameter)
@@ -193,7 +178,7 @@ namespace SUP.ViewModels
             {
                 var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
                 PlayerName = player.Nickname;
-                IdForPlayerAndSession.PlayerId = player.Id;
+                PlayerID = player.Id;
 
                 EndViewModel = await SingleplayerEndViewModel();
             }
@@ -202,7 +187,7 @@ namespace SUP.ViewModels
 
         private async Task<EndViewModel> SingleplayerEndViewModel()
         {
-            IdForPlayerAndSession.SessionId = 0;
+            CurrentSessionId = 0;
             return new EndViewModel(CurrentResult, false, SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd, null, _audio);
         }
 
@@ -232,17 +217,27 @@ namespace SUP.ViewModels
         {
             CurrentView = new BoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd, _audio);
         }
-
+        public void OpenRules (object parameter)
+        {
+            CurrentView = new RulesViewModel(BackToStartCmd);
+        }
         public async void SaveScore(object parameter)
         {
-            if (IdForPlayerAndSession.SessionId == 0)
+            ParseTime();
+
+            if (CurrentSessionId == 0)
             {
-                IdForPlayerAndSession.SessionId = await _db.GetNewSessionId(CurrentResult);
+                CurrentSessionId = await _db.GetNewSessionId(StartTime, EndTime);
             }
-            if (IdForPlayerAndSession.SessionId != 0)
+            await ShowSaveScoreMessage();
+        }
+
+        private async Task ShowSaveScoreMessage()
+        {
+            if (CurrentSessionId != 0)
             {
                 var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
-                bool sessionSaved = await _db.SaveFullGameSession(IdForPlayerAndSession, CurrentResult);
+                bool sessionSaved = await _db.SaveFullGameSession(CurrentSessionId, PlayerID, CurrentResult);
                 if (sessionSaved == true)
                 {
                     MessageBox.Show($"Ditt resultat har sparats i topplistan, '{player.Nickname}'!", "Sparat");
@@ -257,6 +252,17 @@ namespace SUP.ViewModels
                 MessageBox.Show("Session kan inte sparas i offlineläge");
             }
         }
+
+        private void ParseTime()
+        {
+            string format = @"mm\:ss";
+            int timeAsInt = 0;
+            if (TimeSpan.TryParseExact(TimerText, format, null, out var span))
+            {
+                timeAsInt = (int)span.TotalSeconds;
+            }
+        }
+
         public async void OpenHighScores(object parameter)
         {
             ObservableCollection<SessionScores> level1Scores = await _db.GetHighScoreList(1);
@@ -272,7 +278,6 @@ namespace SUP.ViewModels
             LatestView = CurrentView;
 
             CurrentView = new HighScoreViewModel(ReturnCmd, allHighScores);
-
         }
         public void BackToStart(object parameter)
         {

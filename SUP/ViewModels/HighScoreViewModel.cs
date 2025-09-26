@@ -35,7 +35,6 @@ namespace SUP.ViewModels
             CurrentHighScoreList = AllHighScores.First();
         }
 
-        
         public void ChangeHighScoreList(object parameter)
         {
             CurrentHighScoreList.Clear();
