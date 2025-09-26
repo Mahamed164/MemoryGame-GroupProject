@@ -112,9 +112,9 @@ namespace SUP.ViewModels
             //string meddelanden som ska kopplas bindings till i startview
 
             string nameToLong = "För långt namn, max antal karaktärer är 20";
-            string nameSpace = "Ej mellanslag innan eller efter namn";
-            string nameRegex = $"Ej tillånta tecken. \r\n{regexString}";
-            string nameSpaceRegex = $"Ej mellanslag innan eller efter namn.  \n \n" +
+            string nameSpace = "Ej mellanslag före eller efter namn";
+            string nameRegex = $"Ej tillåtna tecken! \r\n{regexString}";
+            string nameSpaceRegex = $"Ej mellanslag före eller efter namn.  \n \n" +
                 $"Tillåtna specialtecken: 0-9 . _ -";
 
 
@@ -160,9 +160,9 @@ namespace SUP.ViewModels
             PlayerName = player.Nickname;
 
             var playerNameMessage = ControlPlayerNameMessage(PlayerName);
+            _startview.PlayerNameMessage = playerNameMessage;
             if (playerNameMessage != null)
             {
-                _startview.PlayerNameMessage = playerNameMessage;
                 return;
             }
 
