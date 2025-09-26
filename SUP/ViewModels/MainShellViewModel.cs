@@ -44,15 +44,7 @@ namespace SUP.ViewModels
 
         EndViewModel EndViewModel { get; set; }
         public object CurrentView { get; set; }
-        //public int Misses { get; set; }
-        //public int Moves { get; set; }
-        //public string TimerText { get; set; }
         public string PlayerName { get; set; }
-        //public int PlayerID { get; set; }
-        //public DateTime StartTime { get; set; }
-        //public DateTime EndTime { get; set; }
-        //public int SelectedLevel { get; set; }
-        //public int CurrentSessionId { get; set; }
         public Result CurrentResult { get; set; }
 
         private readonly GameHubDbServices _db;
