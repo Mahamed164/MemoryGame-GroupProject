@@ -194,36 +194,6 @@ namespace SUP.ViewModels
 
         }
 
-        //public async void AddPlayer()
-        //{
-
-        //    var player = await _db.GetOrCreatePlayerAsync(PlayerName);
-        //    PlayerName = player.Nickname;
-
-        //    var playerNameMessage = GetPlayerNameMessage(PlayerName);
-        //    if (playerNameMessage != null)
-        //    {
-
-        //        _startview.MultiPlayerNameMessage = playerNameMessage;
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("addplayer test");
-        //    }
-
-        //}
-
-        //public ICommand AddPlayerCmd { get; set; }
-
-
-
-
-
-
-
-
-
         public async void FinishGame(object parameter)
         {
             var result = (ValueTuple<int, int, string, DateTime, DateTime, int, PlayerInformation[]>)parameter;
@@ -292,19 +262,6 @@ namespace SUP.ViewModels
 
         public async void SaveScore(object parameter)
         {
-            try
-            {
-                var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
-
-                // Här kan vi utöka att spara utöver namn ex (moves, misses, tid osv) kanske?
-
-                MessageBox.Show($"Ditt namn '{player.Nickname}' har sparats i databasen!", "Sparat");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Kunde inte spara resultatet. Fel: " + ex.Message, "Fel");
-            }
-
             string format = @"mm\:ss";
             int timeAsInt = 0;
             if (TimeSpan.TryParseExact(TimerText, format, null, out var span))
@@ -314,11 +271,20 @@ namespace SUP.ViewModels
 
             if (CurrentSessionId == 0)
             {
-            CurrentSessionId = await _db.GetNewSessionId(StartTime, EndTime);
+                CurrentSessionId = await _db.GetNewSessionId(StartTime, EndTime);
             }
             if (CurrentSessionId != 0)
             {
-            _db.SaveFullGameSession(CurrentSessionId, StartTime, EndTime, PlayerID, timeAsInt, Moves, Misses, SelectedLevel);
+                var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
+                bool sessionSaved = await _db.SaveFullGameSession(CurrentSessionId, StartTime, EndTime, PlayerID, timeAsInt, Moves, Misses, SelectedLevel);
+                if (sessionSaved == true)
+                {
+                    MessageBox.Show($"Ditt resultat har sparats i topplistan, '{player.Nickname}'!", "Sparat");
+                }
+                else
+                {
+                    MessageBox.Show("Ditt resultat har redan sparats i topplistan!", "Ok");
+                }
             }
             else
             {
@@ -330,7 +296,7 @@ namespace SUP.ViewModels
             List<SessionScores> level1Scores = await _db.GetHighScoreList(1);
             List<SessionScores> level2Scores = await _db.GetHighScoreList(2);
             List<SessionScores> level3Scores = await _db.GetHighScoreList(3);
-            
+
             LatestView = CurrentView;
             var players = await _db.GetPlayersForHighScoreAsync();
 
