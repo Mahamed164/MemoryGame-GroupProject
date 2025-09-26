@@ -92,25 +92,25 @@ public class GameHubDbServices
         }
     }
 
-    public async Task<List<Player>> GetPlayersForHighScoreAsync()
-    {
-        const string sqlStmt = "select player_id, nickname from player order by nickname";
-        var players = new List<Player>();
+    //public async Task<List<Player>> GetPlayersForHighScoreAsync()
+    //{
+    //    const string sqlStmt = "select player_id, nickname from player order by nickname";
+    //    var players = new List<Player>();
 
-        await using var connection = await _dataSource.OpenConnectionAsync();
-        await using var command = new NpgsqlCommand(sqlStmt, connection);
-        using var reader = await command.ExecuteReaderAsync();
+    //    await using var connection = await _dataSource.OpenConnectionAsync();
+    //    await using var command = new NpgsqlCommand(sqlStmt, connection);
+    //    using var reader = await command.ExecuteReaderAsync();
 
-        while (await reader.ReadAsync())
-        {
-            players.Add(new Player()
-            {
-                Id = reader.GetInt32(0),
-                Nickname = reader.GetString(1)
-            });
-        }
-        return players;
-    }
+    //    while (await reader.ReadAsync())
+    //    {
+    //        players.Add(new Player()
+    //        {
+    //            Id = reader.GetInt32(0),
+    //            Nickname = reader.GetString(1)
+    //        });
+    //    }
+    //    return players;
+    //}
 
     public async Task<int> GetNewSessionId(DateTime startTime, DateTime endTime)
     {
@@ -329,7 +329,7 @@ public class GameHubDbServices
                 "JOIN PUBLIC.SESSION S ON S.SESSION_ID = SS.SESSION_ID " +
                 "GROUP BY SS.SESSION_ID, P.NICKNAME, S.STARTED_AT " +
                 "HAVING SUM(CASE WHEN SS.SCORE_TYPE_ID = 6 THEN SS.VALUE END) = @Level " +
-                "ORDER BY MOVES ASC, MISSES ASC, TIME ASC", connection);
+                "ORDER BY MOVES ASC, MISSES ASC, TIME ASC LIMIT 100", connection);
 
             command.Parameters.AddWithValue("Level", level);
 
