@@ -27,8 +27,7 @@ public class EndViewModel
     public int Missed { get; set; }
     public int Moves { get; set; }
     public bool IsMultiplayer { get; set; }
-    //public string TimerText { get; set; }
-    //public string TimeAsText { get; set; }
+
     public string TotalTimeInSeconds { get; set; }
     public string EndViewMessage { get; set; }
     public DateTime StartTime { get; set; }
