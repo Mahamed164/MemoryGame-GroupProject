@@ -195,10 +195,11 @@ namespace SUP.ViewModels
         public async void CheckPlayerName(object parameter)
         {
             var multiplayerNameMessage = MainShellVM.ControlPlayerNameMessage(PlayerName);
+            MultiPlayerNameMessage = multiplayerNameMessage;
 
             if (multiplayerNameMessage != null)
             {
-                MultiPlayerNameMessage = multiplayerNameMessage;
+                
                 return;
             }
             else
