@@ -17,7 +17,6 @@ public class GameHubDbServices
     private readonly NpgsqlDataSource _dataSource;
 
     public StartViewModel StartVM { get; set; }
-    int sessionId = 0;
 
     public GameHubDbServices(NpgsqlDataSource dataSource)
     {
@@ -93,44 +92,24 @@ public class GameHubDbServices
         }
     }
 
-    public async Task<List<Player>> GetPlayersForHighScoreAsync()
+    public async Task<int> GetNewSessionId(Result currentResult)
     {
-        const string sqlStmt = "select player_id, nickname from player order by nickname";
-        var players = new List<Player>();
-
-        await using var connection = await _dataSource.OpenConnectionAsync();
-        await using var command = new NpgsqlCommand(sqlStmt, connection);
-        using var reader = await command.ExecuteReaderAsync();
-
-        while (await reader.ReadAsync())
-        {
-            players.Add(new Player()
-            {
-                Id = reader.GetInt32(0),
-                Nickname = reader.GetString(1)
-            });
-        }
-        return players;
-    }
-
-    public async Task<int> GetNewSessionId(DateTime startTime, DateTime endTime)
-    {
-        int sessionId = await SaveAndGetSessionAsync(startTime, endTime);
+        int sessionId = await SaveAndGetSessionAsync(currentResult);
         return sessionId;
     }
 
-    public async Task<bool> SaveFullGameSession(int sessionId, int playerId, Result currentResult)
+    public async Task<bool> SaveFullGameSession(IdForPlayerAndSession idForPlayerAndSession, Result currentResult)
     {
         bool sessionSaved;
-        bool isSessionNew = await IsNewSession(sessionId);
+        bool isSessionNew = await IsNewSession(idForPlayerAndSession.SessionId);
 
         if (isSessionNew == true)
         {
-            SaveSessionParticipantAsync(sessionId, playerId);
-            SaveSessionScoreTime(sessionId, playerId, currentResult);
-            SaveSessionScoreMoves(sessionId, playerId, currentResult);
-            SaveSessionScoreMisses(sessionId, playerId, currentResult);
-            SaveSessionScoreLevel(sessionId, playerId, currentResult);
+            SaveSessionParticipantAsync(idForPlayerAndSession);
+            SaveSessionScoreTime(idForPlayerAndSession, currentResult);
+            SaveSessionScoreMoves(idForPlayerAndSession, currentResult);
+            SaveSessionScoreMisses(idForPlayerAndSession, currentResult);
+            SaveSessionScoreLevel(idForPlayerAndSession, currentResult);
             sessionSaved = true;
         }
         else
@@ -174,10 +153,12 @@ public class GameHubDbServices
         return isSessionNew;
     }
 
-    public async Task<int> SaveAndGetSessionAsync(DateTime startTime, DateTime endTime)
+    public async Task<int> SaveAndGetSessionAsync(Result currentResult)
     {
+        int sessionId = 0;
         try
         {
+
             await using var connection = await _dataSource.OpenConnectionAsync();
             await using var command = new NpgsqlCommand("INSERT INTO PUBLIC.SESSION " +
                 "(GAME_ID, STARTED_AT, ENDED_AT) " +
@@ -187,8 +168,8 @@ public class GameHubDbServices
                 "@ENDDATE) " +
                 "RETURNING SESSION_ID", connection);
 
-            command.Parameters.AddWithValue("STARTDATE", startTime);
-            command.Parameters.AddWithValue("ENDDATE", endTime);
+            command.Parameters.AddWithValue("STARTDATE", currentResult.StartTime);
+            command.Parameters.AddWithValue("ENDDATE", currentResult.EndTime);
 
             using (var reader = command.ExecuteReader())
             {
@@ -209,15 +190,15 @@ public class GameHubDbServices
         }
     }
 
-    public async void SaveSessionParticipantAsync(int sessionId, int playerId)
+    public async void SaveSessionParticipantAsync(IdForPlayerAndSession idForPlayerAndSession)
     {
         try
         {
             await using var connection = await _dataSource.OpenConnectionAsync();
             await using var command = new NpgsqlCommand("INSERT INTO SESSION_PARTICIPANT(SESSION_ID, PLAYER_ID) VALUES(@SESSION_ID, @PLAYER_ID)", connection);
 
-            command.Parameters.AddWithValue("SESSION_ID", sessionId);
-            command.Parameters.AddWithValue("PLAYER_ID", playerId);
+            command.Parameters.AddWithValue("SESSION_ID", idForPlayerAndSession.SessionId);
+            command.Parameters.AddWithValue("PLAYER_ID", idForPlayerAndSession.PlayerId);
 
             var result = await command.ExecuteNonQueryAsync();
         }
@@ -227,7 +208,7 @@ public class GameHubDbServices
         }
     }
 
-    public async void SaveSessionScoreTime(int sessionId, int playerId, Result currentResult)
+    public async void SaveSessionScoreTime(IdForPlayerAndSession idForPlayerAndSession, Result currentResult)
     {
         //https://learn.microsoft.com/en-us/dotnet/api/system.timespan.tryparseexact?view=net-9.0
         int timeAsInt = 0;
@@ -243,8 +224,8 @@ public class GameHubDbServices
             await using var command = new NpgsqlCommand("INSERT INTO SESSION_SCORE (SESSION_ID, PLAYER_ID, SCORE_TYPE_ID, VALUE) " +
                 "VALUES (@SESSION_ID, @PLAYER_ID, (SELECT SCORE_TYPE_ID FROM SCORE_TYPE WHERE CODE = 'Time'), @TIME_AS_INT)", connection);
 
-            command.Parameters.AddWithValue("SESSION_ID", sessionId);
-            command.Parameters.AddWithValue("PLAYER_ID", playerId);
+            command.Parameters.AddWithValue("SESSION_ID", idForPlayerAndSession.SessionId);
+            command.Parameters.AddWithValue("PLAYER_ID", idForPlayerAndSession.PlayerId);
             command.Parameters.AddWithValue("TIME_AS_INT", timeAsInt);
 
             var result = await command.ExecuteNonQueryAsync();
@@ -255,7 +236,7 @@ public class GameHubDbServices
         }
     }
 
-    public async void SaveSessionScoreMoves(int sessionId, int playerId, Result currentResult)
+    public async void SaveSessionScoreMoves(IdForPlayerAndSession idForPlayerAndSession, Result currentResult)
     {
         try
         {
@@ -263,8 +244,8 @@ public class GameHubDbServices
             await using var command = new NpgsqlCommand("INSERT INTO SESSION_SCORE (SESSION_ID, PLAYER_ID, SCORE_TYPE_ID, VALUE) " +
                 "VALUES (@SESSION_ID, @PLAYER_ID, (SELECT SCORE_TYPE_ID FROM SCORE_TYPE WHERE CODE = 'Moves'), @NUMOFMOVES)", connection);
 
-            command.Parameters.AddWithValue("SESSION_ID", sessionId);
-            command.Parameters.AddWithValue("PLAYER_ID", playerId);
+            command.Parameters.AddWithValue("SESSION_ID", idForPlayerAndSession.SessionId);
+            command.Parameters.AddWithValue("PLAYER_ID", idForPlayerAndSession.PlayerId);
             command.Parameters.AddWithValue("NUMOFMOVES", currentResult.Guesses);
 
             var result = await command.ExecuteNonQueryAsync();
@@ -275,7 +256,7 @@ public class GameHubDbServices
         }
     }
 
-    public async void SaveSessionScoreMisses(int sessionId, int playerId, Result currentResult)
+    public async void SaveSessionScoreMisses(IdForPlayerAndSession idForPlayerAndSession, Result currentResult)
     {
         try
         {
@@ -283,8 +264,8 @@ public class GameHubDbServices
             await using var command = new NpgsqlCommand("INSERT INTO SESSION_SCORE (SESSION_ID, PLAYER_ID, SCORE_TYPE_ID, VALUE) " +
                 "VALUES (@SESSION_ID, @PLAYER_ID, (SELECT SCORE_TYPE_ID FROM SCORE_TYPE WHERE CODE = 'Misses'), @NUMOFMISSES)", connection);
 
-            command.Parameters.AddWithValue("SESSION_ID", sessionId);
-            command.Parameters.AddWithValue("PLAYER_ID", playerId);
+            command.Parameters.AddWithValue("SESSION_ID", idForPlayerAndSession.SessionId);
+            command.Parameters.AddWithValue("PLAYER_ID", idForPlayerAndSession.PlayerId);
             command.Parameters.AddWithValue("NUMOFMISSES", currentResult.Misses);
 
             var result = await command.ExecuteNonQueryAsync();
@@ -294,7 +275,7 @@ public class GameHubDbServices
             throw;
         }
     }
-    public async void SaveSessionScoreLevel(int sessionId, int playerId, Result currentResult)
+    public async void SaveSessionScoreLevel(IdForPlayerAndSession idForPlayerAndSession, Result currentResult)
     {
         try
         {
@@ -302,8 +283,8 @@ public class GameHubDbServices
             await using var command = new NpgsqlCommand("INSERT INTO SESSION_SCORE (SESSION_ID, PLAYER_ID, SCORE_TYPE_ID, VALUE) " +
                 "VALUES (@SESSION_ID, @PLAYER_ID, (SELECT SCORE_TYPE_ID FROM SCORE_TYPE WHERE CODE = 'Level'), @Selected_Level) ", connection);
 
-            command.Parameters.AddWithValue("SESSION_ID", sessionId);
-            command.Parameters.AddWithValue("PLAYER_ID", playerId);
+            command.Parameters.AddWithValue("SESSION_ID", idForPlayerAndSession.SessionId);
+            command.Parameters.AddWithValue("PLAYER_ID", idForPlayerAndSession.PlayerId);
             command.Parameters.AddWithValue("Selected_Level", currentResult.Level);
 
             var result = await command.ExecuteNonQueryAsync();
