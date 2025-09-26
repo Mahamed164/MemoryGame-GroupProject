@@ -44,21 +44,22 @@ namespace SUP.ViewModels
 
         EndViewModel EndViewModel { get; set; }
         public object CurrentView { get; set; }
-        public int Misses { get; set; }
-        public int Moves { get; set; }
-        public string TimerText { get; set; }
+        //public int Misses { get; set; }
+        //public int Moves { get; set; }
+        //public string TimerText { get; set; }
         public string PlayerName { get; set; }
-        public int PlayerID { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public int SelectedLevel { get; set; }
-        public int CurrentSessionId { get; set; }
+        //public int PlayerID { get; set; }
+        //public DateTime StartTime { get; set; }
+        //public DateTime EndTime { get; set; }
+        //public int SelectedLevel { get; set; }
+        //public int CurrentSessionId { get; set; }
         public Result CurrentResult { get; set; }
 
         private readonly GameHubDbServices _db;
         private readonly IAudioService _audio;
         private StartViewModel _startview;
         public object LatestView;
+        IdForPlayerAndSession IdForPlayerAndSession { get; set; }
 
         private void OnMusicVolumeChanged() { _audio.SetMusicVolume((float)MusicVolume); }
         private void OnSfxVolumeChanged() { _audio.SetSfxVolume((float)SfxVolume); }
@@ -77,6 +78,8 @@ namespace SUP.ViewModels
             RulesCmd = new RelayCommand(OpenRules);
 
             _db = db;
+
+            IdForPlayerAndSession = new IdForPlayerAndSession(0, 0);
 
             _startview = new StartViewModel(StartGameCmd, HighScoreCmd, RulesCmd, db);
 
@@ -178,7 +181,7 @@ namespace SUP.ViewModels
             {
                 var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
                 PlayerName = player.Nickname;
-                PlayerID = player.Id;
+                IdForPlayerAndSession.PlayerId = player.Id;
 
                 EndViewModel = await SingleplayerEndViewModel();
             }
@@ -187,7 +190,6 @@ namespace SUP.ViewModels
 
         private async Task<EndViewModel> SingleplayerEndViewModel()
         {
-            CurrentSessionId = 0;
             return new EndViewModel(CurrentResult, false, SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd, null, _audio);
         }
 
@@ -217,27 +219,27 @@ namespace SUP.ViewModels
         {
             CurrentView = new BoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd, _audio);
         }
-        public void OpenRules (object parameter)
+        public void OpenRules(object parameter)
         {
             CurrentView = new RulesViewModel(BackToStartCmd);
         }
         public async void SaveScore(object parameter)
         {
-            ParseTime();
 
-            if (CurrentSessionId == 0)
+
+            if (IdForPlayerAndSession.SessionId == 0)
             {
-                CurrentSessionId = await _db.GetNewSessionId(StartTime, EndTime);
+                IdForPlayerAndSession.SessionId = await _db.GetNewSessionId(CurrentResult);
             }
             await ShowSaveScoreMessage();
         }
 
         private async Task ShowSaveScoreMessage()
         {
-            if (CurrentSessionId != 0)
+            if (IdForPlayerAndSession.SessionId != 0)
             {
                 var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
-                bool sessionSaved = await _db.SaveFullGameSession(CurrentSessionId, PlayerID, CurrentResult);
+                bool sessionSaved = await _db.SaveFullGameSession(IdForPlayerAndSession, CurrentResult);
                 if (sessionSaved == true)
                 {
                     MessageBox.Show($"Ditt resultat har sparats i topplistan, '{player.Nickname}'!", "Sparat");
@@ -253,15 +255,15 @@ namespace SUP.ViewModels
             }
         }
 
-        private void ParseTime()
-        {
-            string format = @"mm\:ss";
-            int timeAsInt = 0;
-            if (TimeSpan.TryParseExact(TimerText, format, null, out var span))
-            {
-                timeAsInt = (int)span.TotalSeconds;
-            }
-        }
+        //private void ParseTime()
+        //{
+        //    string format = @"mm\:ss";
+        //    int timeAsInt = 0;
+        //    if (TimeSpan.TryParseExact(TimerText, format, null, out var span))
+        //    {
+        //        timeAsInt = (int)span.TotalSeconds;
+        //    }
+        //}
 
         public async void OpenHighScores(object parameter)
         {

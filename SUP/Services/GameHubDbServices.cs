@@ -101,7 +101,7 @@ public class GameHubDbServices
     public async Task<bool> SaveFullGameSession(IdForPlayerAndSession idForPlayerAndSession, Result currentResult)
     {
         bool sessionSaved;
-        bool isSessionNew = await IsNewSession(idForPlayerAndSession.SessionId);
+        bool isSessionNew = await IsNewSession(idForPlayerAndSession);
 
         if (isSessionNew == true)
         {
@@ -119,7 +119,7 @@ public class GameHubDbServices
             return sessionSaved;
     }
 
-    public async Task<bool> IsNewSession(int sessionId)
+    public async Task<bool> IsNewSession(IdForPlayerAndSession idForPlayerAndSession)
     {
 
         //https://stackoverflow.com/questions/17903092/check-if-record-in-a-table-exist-in-a-database-through-executenonquery
@@ -130,7 +130,7 @@ public class GameHubDbServices
             await using var connection = await _dataSource.OpenConnectionAsync();
             await using var command = new NpgsqlCommand("select session.session_id, count(*) from public.session join  session_score on session_score.session_id = session.session_id where session.session_id = @SESSION_ID group by session.session_id", connection);
 
-            command.Parameters.AddWithValue("SESSION_ID", sessionId);
+            command.Parameters.AddWithValue("SESSION_ID", idForPlayerAndSession.SessionId);
 
 
             using (var reader = command.ExecuteReader())
