@@ -256,7 +256,7 @@ namespace SUP.ViewModels
         private async Task<EndViewModel> SingleplayerEndViewModel()
         {
 
-            CurrentSessionId = await _db.GetNewSessionId(StartTime, EndTime);
+            CurrentSessionId = 0;
             return new EndViewModel(Misses, Moves, false, TimerText, StartTime, EndTime,
                                          SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd, audioService: _audio);
         }
@@ -311,6 +311,11 @@ namespace SUP.ViewModels
             {
                 timeAsInt = (int)span.TotalSeconds;
             }
+
+            if (CurrentSessionId == 0)
+            {
+            CurrentSessionId = await _db.GetNewSessionId(StartTime, EndTime);
+            }
             _db.SaveFullGameSession(CurrentSessionId, StartTime, EndTime, PlayerID, timeAsInt, Moves, Misses, SelectedLevel);
         }
         public async void OpenHighScores(object parameter)
@@ -318,7 +323,7 @@ namespace SUP.ViewModels
             List<SessionScores> level1Scores = await _db.GetHighScoreList(1);
             List<SessionScores> level2Scores = await _db.GetHighScoreList(2);
             List<SessionScores> level3Scores = await _db.GetHighScoreList(3);
-
+            
             LatestView = CurrentView;
             var players = await _db.GetPlayersForHighScoreAsync();
 
