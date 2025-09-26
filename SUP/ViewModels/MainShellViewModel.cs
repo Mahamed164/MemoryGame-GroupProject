@@ -316,7 +316,14 @@ namespace SUP.ViewModels
             {
             CurrentSessionId = await _db.GetNewSessionId(StartTime, EndTime);
             }
+            if (CurrentSessionId != 0)
+            {
             _db.SaveFullGameSession(CurrentSessionId, StartTime, EndTime, PlayerID, timeAsInt, Moves, Misses, SelectedLevel);
+            }
+            else
+            {
+                MessageBox.Show("Session kan inte sparas i offlineläge");
+            }
         }
         public async void OpenHighScores(object parameter)
         {
