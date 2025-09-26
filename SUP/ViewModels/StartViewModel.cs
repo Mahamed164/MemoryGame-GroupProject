@@ -23,72 +23,24 @@ namespace SUP.ViewModels
     [AddINotifyPropertyChangedInterface]
     public class StartViewModel
     {
+        //Icommand
+        public ICommand StartGameCmd { get; }
+        public ICommand HighScoreCmd { get; }
+        public ICommand RulesCmd { get; }
+        public ICommand AddPlayerCmd { get; }
+        public ICommand RemovePlayerCmd { get; }
 
-        
-
+        //Prop
         public bool IsLevelOneSelected { get; set; }
         public bool IsLevelTwoSelected { get; set; } = true;
         public bool IsLevelThreeSelected { get; set; }
-
         public List<string> PlayerList { get; set; } = [];
-
-
         private string playerName { get; set; }
-
-
         public string MultiPlayerNameMessage { get; set; }
-
         public string PlayerNameMessage { get; set; } //för binding i mainshellviewmodel
-
-
-
-        public int level;
-
-        public int Level
-        {
-            get
-            {
-                SetLevel();// https://softwareengineering.stackexchange.com/questions/225354/logic-inside-class-properties-setters-getters
-                return level;
-            }
-            set
-            {
-                level = value;
-            }
-        }
-
-        private void SetLevel()
-        {
-            if (IsLevelOneSelected == true)
-            {
-                level = 1;
-            }
-            else if (IsLevelTwoSelected == true)
-            {
-                level = 2;
-            }
-            else if (IsLevelThreeSelected == true)
-            {
-                level = 3;
-            }
-        }
         public bool IsSinglePlayerSelected { get; set; } = true;
         public bool IsMultiplayerSelected { get; set; }
-
-        public List<string> GetPlayerList()
-        {
-            if (IsSinglePlayerSelected == true)
-            {
-                List<string> playerName = new List<string>();
-                playerName.Add(PlayerName);
-                return playerName;
-            }
-            if (IsMultiplayerSelected == true)
-            {
-                return PlayerList;
-            }
-            throw new Exception("nEJ");
-        }
+        public string Greeting { get; set; }
         public Visibility ShowList
         {
             get
@@ -116,8 +68,6 @@ namespace SUP.ViewModels
                 return false;
             }
         }
-
-
         public string PlayerName
         {
             get { return playerName; }
@@ -125,46 +75,92 @@ namespace SUP.ViewModels
             {
                 playerName = value;
 
-                if (string.IsNullOrEmpty(playerName) && PlayerList.Count == 0)
-                {
-                    Greeting = "Spelarnamn:";
-                }
-                else if (IsMultiplayerSelected == true)
-                {
-                    Greeting = "Hej " + string.Join(" & ", PlayerList) + ", klicka på spela när du är redo!";
-                }
-                else
-                {
-                    Greeting = "Hej " + playerName + ", klicka på spela när du är redo!";
-                }
+                GreetingMessage();
             }
         }
 
-        public string Greeting { get; set; }
 
-        public ICommand StartGameCmd { get; }
-        public ICommand HighScoreCmd { get; }
-        public ICommand RulesCmd {  get; }
+        private void GreetingMessage()
+        {
+            if (string.IsNullOrEmpty(playerName) && PlayerList.Count == 0)
+            {
+                Greeting = "Spelarnamn:";
+            }
+            else if (IsMultiplayerSelected == true)
+            {
+                Greeting = "Hej " + string.Join(" & ", PlayerList) + ", klicka på spela när du är redo!";
+            }
+            else
+            {
+                Greeting = "Hej " + playerName + ", klicka på spela när du är redo!";
+            }
+        }
+
+        public int Level
+        {
+            get
+            {
+                SetLevel();// https://softwareengineering.stackexchange.com/questions/225354/logic-inside-class-properties-setters-getters
+                return level;
+            }
+            set
+            {
+                level = value;
+            }
+        }
 
 
+        //Variabler
+        public MainShellViewModel MainShellVM = new();
+        public int level;
+        private readonly GameHubDbServices _db;
 
-        public MainShellViewModel MainShellVM  = new();
+
         
 
+        private void SetLevel()
+        {
+            if (IsLevelOneSelected == true)
+            {
+                level = 1;
+            }
+            else if (IsLevelTwoSelected == true)
+            {
+                level = 2;
+            }
+            else if (IsLevelThreeSelected == true)
+            {
+                level = 3;
+            }
+        }
+       
 
-        public ICommand AddPlayerCmd { get; }
-        public ICommand RemovePlayerCmd { get; }
+        public List<string> GetPlayerList()
+        {
+            if (IsSinglePlayerSelected == true)
+            {
+                List<string> playerName = new List<string>();
+                playerName.Add(PlayerName);
+                return playerName;
+            }
+            if (IsMultiplayerSelected == true)
+            {
+                return PlayerList;
+            }
+            throw new Exception("nEJ");
+        }
+       
 
 
 
-        //sparar för att det ska fortsättas 
+
+        //sparar för att det ska fortsättas ?????
 
         //private Regex regex = new Regex(@"^[0-9A-Za-z.\s_-]+$"); //https://stackoverflow.com/questions/13353663/what-is-the-regular-expression-to-allow-uppercase-lowercase-alphabetical-charac
         //private readonly string regexString = $"Tillåtna specialtecken: 0-9 . _ -";
         //private int maxLenght = 20;
 
 
-        private readonly GameHubDbServices _db;
 
         public StartViewModel(ICommand startGameCmd, ICommand highScoreCmd, ICommand rulesCmd, GameHubDbServices db)
 
@@ -196,12 +192,9 @@ namespace SUP.ViewModels
             Greeting = "Spelarnamn:";
         }
 
-        
-        public Player player { get; set; } = new();
-
         public async void CheckPlayerName(object parameter)
         {
-            var multiplayerNameMessage = MainShellVM.GetPlayerNameMessage(PlayerName);
+            var multiplayerNameMessage = MainShellVM.ControlPlayerNameMessage(PlayerName);
 
             if (multiplayerNameMessage != null)
             {

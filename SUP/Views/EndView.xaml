@@ -57,14 +57,6 @@
                 Text="{Binding EndViewMessage}"
                 TextAlignment="Center" />
 
-            <!--<TextBlock.Text>
-                <MultiBinding StringFormat="Du hittade alla kort med {0} missar på {1} drag! &#x0a; Det tog {2}. &#x0a; &#x0a; Bra jobbat!">
-                    <Binding FallbackValue="77" Path="Missed" />
-                    <Binding FallbackValue="190" Path="Moves" />
-                    <Binding FallbackValue="00:00 sekunder/minuter" Path="TimeAsText" />
-                </MultiBinding>
-            </TextBlock.Text>-->
-
         </StackPanel>
 
         <StackPanel

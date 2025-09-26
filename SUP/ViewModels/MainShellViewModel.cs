@@ -2,7 +2,6 @@
 using SUP.Commands;
 using SUP.Models;
 using SUP.Services;
-using SUP.ViewModels.Scores;
 using SUP.Views;
 using System;
 using System.Collections.Generic;
@@ -22,15 +21,6 @@ namespace SUP.ViewModels
     [AddINotifyPropertyChangedInterface]
     public class MainShellViewModel
     {
-        //från humanbenchmark video 8
-        public double MusicVolume { get; set; } = 0.25;
-        public double SfxVolume { get; set; } = 0.50;
-        public bool MusicMuted { get; set; } = false;
-        public bool SfxMuted { get; set; } = false;
-
-        public object CurrentView { get; set; }
-        public object LatestView;
-
         public ICommand StartGameCmd { get; }
         public ICommand FinishGameCmd { get; }
         public ICommand RestartCmd { get; }
@@ -42,17 +32,21 @@ namespace SUP.ViewModels
         public ICommand RulesCmd { get; }
 
 
+        
+
+        //från human benchmark video 8
+        public double MusicVolume { get; set; } = 0.25;      
+        public double SfxVolume { get; set; } = 0.50;        
+        public bool MusicMuted { get; set; } = false;        
+        public bool SfxMuted { get; set; } = false;
+
         EndViewModel EndViewModel { get; set; }
-        private StartViewModel _startview;
-
-
+        public object CurrentView { get; set; }
         public int Misses { get; set; }
         public int Moves { get; set; }
-
         public string TimerText { get; set; }
         public string PlayerName { get; set; }
         public int PlayerID { get; set; }
-
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public int SelectedLevel { get; set; }
@@ -60,16 +54,9 @@ namespace SUP.ViewModels
 
         private readonly GameHubDbServices _db;
         private readonly IAudioService _audio;
-        List<SessionScores> _highScores;
-
-        //från human benchmark video 8
-        private void OnMusicVolumeChanged() { _audio.SetMusicVolume((float)MusicVolume); }
-        private void OnSfxVolumeChanged() { _audio.SetSfxVolume((float)SfxVolume); }
-        private void OnMusicMutedChanged() { _audio.SetMusicMuted(MusicMuted); }
-        private void OnSfxMutedChanged() { _audio.SetSfxMuted(SfxMuted); }
-
-
-        //"efterlys stegljud"
+        private StartViewModel _startview;
+        public object LatestView;
+      
 
         public MainShellViewModel(GameHubDbServices db, IAudioService audioService)
         {
@@ -114,7 +101,7 @@ namespace SUP.ViewModels
         private readonly string regexString = $"Tillåtna specialtecken: 0-9 . _ -";
         private int maxLenght = 20;
 
-        public string? GetPlayerNameMessage(string inputName) //kan vara null
+        public string? ControlPlayerNameMessage(string inputName) //kan vara null
         {
             //string meddelanden som ska kopplas bindings till i startview
 
@@ -125,39 +112,28 @@ namespace SUP.ViewModels
                 $"Tillåtna specialtecken: 0-9 . _ -";
 
 
-
             if (inputName.Length > maxLenght)
             {
-                //_startview.PlayerNameMessage = nameToLong;
-                //MessageBox.Show(nameToLong);
                 return nameToLong;
             }
 
             else if (inputName.StartsWith(" ") || inputName.EndsWith(" ") && !regex.IsMatch(inputName))
             {
-                //_startview.PlayerNameMessage = nameSpaceRegex;
-                //MessageBox.Show(nameSpaceRegex);
                 return nameSpaceRegex;
             }
 
             else if (inputName.StartsWith(" ") || inputName.EndsWith(" "))
             {
-                //_startview.PlayerNameMessage = nameSpace;
-                //MessageBox.Show(nameSpace);
                 return nameSpace;
             }
 
             else if (inputName.StartsWith(" ") && inputName.EndsWith(" "))
             {
-                //_startview.PlayerNameMessage = nameSpace;
-                //MessageBox.Show(nameSpace);
                 return nameSpace;
             }
 
             else if (!regex.IsMatch(inputName))
             {
-                //_startview.PlayerNameMessage = nameRegex;
-                //MessageBox.Show(nameRegex);
                 return nameRegex;
             }
 
@@ -174,12 +150,10 @@ namespace SUP.ViewModels
                 return;
             }
 
-            //int maxLenght = 20;
-
             var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
             PlayerName = player.Nickname;
 
-            var playerNameMessage = GetPlayerNameMessage(PlayerName);
+            var playerNameMessage = ControlPlayerNameMessage(PlayerName);
             if (playerNameMessage != null)
             {
                 _startview.PlayerNameMessage = playerNameMessage;
@@ -233,7 +207,6 @@ namespace SUP.ViewModels
 
         private EndViewModel MultiplayerEndViewModel(PlayerInformation winningPlayer)
         {
-            // Spara inte score som multiplayer
             return new EndViewModel(Misses, Moves, true, TimerText, StartTime, EndTime,
                                         null, RestartCmd, null, BackToStartCmd, winningPlayer, audioService: _audio);
         }

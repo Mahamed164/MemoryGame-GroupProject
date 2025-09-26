@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace SUP.Views
 {
-    /// <summary>
-    /// Interaction logic for HighScoreView.xaml
-    /// </summary>
     public partial class HighScoreView : UserControl
     {
         public HighScoreView()

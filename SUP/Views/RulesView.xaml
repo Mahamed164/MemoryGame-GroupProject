@@ -55,23 +55,9 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <!--<Button 
-      Grid.Row="2"
-      Width="150"
-      Height="40"
-      Margin="10,7,10,10"
-      Padding="20,0"
-      HorizontalAlignment="Right"
-      VerticalAlignment="Center"
-      Background="ForestGreen"
-      Command="{Binding ReturnCmd}"
-      Content="Tillbaka till spelet"
-      FontFamily="Bahnschrift Condensed"
-      FontSize="16"
-      Foreground="White">-->
 
 
-            <TextBlock
+        <TextBlock
             Grid.Row="1"
             Width="300"
             Height="340"
@@ -107,7 +93,7 @@
             <Run
                 FontSize="14"
                 FontWeight="SemiBold"
-                Text="&#x0a;&#x0a; 1. Välj antal spelare&#x0a; 2. Välj svårighetsgrad (12, 20, eller 30 kort)&#x0a; 3. Skriv in spelarnamn&#x0a; 4. Klicka på 'Spela' för att starta!  &#x0a;"/>
+                Text="&#x0a;&#x0a; 1. Välj antal spelare&#x0a; 2. Välj svårighetsgrad (12, 20, eller 30 kort)&#x0a; 3. Skriv in spelarnamn&#x0a; 4. Klicka på 'Spela' för att starta!  &#x0a;" />
         </TextBlock>
     </Grid>
 </UserControl>

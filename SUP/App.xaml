@@ -4,9 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:gameVM="clr-namespace:SUP.ViewModels"
     xmlns:gameView="clr-namespace:SUP.Views"
-    xmlns:local="clr-namespace:SUP"
-    xmlns:scoreVM="clr-namespace:SUP.ViewModels.Scores"
-    xmlns:scoreView="clr-namespace:SUP.Views.Scores">
+    xmlns:local="clr-namespace:SUP">
     <Application.Resources>
 
         <DataTemplate DataType="{x:Type gameVM:StartViewModel}">
@@ -25,10 +23,6 @@
             <gameView:HighScoreView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type scoreVM:SaveScoreViewModel}">
-            <scoreView:SaveScoreView />
-        </DataTemplate>
-        
         <DataTemplate DataType="{x:Type gameVM:RulesViewModel}">
             <gameView:RulesView />
         </DataTemplate>

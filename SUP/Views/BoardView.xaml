@@ -13,39 +13,12 @@
 
     <UserControl.Resources>
         <converters:FaceUpImageConverter x:Key="FaceUpImageConverter" />
-
-        <!--  Detta är kopierat från HumanBenchMark  -->
-        <!--<Style TargetType="Button">
-            <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border
-                            Name="border"
-                            Padding="4,2"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="#FFE4A7C3"
-                            BorderThickness="2">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="BorderBrush" Value="Purple" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>-->
     </UserControl.Resources>
 
     <Grid>
-
         <Grid.Background>
             <ImageBrush ImageSource="/Assets/ViewDesign/background.png" />
         </Grid.Background>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -67,8 +40,8 @@
             Height="50"
             Margin="0,3,2,25"
             HorizontalAlignment="Right"
-            FontSize="40"
             FontFamily="Bahnschrift Condensed"
+            FontSize="40"
             Text="{Binding TimerText, FallbackValue=99:99}" />
         <Label
             Grid.Row="1"
@@ -76,8 +49,8 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="{Binding PlayerOneLabel, FallbackValue=Spelarens namn}"
-            FontSize="13"
             FontFamily="Bahnschrift"
+            FontSize="13"
             FontWeight="{Binding PlayerOneHighlighted, FallbackValue=normal}" />
         <Label
             Grid.Row="1"
@@ -85,8 +58,8 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="{Binding PlayerTwoLabel, FallbackValue=Spelarens namn}"
-            FontSize="13"
             FontFamily="Bahnschrift"
+            FontSize="13"
             FontWeight="{Binding PlayerTwoHighlighted, FallbackValue=normal}" />
         <Button
             Grid.Row="2"
@@ -96,12 +69,12 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Background="ForestGreen"
+            BorderBrush="Transparent"
             Command="{Binding RestartCmd}"
             Content="Börja om"
             FontFamily="Bahnschrift Condensed"
             FontSize="16"
-            Foreground="White"
-            BorderBrush="Transparent">
+            Foreground="White">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="20" />
@@ -117,12 +90,12 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Background="CornflowerBlue"
+            BorderBrush="Transparent"
             Command="{Binding BackToStartCmd}"
             Content="Startmeny"
             FontFamily="Bahnschrift Condensed"
             FontSize="16"
-            Foreground="White"
-            BorderBrush="Transparent">
+            Foreground="White">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="20" />
@@ -136,11 +109,8 @@
             VerticalAlignment="Center"
             Stretch="Uniform">
             <Grid>
-                <Border x:Name="Radius" CornerRadius="20">
-                    
-                </Border>
-                
-                    
+                <Border x:Name="Radius" CornerRadius="20" />
+
                 <ItemsControl ItemsSource="{Binding Cards}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -150,30 +120,34 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button Command="{Binding ClickCommand}" BorderBrush="Transparent" Background="#FFFFFF">
+                            <Button
+                                Background="#FFFFFF"
+                                BorderBrush="Transparent"
+                                Command="{Binding ClickCommand}">
 
                                 <Button.Content>
                                     <Border CornerRadius="20">
-                                    <Image
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch"
-                                        Stretch="Uniform">
+                                        <Image
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            Stretch="Uniform">
 
-                                        <Image.Source>
-                                            
-                                            <MultiBinding Converter="{StaticResource FaceUpImageConverter}">
-                                                <Binding Path="FaceUp" />
-                                                <Binding Path="Image" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
+                                            <Image.Source>
+
+                                                <MultiBinding Converter="{StaticResource FaceUpImageConverter}">
+                                                    <Binding Path="FaceUp" />
+                                                    <Binding Path="Image" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
                                     </Border>
                                 </Button.Content>
                                 <Button.Resources>
                                     <Style TargetType="{x:Type Border}">
-                                        <Setter Property="BorderBrush" Value="Transparent"  /> <!--denna gör inget som syns-->
-                                        <Setter Property="Margin" Value="7"/>
-                                        <Setter Property="CornerRadius" Value="20"/>
+                                        <Setter Property="BorderBrush" Value="Transparent" /> 
+                                        <!--  denna gör inget som syns  -->
+                                        <Setter Property="Margin" Value="7" />
+                                        <Setter Property="CornerRadius" Value="20" />
                                     </Style>
                                 </Button.Resources>
                             </Button>
@@ -183,12 +157,11 @@
 
                             <!--  källa binding . = https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.binding.path?view=windowsdesktop-9.0  -->
                             <!--  Optionally, a period (.) path can be used to bind to the current source.  -->
-                            <!--  Background="{Binding IsLit, Converter={StaticResource ColorConverterCards}}"  -->
-                            <!--  LÖSA CONVERTERN FÖR BINDA, FORTSÄTTA KALLA DEN COLOR MEN SE OM JAG FÅR IN NUMMER.....  -->
+                          
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                
+
             </Grid>
         </Viewbox>
     </Grid>

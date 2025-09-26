@@ -29,7 +29,6 @@ public partial class App : Application
         var memoryGame = new BoardViewModel(_audio);
 
         var config = new ConfigurationBuilder().AddUserSecrets<App>().Build();
-        //.AddUserSecrets<App>().Build();
         var connectionString = config.GetConnectionString("Production");
         _dataSource = NpgsqlDataSource.Create(connectionString);
 

@@ -16,18 +16,5 @@ namespace SUP.Models
         public int Misses { get; set; }
         public string TimerText { get; set; }
         public int Level { get; set; }
-
-        //public SessionScores(int sessionId, string nickname, DateTime timeOfPlay, int moves, int misses, string timerText, int level)
-        //{
-        //    SessionId = sessionId;
-        //    Nickname = nickname;
-        //    TimeOfPlay = timeOfPlay;
-        //    Moves = moves;
-        //    Misses = misses;
-        //    TimerText = timerText;
-        //    Level = level;
-        //}
-
-
     }
 }
