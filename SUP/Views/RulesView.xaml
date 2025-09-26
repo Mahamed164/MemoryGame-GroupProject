@@ -9,24 +9,20 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="/Assets/ViewDesign/background.png" />
         </Grid.Background>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="3*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
         <StackPanel
             Grid.Row="0"
             HorizontalAlignment="Center"
             VerticalAlignment="Stretch"
             Orientation="Horizontal">
-
             <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
@@ -35,7 +31,6 @@
                 Foreground="White"
                 Text="Regler" />
         </StackPanel>
-
         <Button
             Grid.Row="2"
             Width="150"
@@ -55,8 +50,6 @@
                 </Style>
             </Button.Resources>
         </Button>
-
-
         <TextBlock
             Grid.Row="1"
             Width="300"
@@ -75,7 +68,6 @@
                 FontSize="14"
                 FontWeight="SemiBold"
                 Text="&#x0a;&#x0a; • Vänd två kort per drag&#x0a; • Om korten matchar får du behålla paret&#x0a; • Om korten inte matchar vänds de tillbaka&#x0a; • Spelet är slut när du har vänt upp alla kort&#x0a;&#x0a; • Placeringen i topplistan baseras på:&#x0a;      1. Minst antal drag&#x0a;      2. Minst antal missade drag&#x0a;      3. Kortast tid&#x0a;&#x0a; • I multiplayer är vinnaren den med högst&#x0a;   precision, och vid lika den med färre antal&#x0a;   drag" />
-
         </TextBlock>
         <TextBlock
             Grid.Row="1"

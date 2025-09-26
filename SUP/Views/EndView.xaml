@@ -11,23 +11,18 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-
     <UserControl.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
-
-
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="/Assets/ViewDesign/background.png" />
         </Grid.Background>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
         <Image
             x:Name="Confetti"
             Grid.Row="0"
@@ -35,7 +30,6 @@
             gif:ImageBehavior.AnimatedSource="{Binding SelectedImage}"
             gif:ImageBehavior.AutoStart="{Binding PlayConfetti}"
             gif:ImageBehavior.RepeatBehavior="1x" />
-
         <Image
             Grid.Row="0"
             Grid.RowSpan="3"
@@ -45,25 +39,20 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Source="/Assets/ViewDesign/memorylogo.png" />
-
         <StackPanel
             Grid.Row="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Orientation="Horizontal">
-
             <TextBlock
                 FontSize="25"
                 Text="{Binding EndViewMessage}"
                 TextAlignment="Center" />
-
         </StackPanel>
-
         <StackPanel
             Grid.Row="2"
             HorizontalAlignment="Center"
             Orientation="Horizontal">
-
             <Button
                 Width="100"
                 Height="40"
@@ -74,25 +63,24 @@
                 Content="Spela igen"
                 FontFamily="Bahnschrift Condensed"
                 FontSize="16"
-                Foreground="White" >
+                Foreground="White">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="20" />
                     </Style>
                 </Button.Resources>
             </Button>
-
             <Button
                 Width="100"
                 Height="40"
                 Margin="5"
                 Background="CornflowerBlue"
+                BorderBrush="Transparent"
                 Command="{Binding BackToStartCmd}"
                 Content="Startmeny"
                 FontFamily="Bahnschrift Condensed"
                 FontSize="16"
-                Foreground="White"
-                BorderBrush="Transparent">
+                Foreground="White">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="20" />
@@ -103,46 +91,41 @@
                 Width="100"
                 Height="40"
                 Background="#FFED6464"
+                BorderBrush="Transparent"
                 Command="{Binding SaveScoreCmd}"
                 Content="Spara resultat"
                 FontFamily="Bahnschrift Condensed"
                 FontSize="16"
                 Foreground="White"
-                BorderBrush="Transparent"
-                Visibility="{Binding IsMultiplayer, Converter={StaticResource BoolToVisibilityConverter}}" >
+                Visibility="{Binding IsMultiplayer, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="20" />
                     </Style>
                 </Button.Resources>
             </Button>
-
             <Button
                 Width="100"
                 Height="40"
                 Margin="5"
                 Background="Orange"
+                BorderBrush="Transparent"
                 Command="{Binding HighScoreCmd}"
                 Content="Visa topplista"
                 FontFamily="Bahnschrift Condensed"
                 FontSize="16"
                 Foreground="White"
-                Visibility="{Binding IsMultiplayer, Converter={StaticResource BoolToVisibilityConverter}}"
-                BorderBrush="Transparent">
-                
+                Visibility="{Binding IsMultiplayer, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="20" />
                     </Style>
                 </Button.Resources>
             </Button>
-
             <!--
                 https://github.com/XamlAnimatedGif/WpfAnimatedGif/wiki
                 https://github.com/XamlAnimatedGif/WpfAnimatedGif/blob/master/WpfAnimatedGif.Demo/MainWindow.xaml
             -->
-
         </StackPanel>
-
     </Grid>
 </UserControl>

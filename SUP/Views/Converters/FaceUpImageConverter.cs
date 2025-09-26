@@ -18,7 +18,6 @@ namespace SUP.Views.Converters;
 public class FaceUpImageConverter : IMultiValueConverter
 {
     private static readonly ImageSource Backside = new BitmapImage(new Uri("pack://application:,,,/SUP;component/Assets/Images/backside.jpg", UriKind.Absolute));
-
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
         if (values.Length == 2 && values[0] is bool faceUp && values[1] is ImageSource image)

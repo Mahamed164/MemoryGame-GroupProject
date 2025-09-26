@@ -8,31 +8,26 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="/Assets/ViewDesign/background.png" />
         </Grid.Background>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="3*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
         <StackPanel
             Grid.Row="0"
             HorizontalAlignment="Center"
             VerticalAlignment="Stretch"
             Orientation="Horizontal">
-
             <TextBlock
                 Margin="0,0,30,0"
                 FontFamily="Bahnschrift Condensed"
                 FontSize="40"
                 Foreground="White"
                 Text="Topplista" />
-
             <TextBlock
                 Margin="0,0,10,0"
                 VerticalAlignment="Center"
@@ -40,7 +35,6 @@
                 FontSize="20"
                 Foreground="White"
                 Text="Level:" />
-
             <ComboBox
                 x:Name="CBLevel"
                 Width="40"
@@ -54,13 +48,7 @@
                 https://learn.microsoft.com/en-us/dotnet/desktop/wpf/data/
                 https://stackoverflow.com/questions/2305179/what-are-the-various-wpf-binding-modes
             -->
-
-
         </StackPanel>
-
-
-
-
         <ListView
             Grid.Row="1"
             HorizontalAlignment="Stretch"
@@ -68,20 +56,18 @@
             Background="Transparent"
             FontSize="20"
             ItemsSource="{Binding CurrentHighScoreList}">
-
             <ListView.Resources>
                 <Style TargetType="GridViewColumnHeader">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#FFFFB2E3" Offset="0"/>
-                                <GradientStop Color="#FFFF82D2" Offset="1"/>
+                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                <GradientStop Offset="0" Color="#FFFFB2E3" />
+                                <GradientStop Offset="1" Color="#FFFF82D2" />
                             </LinearGradientBrush>
                         </Setter.Value>
                     </Setter>
                 </Style>
             </ListView.Resources>
-            
             <ListView.View>
                 <GridView>
                     <GridViewColumn
@@ -103,8 +89,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-
-        <Button 
+        <Button
             Grid.Row="2"
             Width="150"
             Height="40"
@@ -121,9 +106,8 @@
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="20" />
-                </Style>       
+                </Style>
             </Button.Resources>
         </Button>
-            
     </Grid>
 </UserControl>

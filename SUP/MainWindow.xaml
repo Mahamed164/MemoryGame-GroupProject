@@ -19,16 +19,11 @@
             x:Key="BoolToIconConverter"
             OffUri="Assets/Sounds/SoundPng/soundOff.png"
             OnUri="Assets/Sounds/SoundPng/soundOn.png" />
-
     </Window.Resources>
 
     <Grid>
         <ContentControl Content="{Binding CurrentView}" />
-
-
-
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-
             <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
                 <ToggleButton
                     Width="36"
@@ -38,7 +33,6 @@
                     IsChecked="{Binding MusicMuted, Mode=TwoWay}">
                     <Image Source="{Binding MusicMuted, Converter={StaticResource BoolToIconConverter}}" />
                 </ToggleButton>
-
                 <Slider
                     Width="140"
                     Height="20"
@@ -49,11 +43,6 @@
                     Minimum="0"
                     Value="{Binding MusicVolume, Mode=TwoWay}" />
             </StackPanel>
-
         </StackPanel>
-
-
-
     </Grid>
-
 </Window>

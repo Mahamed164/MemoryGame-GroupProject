@@ -14,7 +14,10 @@ namespace SUP.Views.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is not bool isMultiplayer) return Binding.DoNothing;
+            if (value is not bool isMultiplayer)
+            {
+                return Binding.DoNothing;
+            }
             if (isMultiplayer)
             {
                 return Visibility.Collapsed;
@@ -24,7 +27,6 @@ namespace SUP.Views.Converters
                 return Visibility.Visible;
             }
         }
-
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

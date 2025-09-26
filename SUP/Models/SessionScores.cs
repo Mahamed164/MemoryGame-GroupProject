@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace SUP.Models
 {
-
     public class SessionScores
     {
         public int SessionId { get; set; }
