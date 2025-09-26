@@ -118,8 +118,9 @@ public class GameHubDbServices
         return sessionId;
     }
 
-    public async void SaveFullGameSession(int sessionId, DateTime startTime, DateTime endTime, int playerId, int timeAsInt, int numOfMoves, int numOfMisses, int selectedLevel)
+    public async Task<bool> SaveFullGameSession(int sessionId, DateTime startTime, DateTime endTime, int playerId, int timeAsInt, int numOfMoves, int numOfMisses, int selectedLevel)
     {
+        bool sessionSaved;
         bool isSessionNew = await IsNewSession(sessionId);
 
         if (isSessionNew == true)
@@ -129,7 +130,13 @@ public class GameHubDbServices
             SaveSessionScoreMoves(sessionId, playerId, numOfMoves);
             SaveSessionScoreMisses(sessionId, playerId, numOfMisses);
             SaveSessionScoreLevel(sessionId, playerId, selectedLevel);
+            sessionSaved = true;
         }
+        else
+        {
+            sessionSaved = false;
+        }
+            return sessionSaved;
     }
 
     public async Task<bool> IsNewSession(int sessionId)

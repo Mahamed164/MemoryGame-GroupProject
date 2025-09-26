@@ -46,9 +46,9 @@ public class BoardViewModel : ISupportsCardInput
     public PlayerInformation[] Players { get; set; }
     public int CurrentPlayer;
     public string PlayerOneLabel { get; set; }
-    public string PlayerTwoLabel { get; set; }
-    public string PlayerOneHighlighted { get; set; }
-    public string PlayerTwoHighlighted { get; set; }
+    public string PlayerTwoLabel { get; set; } = string.Empty;
+    public string PlayerOneHighlighted { get; set; } = "normal";
+    public string PlayerTwoHighlighted { get; set; } = "normal";
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
 

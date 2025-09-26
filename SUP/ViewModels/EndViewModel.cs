@@ -49,14 +49,14 @@ public class EndViewModel
     public GameTimer _timer = new GameTimer();
 
 
-  
-    public EndViewModel(int misses, int moves, bool isMultiplayer, string timer, 
-                        DateTime startTime, DateTime endTime, 
-                        ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd, ICommand backToStartCmd, 
+
+    public EndViewModel(int misses, int moves, bool isMultiplayer, string timer,
+                        DateTime startTime, DateTime endTime,
+                        ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd, ICommand backToStartCmd,
                         PlayerInformation winningPlayer = null, IAudioService audioService = null)
     {
         _audio = audioService;
-  PlayConfetti = true;
+        PlayConfetti = true;
 
         Missed = misses;
         Moves = moves;
@@ -79,7 +79,7 @@ public class EndViewModel
             EndViewMessage = $"Du hittade alla kort med {Missed} missar på {Moves} drag!\nDet tog {TimeAsText}.\n\nBra jobbat!";
         }
 
-  ConfettiTimer();
+        ConfettiTimer();
         _audio.LoadSfx(new Dictionary<string, string>()
         {
             { "victory", "Assets/Sounds/Sfx/victory.mp3" }
