@@ -24,14 +24,8 @@ public class EndViewModel
     public ICommand BackToStartCmd { get; }
 
     // Properties
-    public int Missed { get; set; }
-    public int Moves { get; set; }
     public bool IsMultiplayer { get; set; }
-
-    public string TotalTimeInSeconds { get; set; }
     public string EndViewMessage { get; set; }
-    public DateTime StartTime { get; set; }
-    public DateTime EndTime { get; set; }
     public BitmapImage SelectedImage { get; set; }
     public bool PlayConfetti { get; set; }
     public Result CurrentResult { get; set; }
@@ -53,7 +47,6 @@ public class EndViewModel
         RestartCmd = restartCmd;
         HighScoreCmd = highScoreCmd;
         BackToStartCmd = backToStartCmd;
-        //TimeAsText = currentResult.TimerText;
         CreateEndViewMessage(winningPlayer);
         ConfettiTimer();
         PlayVictorySound(_audio);
