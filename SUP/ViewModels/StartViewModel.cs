@@ -16,28 +16,26 @@ using System.Windows;
 using System.Windows.Input;
 using System.Xml.Serialization;
 
-
-
 namespace SUP.ViewModels
 {
     [AddINotifyPropertyChangedInterface]
     public class StartViewModel
     {
-        //Icommand
+        // Commands
         public ICommand StartGameCmd { get; }
         public ICommand HighScoreCmd { get; }
         public ICommand RulesCmd { get; }
         public ICommand AddPlayerCmd { get; }
         public ICommand RemovePlayerCmd { get; }
 
-        //Prop
+        // Properties
         public bool IsLevelOneSelected { get; set; }
         public bool IsLevelTwoSelected { get; set; } = true;
         public bool IsLevelThreeSelected { get; set; }
         public List<string> PlayerList { get; set; } = [];
         private string playerName { get; set; }
         public string MultiPlayerNameMessage { get; set; }
-        public string PlayerNameMessage { get; set; } //för binding i mainshellviewmodel
+        public string PlayerNameMessage { get; set; } // För binding i MainShellViewModel
         public bool IsSinglePlayerSelected { get; set; } = true;
         public bool IsMultiplayerSelected { get; set; }
         public string Greeting { get; set; }
@@ -79,7 +77,6 @@ namespace SUP.ViewModels
             }
         }
 
-
         private void GreetingMessage()
         {
             if (string.IsNullOrEmpty(playerName) && PlayerList.Count == 0)
@@ -109,14 +106,10 @@ namespace SUP.ViewModels
             }
         }
 
-
         //Variabler
         public MainShellViewModel MainShellVM = new();
         public int level;
         private readonly GameHubDbServices _db;
-
-
-        
 
         private void SetLevel()
         {
@@ -133,8 +126,6 @@ namespace SUP.ViewModels
                 level = 3;
             }
         }
-       
-
         public List<string> GetPlayerList()
         {
             if (IsSinglePlayerSelected == true)
@@ -149,18 +140,11 @@ namespace SUP.ViewModels
             }
             throw new Exception("nEJ");
         }
-       
 
-
-
-
-        //sparar för att det ska fortsättas ?????
-
+        // Sparar för att det ska fortsättas ?????
         //private Regex regex = new Regex(@"^[0-9A-Za-z.\s_-]+$"); //https://stackoverflow.com/questions/13353663/what-is-the-regular-expression-to-allow-uppercase-lowercase-alphabetical-charac
         //private readonly string regexString = $"Tillåtna specialtecken: 0-9 . _ -";
         //private int maxLenght = 20;
-
-
 
         public StartViewModel(ICommand startGameCmd, ICommand highScoreCmd, ICommand rulesCmd, GameHubDbServices db)
 
@@ -169,12 +153,10 @@ namespace SUP.ViewModels
             HighScoreCmd = highScoreCmd;
             RulesCmd = rulesCmd;
 
-
             AddPlayerCmd = new RelayCommand(CheckPlayerName);
 
             RemovePlayerCmd = new RelayCommand(p =>
             {
-
                 MessageBox.Show($"Nu är spelaren {PlayerName} borttagen");
                 PlayerList.Remove(PlayerName);
                 PlayerList = PlayerList.ToList();
@@ -199,7 +181,6 @@ namespace SUP.ViewModels
 
             if (multiplayerNameMessage != null)
             {
-                
                 return;
             }
             else
@@ -221,9 +202,6 @@ namespace SUP.ViewModels
                     MessageBox.Show("Nu är ni redan två spelare!!");
                 }
             }
-
         }
-
     }   
-    
 }

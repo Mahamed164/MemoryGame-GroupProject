@@ -17,13 +17,13 @@ namespace SUP.ViewModels;
 
 public class EndViewModel
 {
-    //ICOMMAND
+    // Commands
     public ICommand SaveScoreCmd { get; }
     public ICommand RestartCmd { get; }
     public ICommand HighScoreCmd { get; }
     public ICommand BackToStartCmd { get; }
 
-    //PROP
+    // Properties
     public int Missed { get; set; }
     public int Moves { get; set; }
     public bool IsMultiplayer { get; set; }
@@ -37,11 +37,10 @@ public class EndViewModel
     public bool PlayConfetti { get; set; }
     public Result CurrentResult { get; set; }
 
-    //VARIABLER
+    // Variabler
     public GameTimer _timer = new GameTimer();
     public string endViewMessage;
     private readonly IAudioService _audio;
-
 
     public EndViewModel(Result currentResult, bool isMultiplayer,
                         ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd, ICommand backToStartCmd,
@@ -59,7 +58,6 @@ public class EndViewModel
         CreateEndViewMessage(winningPlayer);
         ConfettiTimer();
         PlayVictorySound(_audio);
-
     }
 
     private void PlayVictorySound(IAudioService _audioService)
@@ -131,7 +129,6 @@ public class EndViewModel
 
         //Allmän källa om TimeSpan: https://learn.microsoft.com/en-us/dotnet/api/system.timespan?view=net-9.0
     }
-
     public async Task ConfettiTimer()
     {
         await Task.Delay(500);
@@ -140,5 +137,4 @@ public class EndViewModel
         // https://github.com/XamlAnimatedGif/WpfAnimatedGif/blob/master/WpfAnimatedGif.Demo/MainWindow.xaml.cs
         // https://stackoverflow.com/questions/210922/how-do-i-get-an-animated-gif-to-work-in-wpf
     }
-
 }

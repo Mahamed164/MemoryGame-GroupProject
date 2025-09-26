@@ -10,11 +10,9 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-
     <UserControl.Resources>
         <converters:FaceUpImageConverter x:Key="FaceUpImageConverter" />
     </UserControl.Resources>
-
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="/Assets/ViewDesign/background.png" />
@@ -24,7 +22,6 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
         <Image
             Grid.Row="0"
             Grid.RowSpan="3"
@@ -81,7 +78,6 @@
                 </Style>
             </Button.Resources>
         </Button>
-
         <Button
             Grid.Row="2"
             Width="100"
@@ -102,7 +98,6 @@
                 </Style>
             </Button.Resources>
         </Button>
-
         <Viewbox
             Grid.Row="1"
             HorizontalAlignment="Center"
@@ -110,12 +105,10 @@
             Stretch="Uniform">
             <Grid>
                 <Border x:Name="Radius" CornerRadius="20" />
-
                 <ItemsControl ItemsSource="{Binding Cards}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid />
-
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
@@ -124,16 +117,13 @@
                                 Background="#FFFFFF"
                                 BorderBrush="Transparent"
                                 Command="{Binding ClickCommand}">
-
                                 <Button.Content>
                                     <Border CornerRadius="20">
                                         <Image
                                             HorizontalAlignment="Stretch"
                                             VerticalAlignment="Stretch"
                                             Stretch="Uniform">
-
                                             <Image.Source>
-
                                                 <MultiBinding Converter="{StaticResource FaceUpImageConverter}">
                                                     <Binding Path="FaceUp" />
                                                     <Binding Path="Image" />
@@ -144,7 +134,7 @@
                                 </Button.Content>
                                 <Button.Resources>
                                     <Style TargetType="{x:Type Border}">
-                                        <Setter Property="BorderBrush" Value="Transparent" /> 
+                                        <Setter Property="BorderBrush" Value="Transparent" />
                                         <!--  denna gör inget som syns  -->
                                         <Setter Property="Margin" Value="7" />
                                         <Setter Property="CornerRadius" Value="20" />
@@ -157,11 +147,9 @@
 
                             <!--  källa binding . = https://learn.microsoft.com/en-us/dotnet/api/system.windows.data.binding.path?view=windowsdesktop-9.0  -->
                             <!--  Optionally, a period (.) path can be used to bind to the current source.  -->
-                          
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-
             </Grid>
         </Viewbox>
     </Grid>

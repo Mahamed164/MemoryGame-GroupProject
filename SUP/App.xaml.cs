@@ -7,13 +7,8 @@ using SUP.Services;
 using SUP.Models;
 using SUP.ViewModels;
 
-
-
 namespace SUP;
 
-/// <summary>
-/// Interaction logic for App.xaml
-/// </summary>
 public partial class App : Application
 {
     private NpgsqlDataSource _dataSource = null;
@@ -22,7 +17,6 @@ public partial class App : Application
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-
 
         _audio = new NAudioService();
 
@@ -35,13 +29,10 @@ public partial class App : Application
         var db = new GameHubDbServices(_dataSource);
         var mainShellVm = new MainShellViewModel(db, _audio);
 
-        
-
         var mainWindow = new MainWindow
         {
             DataContext = mainShellVm
         };
         mainWindow.Show();
-
     }   
 }

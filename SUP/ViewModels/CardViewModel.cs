@@ -21,14 +21,11 @@ public class CardViewModel
     public bool FaceUp { get; set; }
     public ImageSource Image { get; set; }
     
-
     public CardViewModel(Cards c, Action<CardViewModel> onClick)
     {
         Id = c.Id;
         Image = c.Image;
         FaceUp = c.FaceUp;
-        ClickCommand = new RelayCommand(_ => onClick(this)); //detta gör att ?????
+        ClickCommand = new RelayCommand(_ => onClick(this)); // Detta gör att ?????
     }
-
-    
 }
