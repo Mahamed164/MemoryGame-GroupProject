@@ -56,7 +56,11 @@ namespace SUP.ViewModels
         private readonly IAudioService _audio;
         private StartViewModel _startview;
         public object LatestView;
-      
+
+        private void OnMusicVolumeChanged() { _audio.SetMusicVolume((float)MusicVolume); }
+        private void OnSfxVolumeChanged() { _audio.SetSfxVolume((float)SfxVolume); }
+        private void OnMusicMutedChanged() { _audio.SetMusicMuted(MusicMuted); }
+        private void OnSfxMutedChanged() { _audio.SetSfxMuted(SfxMuted); }
 
         public MainShellViewModel(GameHubDbServices db, IAudioService audioService)
         {
