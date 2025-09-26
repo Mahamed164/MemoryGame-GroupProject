@@ -23,30 +23,16 @@ namespace SUP.ViewModels
     {
         public ICommand ReturnCmd { get; }
         public ICommand ChangeHighScoreListCmd { get; set; }
-        public ObservableCollection<SessionScores> HighScoresLevel1 { get; set; }
-        public ObservableCollection<SessionScores> HighScoresLevel2 { get; set; }
-        public ObservableCollection<SessionScores> HighScoresLevel3 { get; set; }
         public ObservableCollection<SessionScores> CurrentHighScoreList { get; set; }
         public ObservableCollection<ObservableCollection<SessionScores>> AllHighScores { get; set; }
         public int SelectedLevel { get; set; }
 
-        public HighScoreViewModel(ICommand returnCmd, List<Player> players, List<SessionScores> level1Scores, List<SessionScores> level2Scores, List<SessionScores> level3Scores)
+        public HighScoreViewModel(ICommand returnCmd, ObservableCollection<ObservableCollection<SessionScores>> allHighScores)
         {
             ChangeHighScoreListCmd = new RelayCommand(ChangeHighScoreList);
             ReturnCmd = returnCmd;
-
-            HighScoresLevel1 = new ObservableCollection<SessionScores>(level1Scores);
-            HighScoresLevel2 = new ObservableCollection<SessionScores>(level2Scores);
-            HighScoresLevel3 = new ObservableCollection<SessionScores>(level3Scores);
-
-            AllHighScores = new ObservableCollection<ObservableCollection<SessionScores>>()
-            {
-                HighScoresLevel1,
-                HighScoresLevel2,
-                HighScoresLevel3
-            };
-            CurrentHighScoreList = HighScoresLevel1;
-            
+            AllHighScores = allHighScores;
+            CurrentHighScoreList = AllHighScores.First();
         }
 
         

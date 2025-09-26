@@ -3,6 +3,7 @@ using SUP.Models;
 using SUP.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -118,7 +119,7 @@ public class GameHubDbServices
         return sessionId;
     }
 
-    public async Task<bool> SaveFullGameSession(int sessionId, DateTime startTime, DateTime endTime, int playerId, int timeAsInt, int numOfMoves, int numOfMisses, int selectedLevel)
+    public async Task<bool> SaveFullGameSession(int sessionId, int playerId, Result currentResult)
     {
         bool sessionSaved;
         bool isSessionNew = await IsNewSession(sessionId);
@@ -126,10 +127,10 @@ public class GameHubDbServices
         if (isSessionNew == true)
         {
             SaveSessionParticipantAsync(sessionId, playerId);
-            SaveSessionScoreTime(sessionId, playerId, timeAsInt);
-            SaveSessionScoreMoves(sessionId, playerId, numOfMoves);
-            SaveSessionScoreMisses(sessionId, playerId, numOfMisses);
-            SaveSessionScoreLevel(sessionId, playerId, selectedLevel);
+            SaveSessionScoreTime(sessionId, playerId, currentResult);
+            SaveSessionScoreMoves(sessionId, playerId, currentResult);
+            SaveSessionScoreMisses(sessionId, playerId, currentResult);
+            SaveSessionScoreLevel(sessionId, playerId, currentResult);
             sessionSaved = true;
         }
         else
@@ -226,8 +227,16 @@ public class GameHubDbServices
         }
     }
 
-    public async void SaveSessionScoreTime(int sessionId, int playerId, int timeAsInt)
+    public async void SaveSessionScoreTime(int sessionId, int playerId, Result currentResult)
     {
+        //https://learn.microsoft.com/en-us/dotnet/api/system.timespan.tryparseexact?view=net-9.0
+        int timeAsInt = 0;
+        if (TimeSpan.TryParseExact(currentResult.TimerText, @"mm\:ss", null, out var span))
+        {
+            timeAsInt = (int)span.TotalSeconds;
+        }
+
+
         try
         {
             await using var connection = await _dataSource.OpenConnectionAsync();
@@ -246,7 +255,7 @@ public class GameHubDbServices
         }
     }
 
-    public async void SaveSessionScoreMoves(int sessionId, int playerId, int numOfMoves)
+    public async void SaveSessionScoreMoves(int sessionId, int playerId, Result currentResult)
     {
         try
         {
@@ -256,7 +265,7 @@ public class GameHubDbServices
 
             command.Parameters.AddWithValue("SESSION_ID", sessionId);
             command.Parameters.AddWithValue("PLAYER_ID", playerId);
-            command.Parameters.AddWithValue("NUMOFMOVES", numOfMoves);
+            command.Parameters.AddWithValue("NUMOFMOVES", currentResult.Guesses);
 
             var result = await command.ExecuteNonQueryAsync();
         }
@@ -266,7 +275,7 @@ public class GameHubDbServices
         }
     }
 
-    public async void SaveSessionScoreMisses(int sessionId, int playerId, int numOfMisses)
+    public async void SaveSessionScoreMisses(int sessionId, int playerId, Result currentResult)
     {
         try
         {
@@ -276,7 +285,7 @@ public class GameHubDbServices
 
             command.Parameters.AddWithValue("SESSION_ID", sessionId);
             command.Parameters.AddWithValue("PLAYER_ID", playerId);
-            command.Parameters.AddWithValue("NUMOFMISSES", numOfMisses);
+            command.Parameters.AddWithValue("NUMOFMISSES", currentResult.Misses);
 
             var result = await command.ExecuteNonQueryAsync();
         }
@@ -285,7 +294,7 @@ public class GameHubDbServices
             throw;
         }
     }
-    public async void SaveSessionScoreLevel(int sessionId, int playerId, int selectedLevel)
+    public async void SaveSessionScoreLevel(int sessionId, int playerId, Result currentResult)
     {
         try
         {
@@ -295,7 +304,7 @@ public class GameHubDbServices
 
             command.Parameters.AddWithValue("SESSION_ID", sessionId);
             command.Parameters.AddWithValue("PLAYER_ID", playerId);
-            command.Parameters.AddWithValue("Selected_Level", selectedLevel);
+            command.Parameters.AddWithValue("Selected_Level", currentResult.Level);
 
             var result = await command.ExecuteNonQueryAsync();
         }
@@ -308,11 +317,11 @@ public class GameHubDbServices
 
 
 
-    public async Task<List<SessionScores>> GetHighScoreList(int level)
+    public async Task<ObservableCollection<SessionScores>> GetHighScoreList(int level)
     {
         try
         {
-            List<SessionScores> _sessionScores = new List<SessionScores>();
+            ObservableCollection<SessionScores> _sessionScores = new ObservableCollection<SessionScores>();
             SessionScores sessionScore = null;
 
             await using var connection = await _dataSource.OpenConnectionAsync();

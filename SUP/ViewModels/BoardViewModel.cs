@@ -136,8 +136,8 @@ public class BoardViewModel : ISupportsCardInput
             timer.Stop();
             EndTime = DateTime.Now;
             int mistakes = numOffGuesses - (Cards.Count / 2);
-            await PlayConfettiGif();
-            FinishGameCommand?.Execute((mistakes, numOffGuesses, TimerText, StartTime, EndTime, Level, Players));
+            Result currentResult = new Result(mistakes, numOffGuesses, TimerText, StartTime, EndTime, Level);
+            FinishGameCommand?.Execute((currentResult, Players));
         }
     }
     private async Task TurnCardsAsync(CardViewModel card)
@@ -306,9 +306,5 @@ public class BoardViewModel : ISupportsCardInput
             _cards.Add(new Cards(i));
         }
         return _cards = _cards.OrderBy(x => random.Next()).ToList();
-    }
-    public async Task PlayConfettiGif()
-    {
-
     }
 }
