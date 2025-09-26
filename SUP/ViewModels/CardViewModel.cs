@@ -27,8 +27,7 @@ public class CardViewModel
         Id = c.Id;
         Image = c.Image;
         FaceUp = c.FaceUp;
-        ClickCommand = new RelayCommand(_ => onClick(this)); //hela kortet får man info om, inte bara id som tidigare
-        
+        ClickCommand = new RelayCommand(_ => onClick(this)); //detta gör att ?????
     }
 
     

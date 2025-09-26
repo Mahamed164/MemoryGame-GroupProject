@@ -2,12 +2,12 @@
     x:Class="SUP.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:SUP.Views.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:gameView="clr-namespace:SUP.Views"
     xmlns:local="clr-namespace:SUP"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:SUP.ViewModels"
-    xmlns:gameView="clr-namespace:SUP.Views"
-    xmlns:converters="clr-namespace:SUP.Views.Converters"
     Title="Memory"
     Width="800"
     Height="600"
@@ -15,9 +15,10 @@
     mc:Ignorable="d">
 
     <Window.Resources>
-        <converters:BoolToIconConverter x:Key="BoolToIconConverter"
-                                    OffUri="Assets/Sounds/SoundPng/soundOff.png"
-                                    OnUri="Assets/Sounds/SoundPng/soundOn.png"/>
+        <converters:BoolToIconConverter
+            x:Key="BoolToIconConverter"
+            OffUri="Assets/Sounds/SoundPng/soundOff.png"
+            OnUri="Assets/Sounds/SoundPng/soundOn.png" />
 
     </Window.Resources>
 
@@ -26,22 +27,27 @@
 
 
 
-        <StackPanel Orientation="Horizontal" Grid.Row="0">
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
 
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
-                <ToggleButton Width="36" Height="36" Background="Transparent" BorderBrush="Transparent"
+            <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
+                <ToggleButton
+                    Width="36"
+                    Height="36"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
                     IsChecked="{Binding MusicMuted, Mode=TwoWay}">
-                    <Image Source="{Binding MusicMuted, Converter={StaticResource BoolToIconConverter}}"  />
+                    <Image Source="{Binding MusicMuted, Converter={StaticResource BoolToIconConverter}}" />
                 </ToggleButton>
 
-            <Slider Width="140"
-            Minimum="0"
-            Maximum="1"
-            Background="Transparent"
-            BorderBrush="RosyBrown"
-            Foreground="RosyBrown"
-                   
-            Value="{Binding MusicVolume, Mode=TwoWay}" Height="20"/>
+                <Slider
+                    Width="140"
+                    Height="20"
+                    Background="Transparent"
+                    BorderBrush="RosyBrown"
+                    Foreground="RosyBrown"
+                    Maximum="1"
+                    Minimum="0"
+                    Value="{Binding MusicVolume, Mode=TwoWay}" />
             </StackPanel>
 
         </StackPanel>

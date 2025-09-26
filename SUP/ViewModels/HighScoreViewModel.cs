@@ -23,7 +23,6 @@ namespace SUP.ViewModels
     {
         public ICommand ReturnCmd { get; }
         public ICommand ChangeHighScoreListCmd { get; set; }
-        // public ObservableCollection<Player> HighScores { get; set; }
         public ObservableCollection<SessionScores> HighScoresLevel1 { get; set; }
         public ObservableCollection<SessionScores> HighScoresLevel2 { get; set; }
         public ObservableCollection<SessionScores> HighScoresLevel3 { get; set; }
@@ -35,8 +34,6 @@ namespace SUP.ViewModels
         {
             ChangeHighScoreListCmd = new RelayCommand(ChangeHighScoreList);
             ReturnCmd = returnCmd;
-            //HighScores = new ObservableCollection<Player>(players);
-
 
             HighScoresLevel1 = new ObservableCollection<SessionScores>(level1Scores);
             HighScoresLevel2 = new ObservableCollection<SessionScores>(level2Scores);

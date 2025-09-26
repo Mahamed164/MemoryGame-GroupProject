@@ -8,9 +8,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using PropertyChanged;
-using SUP.Models;
-using SUP.Services;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 
@@ -20,40 +17,35 @@ namespace SUP.ViewModels;
 
 public class EndViewModel
 {
-    private readonly IAudioService _audio;
-    public int Missed { get; set; }
-    public int Moves { get; set; }
-
-    public bool IsMultiplayer { get; set; }
-
-    public string TimerText { get; set; }
-    public string TimeAsText { get; set; }
-    public string TotalTimeInSeconds { get; set; }
-
-    public string endViewMessage;
-    public string EndViewMessage
-    {
-        get { return endViewMessage; }
-        set { endViewMessage = value; }
-    }
-
-    public DateTime StartTime { get; set; }
-    public DateTime EndTime { get; set; }
-
+    //ICOMMAND
     public ICommand SaveScoreCmd { get; }
     public ICommand RestartCmd { get; }
     public ICommand HighScoreCmd { get; }
     public ICommand BackToStartCmd { get; }
+
+    //PROP
+    public int Missed { get; set; }
+    public int Moves { get; set; }
+    public bool IsMultiplayer { get; set; }
+    public string TimerText { get; set; }
+    public string TimeAsText { get; set; }
+    public string TotalTimeInSeconds { get; set; }
+    public string EndViewMessage { get; set; }
+    public DateTime StartTime { get; set; }
+    public DateTime EndTime { get; set; }
     public BitmapImage SelectedImage { get; set; }
     public bool PlayConfetti { get; set; }
+    
+    //VARIABLER
     public GameTimer _timer = new GameTimer();
-
+    public string endViewMessage;
+    private readonly IAudioService _audio;
 
 
     public EndViewModel(int misses, int moves, bool isMultiplayer, string timer,
                         DateTime startTime, DateTime endTime,
                         ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd, ICommand backToStartCmd,
-                        PlayerInformation winningPlayer = null, IAudioService audioService = null)
+                        PlayerInformation winningPlayer = null, IAudioService audioService = null) //?????
     {
         _audio = audioService;
         PlayConfetti = true;
@@ -69,7 +61,26 @@ public class EndViewModel
         HighScoreCmd = highScoreCmd;
         BackToStartCmd = backToStartCmd;
         TimeAsText = SetTimerText();
+        CreateEndViewMessage(winningPlayer);
+        ConfettiTimer();
+        PlayVictorySound(_audio);
 
+    }
+
+    private void PlayVictorySound(IAudioService _audioService)
+    {
+        _audio.LoadSfx(new Dictionary<string, string>()
+        {
+            { "victory", "Assets/Sounds/Sfx/victory.mp3" }
+        });
+
+        _audio.SetSfxVolume(1);
+        _audio.SetSfxMuted(false);
+        _audio.PlaySfx("victory");
+    }
+
+    private void CreateEndViewMessage(PlayerInformation winningPlayer)
+    {
         if (IsMultiplayer)
         {
             EndViewMessage = $"Grattis {winningPlayer.Name}!\nDu vann med {winningPlayer.Accuracy}% precision\n{winningPlayer.CorrectGuesses}/{winningPlayer.Guesses} rätt!";
@@ -78,22 +89,6 @@ public class EndViewModel
         {
             EndViewMessage = $"Du hittade alla kort med {Missed} missar på {Moves} drag!\nDet tog {TimeAsText}.\n\nBra jobbat!";
         }
-
-        ConfettiTimer();
-        _audio.LoadSfx(new Dictionary<string, string>()
-        {
-            { "victory", "Assets/Sounds/Sfx/victory.mp3" }
-        });
-
-        _audio.SetSfxVolume(1);
-        _audio.SetSfxMuted(false);
-
-        _audio.PlaySfx("victory");
-
-    }
-
-    public EndViewModel()
-    {
     }
 
     public string SetTimerText()
