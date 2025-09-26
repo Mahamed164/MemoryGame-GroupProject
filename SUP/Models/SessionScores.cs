@@ -15,5 +15,7 @@ namespace SUP.Models
         public int Misses { get; set; }
         public string TimerText { get; set; }
         public int Level { get; set; }
+        public int Rankings { get; set; }
+
     }
 }

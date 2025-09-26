@@ -33,12 +33,24 @@ namespace SUP.ViewModels
             ReturnCmd = returnCmd;
             AllHighScores = allHighScores;
             CurrentHighScoreList = AllHighScores.First();
+
+            foreach (var highscoreList in AllHighScores)
+            {
+                SetHighScoreNumbers(highscoreList);
+            }
         }
 
         public void ChangeHighScoreList(object parameter)
         {
             CurrentHighScoreList.Clear();
-            
+        }
+
+        public void SetHighScoreNumbers(ObservableCollection<SessionScores> scores)
+        {
+            for (int i = 0; i < scores.Count; i++) 
+            {
+                scores[i].Rankings = i + 1;
+            }
         }
     }
 }
