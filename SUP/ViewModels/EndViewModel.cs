@@ -35,27 +35,22 @@ public class EndViewModel
     public DateTime EndTime { get; set; }
     public BitmapImage SelectedImage { get; set; }
     public bool PlayConfetti { get; set; }
-    
+    public Result CurrentResult { get; set; }
+
     //VARIABLER
     public GameTimer _timer = new GameTimer();
     public string endViewMessage;
     private readonly IAudioService _audio;
 
 
-    public EndViewModel(int misses, int moves, bool isMultiplayer, string timer,
-                        DateTime startTime, DateTime endTime,
+    public EndViewModel(Result currentResult, bool isMultiplayer,
                         ICommand saveScoreCmd, ICommand restartCmd, ICommand highScoreCmd, ICommand backToStartCmd,
                         PlayerInformation winningPlayer = null, IAudioService audioService = null) //?????
     {
         _audio = audioService;
         PlayConfetti = true;
-
-        Missed = misses;
-        Moves = moves;
+        CurrentResult = currentResult;
         IsMultiplayer = isMultiplayer;
-        TimerText = timer;
-        StartTime = startTime;
-        EndTime = endTime;
         SaveScoreCmd = saveScoreCmd;
         RestartCmd = restartCmd;
         HighScoreCmd = highScoreCmd;
@@ -87,7 +82,7 @@ public class EndViewModel
         }
         else
         {
-            EndViewMessage = $"Du hittade alla kort med {Missed} missar på {Moves} drag!\nDet tog {TimeAsText}.\n\nBra jobbat!";
+            EndViewMessage = $"Du hittade alla kort med {CurrentResult.Misses} missar på {CurrentResult.Guesses} drag!\nDet tog {CurrentResult.TimerText}.\n\nBra jobbat!";
         }
     }
 

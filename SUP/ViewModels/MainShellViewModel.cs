@@ -5,6 +5,7 @@ using SUP.Services;
 using SUP.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
@@ -32,12 +33,12 @@ namespace SUP.ViewModels
         public ICommand RulesCmd { get; }
 
 
-        
+
 
         //från human benchmark video 8
-        public double MusicVolume { get; set; } = 0.25;      
-        public double SfxVolume { get; set; } = 0.50;        
-        public bool MusicMuted { get; set; } = false;        
+        public double MusicVolume { get; set; } = 0.25;
+        public double SfxVolume { get; set; } = 0.50;
+        public bool MusicMuted { get; set; } = false;
         public bool SfxMuted { get; set; } = false;
 
         EndViewModel EndViewModel { get; set; }
@@ -51,6 +52,7 @@ namespace SUP.ViewModels
         public DateTime EndTime { get; set; }
         public int SelectedLevel { get; set; }
         public int CurrentSessionId { get; set; }
+        public Result CurrentResult { get; set; }
 
         private readonly GameHubDbServices _db;
         private readonly IAudioService _audio;
@@ -174,15 +176,10 @@ namespace SUP.ViewModels
 
         public async void FinishGame(object parameter)
         {
-            var result = (ValueTuple<int, int, string, DateTime, DateTime, int, PlayerInformation[]>)parameter;
+            var result = (ValueTuple<Result, PlayerInformation[]>)parameter;
 
-            Misses = result.Item1;
-            Moves = result.Item2;
-            TimerText = result.Item3;
-            StartTime = result.Item4;
-            EndTime = result.Item5;
-            SelectedLevel = result.Item6;
-            var players = result.Item7;
+            CurrentResult = result.Item1;
+            var players = result.Item2;
 
             if (_startview.IsMultiplayerSelected)
             {
@@ -203,16 +200,13 @@ namespace SUP.ViewModels
 
         private async Task<EndViewModel> SingleplayerEndViewModel()
         {
-
             CurrentSessionId = 0;
-            return new EndViewModel(Misses, Moves, false, TimerText, StartTime, EndTime,
-                                         SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd, audioService: _audio);
+            return new EndViewModel(CurrentResult, false, SaveScoreCmd, RestartCmd, HighScoreCmd, BackToStartCmd, null, _audio);
         }
 
         private EndViewModel MultiplayerEndViewModel(PlayerInformation winningPlayer)
         {
-            return new EndViewModel(Misses, Moves, true, TimerText, StartTime, EndTime,
-                                        null, RestartCmd, null, BackToStartCmd, winningPlayer, audioService: _audio);
+            return new EndViewModel(CurrentResult, true, null, RestartCmd, null, BackToStartCmd, winningPlayer, _audio);
         }
 
         private static PlayerInformation GetMultiplayerWinner(PlayerInformation[] players)
@@ -253,7 +247,7 @@ namespace SUP.ViewModels
             if (CurrentSessionId != 0)
             {
                 var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
-                bool sessionSaved = await _db.SaveFullGameSession(CurrentSessionId, StartTime, EndTime, PlayerID, timeAsInt, Moves, Misses, SelectedLevel);
+                bool sessionSaved = await _db.SaveFullGameSession(CurrentSessionId, PlayerID, CurrentResult);
                 if (sessionSaved == true)
                 {
                     MessageBox.Show($"Ditt resultat har sparats i topplistan, '{player.Nickname}'!", "Sparat");
@@ -270,14 +264,19 @@ namespace SUP.ViewModels
         }
         public async void OpenHighScores(object parameter)
         {
-            List<SessionScores> level1Scores = await _db.GetHighScoreList(1);
-            List<SessionScores> level2Scores = await _db.GetHighScoreList(2);
-            List<SessionScores> level3Scores = await _db.GetHighScoreList(3);
+            ObservableCollection<SessionScores> level1Scores = await _db.GetHighScoreList(1);
+            ObservableCollection<SessionScores> level2Scores = await _db.GetHighScoreList(2);
+            ObservableCollection<SessionScores> level3Scores = await _db.GetHighScoreList(3);
 
+            ObservableCollection<ObservableCollection<SessionScores>> allHighScores = new ObservableCollection<ObservableCollection<SessionScores>>
+            {
+                level1Scores,
+                level2Scores,
+                level3Scores
+            };
             LatestView = CurrentView;
-            var players = await _db.GetPlayersForHighScoreAsync();
 
-            CurrentView = new HighScoreViewModel(ReturnCmd, players, level1Scores, level2Scores, level3Scores);
+            CurrentView = new HighScoreViewModel(ReturnCmd, allHighScores);
 
         }
         public void BackToStart(object parameter)

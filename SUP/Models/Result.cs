@@ -11,12 +11,19 @@ namespace SUP.Models
         public int Misses { get; set; }
         public int Guesses { get; set; }
         public string TimerText { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public int Level { get; set; }
+        public int TimeAsInt {  get; set; }
 
-        public void SetResult(int misses, int guesses, string timeText)
+        public Result(int misses, int guesses, string timeText, DateTime startTime, DateTime endTime, int level)
         {
             Misses = misses;
             Guesses = guesses;
             TimerText = timeText;
+            StartTime= startTime; 
+            EndTime= endTime;
+            Level = level;
         }
     }
 }
