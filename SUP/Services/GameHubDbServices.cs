@@ -197,7 +197,7 @@ public class GameHubDbServices
         }
         catch (Exception ex)
         {
-            throw;
+            return 0;
         }
     }
 
