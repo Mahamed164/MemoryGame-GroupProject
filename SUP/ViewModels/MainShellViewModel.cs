@@ -247,15 +247,7 @@ namespace SUP.ViewModels
             }
         }
 
-        //private void ParseTime()
-        //{
-        //    string format = @"mm\:ss";
-        //    int timeAsInt = 0;
-        //    if (TimeSpan.TryParseExact(TimerText, format, null, out var span))
-        //    {
-        //        timeAsInt = (int)span.TotalSeconds;
-        //    }
-        //}
+       
 
         public async void OpenHighScores(object parameter)
         {
