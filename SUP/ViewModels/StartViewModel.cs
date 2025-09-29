@@ -39,7 +39,7 @@ namespace SUP.ViewModels
         public string PlayerNameMessage { get; set; } // För binding i MainShellViewModel
         public bool IsSinglePlayerSelected { get; set; } = true;
         public GameMode SelectedGameMode { get; set; } = GameMode.SinglePlayer;
-        // public bool IsMultiplayerSelected { get; set; }
+        
         public string Greeting { get; set; }
         public Visibility ShowList
         {
