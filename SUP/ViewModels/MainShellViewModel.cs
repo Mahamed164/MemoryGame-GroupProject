@@ -171,9 +171,11 @@ namespace SUP.ViewModels
             }
             else
             {
+                
                 var player = await _db.GetOrCreatePlayerAsync(_startview.PlayerName);
                 PlayerName = player.Nickname;
                 IdForPlayerAndSession.PlayerId = player.Id;
+                IdForPlayerAndSession.SessionId = 0;
 
                 EndViewModel = await SingleplayerEndViewModel();
             }
