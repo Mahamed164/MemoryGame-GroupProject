@@ -83,6 +83,8 @@ namespace SUP.ViewModels
             if (string.IsNullOrEmpty(playerName) && PlayerList.Count == 0)
             {
                 Greeting = "Spelarnamn:";
+                MultiPlayerNameMessage = string.Empty;
+                PlayerNameMessage = string.Empty;   
             }
             else if (IsMultiplayerSelected == true)
             {
@@ -157,7 +159,7 @@ namespace SUP.ViewModels
 
             RemovePlayerCmd = new RelayCommand(p =>
             {
-                MessageBox.Show($"Nu är spelaren {PlayerName} borttagen");
+                MessageBox.Show($"Nu är spelaren {PlayerName} borttagen"); 
                 PlayerList.Remove(PlayerName);
                 PlayerList = PlayerList.ToList();
             });

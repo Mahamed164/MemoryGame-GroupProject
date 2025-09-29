@@ -94,7 +94,7 @@ namespace SUP.ViewModels
         {
         }
 
-        private Regex regex = new Regex(@"^[0-9A-Za-z.\s_-]+$"); //https://stackoverflow.com/questions/13353663/what-is-the-regular-expression-to-allow-uppercase-lowercase-alphabetical-charac
+        private Regex regex = new Regex(@"^[0-9A-Za-z.å.ä.ö.\s_-]+$"); //https://stackoverflow.com/questions/13353663/what-is-the-regular-expression-to-allow-uppercase-lowercase-alphabetical-charac
         private readonly string regexString = $"Tillåtna specialtecken: 0-9 . _ -";
         private int maxLenght = 20;
 
