@@ -135,7 +135,7 @@ namespace SUP.ViewModels
 
         public async void StartGame(object parameter)
         {
-            if (_startview.IsMultiplayerSelected)
+            if (_startview.SelectedGameMode is Enums.GameMode.MultiPlayer)
             {
                 CurrentView = new BoardViewModel(FinishGameCmd, RestartCmd, _startview.Level, _startview.GetPlayerList(), BackToStartCmd, _audio);
                 return;
@@ -163,7 +163,7 @@ namespace SUP.ViewModels
             CurrentResult = result.Item1;
             var players = result.Item2;
 
-            if (_startview.IsMultiplayerSelected)
+            if (_startview.SelectedGameMode is Enums.GameMode.MultiPlayer)
             {
                 PlayerInformation winningPlayer = GetMultiplayerWinner(players);
 
