@@ -61,8 +61,7 @@
                     FontFamily="Bahnschrift Condensed"
                     FontSize="16"
                     Foreground="White"
-                    GroupName="Multiplayer"
-                    IsChecked="{Binding IsMultiplayerSelected}" />
+                    GroupName="Multiplayer" />
                 <ListBox
                     x:Name="lstPlayers"
                     Grid.Row="1"
