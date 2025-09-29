@@ -38,13 +38,14 @@ namespace SUP.ViewModels
         public string MultiPlayerNameMessage { get; set; }
         public string PlayerNameMessage { get; set; } // För binding i MainShellViewModel
         public bool IsSinglePlayerSelected { get; set; } = true;
-        public bool IsMultiplayerSelected { get; set; }
+        public GameMode SelectedGameMode { get; set; } = GameMode.SinglePlayer;
+        // public bool IsMultiplayerSelected { get; set; }
         public string Greeting { get; set; }
         public Visibility ShowList
         {
             get
             {
-                if (IsMultiplayerSelected == true)
+                if (SelectedGameMode is Enums.GameMode.MultiPlayer)
                 {
                     return Visibility.Visible;
                 }
@@ -55,7 +56,7 @@ namespace SUP.ViewModels
         {
             get
             {
-                if (IsMultiplayerSelected == true)
+                if (SelectedGameMode is Enums.GameMode.MultiPlayer)
                 {
                     if (PlayerList.Count >= 2)
                         return true;
@@ -78,15 +79,27 @@ namespace SUP.ViewModels
             }
         }
 
+        public void OnIsSinglePlayerSelectedChanged()
+        {
+            if (IsSinglePlayerSelected == true)
+            {
+                SelectedGameMode = GameMode.SinglePlayer;
+            }
+            else
+            {
+                SelectedGameMode = GameMode.MultiPlayer;
+            }
+        }
+
         private void GreetingMessage()
         {
             if (string.IsNullOrEmpty(playerName) && PlayerList.Count == 0)
             {
                 Greeting = "Spelarnamn:";
                 MultiPlayerNameMessage = string.Empty;
-                PlayerNameMessage = string.Empty;   
+                PlayerNameMessage = string.Empty;
             }
-            else if (IsMultiplayerSelected == true)
+            else if (SelectedGameMode is Enums.GameMode.MultiPlayer)
             {
                 Greeting = "Hej " + string.Join(" & ", PlayerList) + ", klicka på spela när du är redo!";
             }
@@ -124,10 +137,7 @@ namespace SUP.ViewModels
         public int level;
         private readonly GameHubDbServices _db;
 
-        private void SetLevel()
-        {
 
-        }
         public List<string> GetPlayerList()
         {
             if (IsSinglePlayerSelected == true)
@@ -136,7 +146,7 @@ namespace SUP.ViewModels
                 playerName.Add(PlayerName);
                 return playerName;
             }
-            if (IsMultiplayerSelected == true)
+            if (SelectedGameMode is Enums.GameMode.MultiPlayer)
             {
                 return PlayerList;
             }
@@ -159,7 +169,7 @@ namespace SUP.ViewModels
 
             RemovePlayerCmd = new RelayCommand(p =>
             {
-                MessageBox.Show($"Nu är spelaren {PlayerName} borttagen"); 
+                MessageBox.Show($"Nu är spelaren {PlayerName} borttagen");
                 PlayerList.Remove(PlayerName);
                 PlayerList = PlayerList.ToList();
             });
