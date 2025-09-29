@@ -219,8 +219,6 @@ namespace SUP.ViewModels
         }
         public async void SaveScore(object parameter)
         {
-
-
             if (IdForPlayerAndSession.SessionId == 0)
             {
                 IdForPlayerAndSession.SessionId = await _db.GetNewSessionId(CurrentResult);
