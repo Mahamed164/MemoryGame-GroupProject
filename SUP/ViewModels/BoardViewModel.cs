@@ -142,7 +142,7 @@ public class BoardViewModel : ISupportsCardInput
     private async Task TurnCardsAsync(CardViewModel card)
     {
 
-        if (!card.FaceUp)
+        if (!card.FaceUp) //om kort inte redan är vänt ska ljudet spelas 
         {
             _audio.PlaySfx("flipCard");
         }

@@ -135,7 +135,6 @@
                                 <Button.Resources>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="BorderBrush" Value="Transparent" />
-                                        <!--  denna gör inget som syns  -->
                                         <Setter Property="Margin" Value="7" />
                                         <Setter Property="CornerRadius" Value="20" />
                                     </Style>

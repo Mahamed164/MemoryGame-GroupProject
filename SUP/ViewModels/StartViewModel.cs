@@ -36,7 +36,7 @@ namespace SUP.ViewModels
         public List<string> PlayerList { get; set; } = [];
         private string playerName { get; set; }
         public string MultiPlayerNameMessage { get; set; }
-        public string PlayerNameMessage { get; set; } // För binding i MainShellViewModel
+        public string PlayerNameMessage { get; set; } 
         public bool IsSinglePlayerSelected { get; set; } = true;
         public GameMode SelectedGameMode { get; set; } = GameMode.SinglePlayer;
         
@@ -153,11 +153,7 @@ namespace SUP.ViewModels
             throw new Exception("nEJ");
         }
 
-        // Sparar för att det ska fortsättas ?????
-        //private Regex regex = new Regex(@"^[0-9A-Za-z.\s_-]+$"); //https://stackoverflow.com/questions/13353663/what-is-the-regular-expression-to-allow-uppercase-lowercase-alphabetical-charac
-        //private readonly string regexString = $"Tillåtna specialtecken: 0-9 . _ -";
-        //private int maxLenght = 20;
-
+       
         public StartViewModel(ICommand startGameCmd, ICommand highScoreCmd, ICommand rulesCmd, GameHubDbServices db)
 
         {

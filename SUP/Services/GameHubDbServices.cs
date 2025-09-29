@@ -30,7 +30,7 @@ public class GameHubDbServices
     /// <exception cref="ArgumentNullException"></exception>
     public async Task<Player> GetOrCreatePlayerAsync(string nickname)
     {
-        //condition för singleplayer // multiplayer
+        
 
 
         if (string.IsNullOrWhiteSpace(nickname)) throw new ArgumentNullException(nameof(nickname)); //guard
@@ -39,24 +39,13 @@ public class GameHubDbServices
         const string trySqlStmt = @"insert into player(nickname) 
                                  select @nickname where not exists
                                 (select 1 from player where lower(nickname) = lower(@nickname))
-                                returning player_id, nickname"; //försöker insert, men det funkar bara om nickname inte redan finns
+                                returning player_id, nickname"; 
 
         //statement 2 = hämtar id och nickname på spelare där nickname i databasen är det samma som man skriver in i spelet (@nickname) -- istället för att insert
         const string selectSqlStmt = @"select player_id, nickname
                                     from player
                                     where LOWER(nickname) = LOWER(@nickname)";
 
-        /* https://stackoverflow.com/questions/1952922/how-to-insert-a-record-or-update-if-it-already-exists
-         * https://www.sqltutorial.net/not-exists.html -- where not exists: "The subquery must return no result for the NOT EXISTS operator to be true. 
-         *                                                                   If the subquery returns any result, the NOT EXISTS operator is false, and the outer query will not return any rows."
-                                                                            
-        Gamla statement (har även använts som källa/inspiration): 
-        @"insert into player(nickname)
-        values (@nickname)
-        on duplicate key(nickname)
-        do update set nickname = excluded.nickname
-        returing player_id, nickname";
-          */
 
         try
         {
