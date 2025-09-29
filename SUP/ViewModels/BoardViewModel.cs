@@ -4,6 +4,7 @@ using Npgsql;
 using PropertyChanged;
 using SUP.Commands;
 using SUP.Common;
+using SUP.Enums;
 using SUP.Models;
 using SUP.Services;
 using SUP.Views.Converters;
@@ -17,6 +18,7 @@ using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -34,7 +36,8 @@ public class BoardViewModel : ISupportsCardInput
 
     // Properties
     public MainShellViewModel MainShellVM { get; set; } = new();
-    public int Level { get; set; } = 2; //den börjar på 2
+    public LevelSelect ChosenLevel { get; set; } = LevelSelect.Medium; //den börjar på 2
+    public int Level { get; set; }
     public PlayerInformation[] Players { get; set; }
     public string PlayerOneLabel { get; set; }
     public string PlayerTwoLabel { get; set; } = string.Empty;
@@ -64,7 +67,7 @@ public class BoardViewModel : ISupportsCardInput
 
     }
 
-    public BoardViewModel(ICommand finishGameCommand, ICommand restartCmd, int level,
+    public BoardViewModel(ICommand finishGameCommand, ICommand restartCmd, LevelSelect level,
                             List<string> playerList, ICommand backToStartCmd, IAudioService _audioService)
     {
         CreateListOfPlayers(level, playerList);
@@ -93,9 +96,9 @@ public class BoardViewModel : ISupportsCardInput
         _audio.SetSfxMuted(false);
     }
 
-    private void CreateListOfPlayers(int level, List<string> playerList)
+    private void CreateListOfPlayers(LevelSelect level, List<string> playerList)
     {
-        Level = level;
+        ChosenLevel = level;
         Players = new PlayerInformation[playerList.Count];
 
         for (int i = 0; i < playerList.Count; i++)
@@ -259,7 +262,7 @@ public class BoardViewModel : ISupportsCardInput
     private void ConfigureCards()
     {
         completedPairs = 0;
-        var shuffled = CreatePairsFromLevel(Level);
+        var shuffled = CreatePairsFromLevel(ChosenLevel);
 
         Cards.Clear();
 
@@ -269,24 +272,27 @@ public class BoardViewModel : ISupportsCardInput
         }
     }
 
-    public List<Cards> CreatePairsFromLevel(int level)
+    public List<Cards> CreatePairsFromLevel(LevelSelect level)
     {
-        Level = level;
+        ChosenLevel = level;
         Random random = new Random();
         _cards.Clear();
         int numberOfCardPairs;
 
-        switch (Level)
+        switch (ChosenLevel)
         {
             default:
-            case 1:
+            case LevelSelect.Easy:
                 numberOfCardPairs = 6;
+                Level = 1;
                 break;
-            case 2:
+            case LevelSelect.Medium:
                 numberOfCardPairs = 10;
+                Level = 2;
                 break;
-            case 3:
+            case LevelSelect.Hard:
                 numberOfCardPairs = 15;
+                Level = 3;
                 break;
                 // You use the switch expression to evaluate a single expression from a list of candidate expressions based on a pattern match with an input expression.
                 // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/switch-expression 

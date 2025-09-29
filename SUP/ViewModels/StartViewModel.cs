@@ -1,6 +1,7 @@
 ﻿using Npgsql;
 using PropertyChanged;
 using SUP.Commands;
+using SUP.Enums;
 using SUP.Models;
 using SUP.Services;
 using SUP.Views;
@@ -93,17 +94,27 @@ namespace SUP.ViewModels
             }
         }
 
-        public int Level
+        public LevelSelect Level
         {
             get
             {
-                SetLevel();// https://softwareengineering.stackexchange.com/questions/225354/logic-inside-class-properties-setters-getters
-                return level;
+                if (IsLevelOneSelected == true)
+                {
+                    return LevelSelect.Easy;
+                }
+                else if (IsLevelTwoSelected == true)
+                {
+                    return LevelSelect.Medium;
+                }
+                else if (IsLevelThreeSelected == true)
+                {
+                    return LevelSelect.Hard;
+                }
+                return LevelSelect.Medium;
+                // https://softwareengineering.stackexchange.com/questions/225354/logic-inside-class-properties-setters-getters
+
             }
-            set
-            {
-                level = value;
-            }
+
         }
 
         //Variabler
@@ -113,18 +124,7 @@ namespace SUP.ViewModels
 
         private void SetLevel()
         {
-            if (IsLevelOneSelected == true)
-            {
-                level = 1;
-            }
-            else if (IsLevelTwoSelected == true)
-            {
-                level = 2;
-            }
-            else if (IsLevelThreeSelected == true)
-            {
-                level = 3;
-            }
+
         }
         public List<string> GetPlayerList()
         {
@@ -203,5 +203,5 @@ namespace SUP.ViewModels
                 }
             }
         }
-    }   
+    }
 }
