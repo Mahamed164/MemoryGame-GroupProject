@@ -152,7 +152,7 @@ public class GameHubDbServices
             await using var command = new NpgsqlCommand("INSERT INTO PUBLIC.SESSION " +
                 "(GAME_ID, STARTED_AT, ENDED_AT) " +
                 "VALUES " +
-                "((SELECT GAME_ID FROM GAME G WHERE NAME = 'G2Memory'), " +
+                "((SELECT GAME_ID FROM GAME G WHERE NAME = 'G2 Memory'), " +
                 "@STARTDATE, " +
                 "@ENDDATE) " +
                 "RETURNING SESSION_ID", connection);
