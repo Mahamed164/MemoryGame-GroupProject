@@ -35,7 +35,6 @@ public class BoardViewModel : ISupportsCardInput
     public ICommand BackToStartCmd { get; }
 
     // Properties
-    public MainShellViewModel MainShellVM { get; set; } = new();
     public LevelSelect ChosenLevel { get; set; } = LevelSelect.Medium; //den börjar på 2
     public int Level { get; set; }
     public PlayerInformation[] Players { get; set; }
