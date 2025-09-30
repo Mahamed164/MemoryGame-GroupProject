@@ -53,7 +53,10 @@ namespace SUP.ViewModels
         public object LatestView;
         IdForPlayerAndSession IdForPlayerAndSession { get; set; }
 
-        
+        private void OnMusicVolumeChanged() { _audio.SetMusicVolume((float)MusicVolume); }
+        private void OnSfxVolumeChanged() { _audio.SetSfxVolume((float)SfxVolume); }
+        private void OnMusicMutedChanged() { _audio.SetMusicMuted(MusicMuted); }
+        private void OnSfxMutedChanged() { _audio.SetSfxMuted(SfxMuted); }
 
         public MainShellViewModel(GameHubDbServices db, IAudioService audioService)
         {
