@@ -178,6 +178,7 @@ public class BoardViewModel : ISupportsCardInput
             await Task.Delay(800);
             turnedCards[0].FaceUp = false;
             turnedCards[1].FaceUp = false;
+            CurrentPlayer = (CurrentPlayer + 1) % Players.Length;
         }
         else
         {
@@ -185,7 +186,7 @@ public class BoardViewModel : ISupportsCardInput
             Players[CurrentPlayer].CorrectGuesses++;
         }
 
-        CurrentPlayer = (CurrentPlayer + 1) % Players.Length;
+       
         turnedCards.Clear();
     }
 
