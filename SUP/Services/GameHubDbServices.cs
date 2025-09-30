@@ -30,7 +30,7 @@ public class GameHubDbServices
     /// <exception cref="ArgumentNullException"></exception>
     public async Task<Player> GetOrCreatePlayerAsync(string nickname)
     {
-        
+
 
 
         if (string.IsNullOrWhiteSpace(nickname)) throw new ArgumentNullException(nameof(nickname)); //guard
@@ -39,7 +39,7 @@ public class GameHubDbServices
         const string trySqlStmt = @"insert into player(nickname) 
                                  select @nickname where not exists
                                 (select 1 from player where lower(nickname) = lower(@nickname))
-                                returning player_id, nickname"; 
+                                returning player_id, nickname";
 
         //statement 2 = hämtar id och nickname på spelare där nickname i databasen är det samma som man skriver in i spelet (@nickname) -- istället för att insert
         const string selectSqlStmt = @"select player_id, nickname
@@ -105,7 +105,7 @@ public class GameHubDbServices
         {
             sessionSaved = false;
         }
-            return sessionSaved;
+        return sessionSaved;
     }
 
     public async Task<bool> IsNewSession(IdForPlayerAndSession idForPlayerAndSession)
@@ -129,7 +129,7 @@ public class GameHubDbServices
                     existingSession = reader.GetInt32(0);
                     isSessionNew = false;
                 }
-                
+
             }
 
             return isSessionNew;
@@ -306,6 +306,8 @@ public class GameHubDbServices
                 "FROM SESSION_SCORE SS " +
                 "JOIN PLAYER P ON SS.PLAYER_ID = P.PLAYER_ID " +
                 "JOIN PUBLIC.SESSION S ON S.SESSION_ID = SS.SESSION_ID " +
+                "JOIN GAME G ON S.GAME_ID = G.GAME_ID " +
+                "WHERE G.NAME = 'G2 Memory'" +
                 "GROUP BY SS.SESSION_ID, P.NICKNAME, S.STARTED_AT " +
                 "HAVING SUM(CASE WHEN SS.SCORE_TYPE_ID = 6 THEN SS.VALUE END) = @Level " +
                 "ORDER BY MOVES ASC, MISSES ASC, TIME ASC LIMIT 100", connection);
