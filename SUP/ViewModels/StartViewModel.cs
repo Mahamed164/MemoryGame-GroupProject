@@ -101,7 +101,7 @@ namespace SUP.ViewModels
             }
             else if (SelectedGameMode is Enums.GameMode.MultiPlayer)
             {
-                Greeting = "Hej " + string.Join(" & ", PlayerList) + ", klicka på spela när du är redo!";
+                Greeting = "Hej " + string.Join(" & ", PlayerList) + ", klicka på spela när ni är redo!";
             }
             else
             {
